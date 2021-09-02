@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAnswers } from "../../../redux/slices/answersSlice";
 import { getQuestions } from "../../../redux/slices/questionsSlice";
 import { getUser } from "../../../redux/slices/userSlice";
-import { addScore } from "../../../redux/slices/scoreSlice";
+import { addRanking, addScore } from "../../../redux/slices/scoreSlice";
+import { PrimaryButton } from "../../components/atoms";
 
 const Result = () => {
   const answers = useSelector(getAnswers).answers;
@@ -46,6 +47,8 @@ const Result = () => {
         level: level,
       })
     );
+    console.log(t1);
+    console.log(t2);
   }, []);
 
   const score: number = tp1 + tp2 + rwp;
@@ -91,6 +94,20 @@ const Result = () => {
             ))}
         </div>
       </div>
+      <PrimaryButton
+        label={"ランキングに登録する"}
+        onClick={() =>
+          dispatch(
+            addRanking({
+              username: user.username,
+              score: Math.floor(score),
+              language: language,
+              level: level,
+              image: user.image,
+            })
+          )
+        }
+      />
     </div>
   );
 };

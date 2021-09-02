@@ -15,15 +15,15 @@ const AfterLoginButton = () => {
   };
 
   return (
-    <div className="flex items-center justify-evenly w-full ">
+    <div className="flex items-center justify-evenly w-2/5">
       {user.image.path !== "" ? (
-        <div onClick={goToProfile} className="flex items-center">
+        <div onClick={goToProfile}>
           <Image
             className="rounded-full"
             src={user.image.path}
             alt="userProfileImage"
-            width={48}
-            height={48}
+            width={56}
+            height={56}
           />
         </div>
       ) : (

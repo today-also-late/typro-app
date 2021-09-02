@@ -58,21 +58,14 @@ export default function Home({
           {content2}
           <div className="mt-16">{content2_1}</div>
         </div>
-        <div className="h-1/6">
-          {user.uid ? (
-            <div className="w-full text-center">
-              <PrimaryButton label={"プレイ"} onClick={handleClick} />
-            </div>
-          ) : (
-            <div className="w-full flex">
-              <div className="w-1/2 text-center">
-                <ContainedButton label={"今すぐプレイ"} href={"/guests/play"} />
-              </div>
-              <div className="w-1/2 text-center">
-                <PrimaryButton label={"登録してプレイ"} onClick={handleClick} />
-              </div>
-            </div>
-          )}
+        <div className="h-1/6 flex">
+          <div className="w-1/2 text-center">
+            <ContainedButton label={"今すぐプレイ"} href={"/guests/play"} />
+          </div>
+
+          <div className="w-1/2 text-center">
+            <PrimaryButton label={"登録してプレイ"} onClick={handleClick} />
+          </div>
         </div>
       </div>
     </div>

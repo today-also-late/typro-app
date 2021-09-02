@@ -35,6 +35,16 @@ export const initialState: scoreState = {
     ],
   },
 };
+type addranking = {
+  username: string;
+  language: string;
+  level: string;
+  score: number;
+  image: {
+    id: string;
+    path: string;
+  };
+};
 
 type addscore = {
   uid: string;
@@ -115,6 +125,35 @@ export const fetchPythonScore = createAsyncThunk(
   }
 );
 
+export const addRanking = createAsyncThunk(
+  "score/addRanking",
+  async (addranking: addranking) => {
+    const username = addranking.username;
+    const score = addranking.score;
+    const language = addranking.language;
+    const level = addranking.level;
+    const image = addranking.image;
+
+    const rankingRef = db.collection("ranking").doc();
+
+    const timestamp = FirebaseTimestamp.now();
+
+    const rankingData = {
+      username: username,
+      language: language,
+      level: level,
+      rankingId: rankingRef.id,
+      score: score,
+      created_at: timestamp,
+      image: image,
+    };
+
+    rankingRef.set(rankingData, { merge: true }).then(() => {
+      console.log("ランキング登録完了");
+    });
+  }
+);
+
 export const addScore = createAsyncThunk(
   "score/addScore",
   async (addscore: addscore) => {
@@ -155,11 +194,11 @@ const scoreSlice = createSlice({
     builder.addCase(addScore.fulfilled, (state, action: any) => {
       alert("スコアの登録が完了しました。");
     });
+    builder.addCase(addRanking.fulfilled, (state, action: any) => {
+      alert("ランキングの登録が完了しました。");
+    });
     builder.addCase(fetchPythonScore.fulfilled, (state, action: any) => {
       console.log("stateにpythonスコアをセット");
-    });
-    builder.addCase(fetchPythonScore.rejected, (state, action: any) => {
-      console.log(action.error);
     });
     builder.addCase(fetchJavascriptScore.fulfilled, (state, action: any) => {
       console.log("stateにjavascriptスコアをセット");
