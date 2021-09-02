@@ -6,13 +6,15 @@ import {
   addFirstOutputAnswers,
   addSecondOutputAnswers,
   addMissAnswers,
-  emptyFirstOutputAnswers,
-  emptySecondOutputAnswers,
 } from "../../../redux/slices/answersSlice";
 import { useEffect } from "react";
 import { getAnswers } from "../../../redux/slices/answersSlice";
 import { getQuestions } from "../../../redux/slices/questionsSlice";
 import Router, { useRouter } from "next/router";
+import Keybord from "../../../public/audios/keybord.mp3";
+import DisplayQ2 from "../../../public/audios/displayquestion2.mp3";
+import Miss from "../../../public/audios/miss.mp3";
+import Success from "../../../public/audios/success.mp3";
 
 const Play = () => {
   const dispatch = useDispatch();
@@ -31,8 +33,20 @@ const Play = () => {
   const [alertText, setAlertText] = useState("");
   const [missCount, setMissCount] = useState(0);
 
+  const [audioKeybord, setAudioKeybord] = useState<HTMLAudioElement | null>(
+    null
+  );
+  const [audioDisplayQ2, setAudioDisplayQ] = useState<HTMLAudioElement | null>(
+    null
+  );
+  const [audioMiss, setAudioMiss] = useState<HTMLAudioElement | null>(null);
+  const [audioSuccess, setAudioSuccess] = useState<HTMLAudioElement | null>(
+    null
+  );
+
   const InputCode = useCallback(
     (event) => {
+      audioKeybord?.play();
       setAlertText("");
       if (event.target.value.match(/  /)) {
         event.target.value = event.target.value.replace(/  /g, " ");
@@ -41,17 +55,30 @@ const Play = () => {
     },
     [setCode]
   );
+  const settingAudio = () => {
+    setAudioKeybord(new Audio(Keybord));
+    setAudioDisplayQ(new Audio(DisplayQ2));
+    setAudioMiss(new Audio(Miss));
+    setAudioSuccess(new Audio(Success));
+  };
 
   useEffect(() => {
+    settingAudio();
+
     displayNextQuestion(currentId);
 
-    if (Number(count) === 1) {
-      dispatch(emptyFirstOutputAnswers());
-    }
-    if (Number(count) === 2) {
-      dispatch(emptySecondOutputAnswers());
-    }
+    // リロード,タブを閉じるときに警告(禁止はできない)
+    window.addEventListener("beforeunload", onUnload);
+    return () => {
+      // イベントの設定解除
+      window.removeEventListener("beforeunload", onUnload);
+    };
   }, []);
+
+  const onUnload = (e: any) => {
+    e.preventDefault();
+    e.returnValue = "";
+  };
 
   const displayNextQuestion = (nextQuestionId: number) => {
     setQuesiton(questions[Number(count)]["output"][nextQuestionId]);
@@ -97,6 +124,7 @@ const Play = () => {
       }
       console.log(question);
       if (code === question) {
+        audioSuccess?.play();
         if (Number(count) === 1) {
           dispatch(addFirstOutputAnswers(code));
         } else if (Number(count) === 2) {
@@ -107,6 +135,7 @@ const Play = () => {
         let nextQuestionId = currentId + 1;
         displayNextQuestion(nextQuestionId);
       } else {
+        audioMiss?.play();
         setMissCount((prevState) => prevState + 1);
         setAlertText("コードが違います。");
       }

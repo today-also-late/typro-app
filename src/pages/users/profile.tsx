@@ -88,7 +88,7 @@ const Profile = () => {
           setLevel={setPythonLevel}
         />
         <LineChart
-          title={"javaScript"}
+          title={"JavaScript"}
           scores={scores.javascript}
           label={javascriptLevel}
           setLevel={setJavascriptLevel}

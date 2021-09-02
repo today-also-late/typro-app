@@ -50,15 +50,6 @@ const answersSlice = createSlice({
     emptyAnswers: () => {
       return initialState;
     },
-    emptySecondSrcAnswers: (state) => {
-      state.answers[2]["src"] = [];
-    },
-    emptyFirstOutputAnswers: (state) => {
-      state.answers[1]["output"] = [];
-    },
-    emptySecondOutputAnswers: (state) => {
-      state.answers[2]["output"] = [];
-    },
   },
 });
 
@@ -69,9 +60,6 @@ export const {
   addSecondOutputAnswers,
   addMissAnswers,
   emptyAnswers,
-  emptySecondSrcAnswers,
-  emptyFirstOutputAnswers,
-  emptySecondOutputAnswers,
 } = answersSlice.actions;
 
 export const getAnswers = (state: RootState) => state.answers;

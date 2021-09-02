@@ -20,6 +20,22 @@ service cloud.firestore {
       allow read;
       allow write;
     }
+    match /ranking/{rankingId} {
+      allow read;
+      allow write;
+
+        match /python/{scoreId} {
+        allow read;
+        allow write;
+      } 
+
+       match /javascript/{scoreId} {
+        allow read;
+        allow write;
+      }
+
+
+    }
     }
   }
 }
