@@ -18,6 +18,7 @@ import Keybord from "../../../public/audios/keybord.mp3";
 import DisplayQ from "../../../public/audios/displayquestion1.mp3";
 import Miss from "../../../public/audios/miss.mp3";
 import Success from "../../../public/audios/success.mp3";
+import CountdownBar from "../../components/atoms/CountDownBar";
 
 const Play = () => {
   const dispatch = useDispatch();
@@ -142,33 +143,40 @@ const Play = () => {
   };
 
   return (
-    <body className="w-screen h-screen flex justify-center items-center">
-      <div className="w-1/4  text-lg"></div>
-      <div className="w-2/4">
-        <h1 className="text-center font-mono text-2xl">{question}</h1>
-        <TextInput
-          fullWidth={true}
-          autoFocus={true}
-          margin="dense"
-          multiline={false}
-          required={true}
-          rows={1}
-          value={code}
-          type={"text"}
-          variant={"outlined"}
-          onChange={InputCode}
-          onKeyDown={(e) => Judge(e, code)}
-        />
-        <div className="text-center text-red-500">{alertText}</div>
-        <div className="text-center text-red-500">{"miss:" + missCount}</div>
+    <body className="w-screen h-screen">
+      <div className="pt-24 py-12 flex justify-center">
+        <CountdownBar />
       </div>
-      <div className="w-1/4  text-lg">
-        {answers[Number(count)]["src"].length > 0 &&
-          answers[Number(count)]["src"].map((answer: string, index: number) => (
-            <div className="ml-24" key={index}>
-              {index + 1} : {answer}
-            </div>
-          ))}
+      <div className="flex justify-center items-center">
+        <div className="w-1/4  text-lg"></div>
+        <div className="w-2/4">
+          <h1 className="text-center font-mono text-2xl">{question}</h1>
+          <TextInput
+            fullWidth={true}
+            autoFocus={true}
+            margin="dense"
+            multiline={false}
+            required={true}
+            rows={1}
+            value={code}
+            type={"text"}
+            variant={"outlined"}
+            onChange={InputCode}
+            onKeyDown={(e) => Judge(e, code)}
+          />
+          <div className="text-center text-red-500">{alertText}</div>
+          <div className="text-center text-red-500">{"miss:" + missCount}</div>
+        </div>
+        <div className="w-1/4  text-lg">
+          {answers[Number(count)]["src"].length > 0 &&
+            answers[Number(count)]["src"].map(
+              (answer: string, index: number) => (
+                <div className="ml-24" key={index}>
+                  {index + 1} : {answer}
+                </div>
+              )
+            )}
+        </div>
       </div>
     </body>
   );
