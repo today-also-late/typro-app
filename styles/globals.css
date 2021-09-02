@@ -46,3 +46,8 @@ a {
   overflow: hidden;
   color: white;
 }
+@keyframes blinking {
+  50% {
+    opacity: 0;
+  }
+}
