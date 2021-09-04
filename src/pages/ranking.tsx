@@ -15,12 +15,12 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { useRouter } from "next/router";
-import Image from "next/image";
+// import Image from "next/image";
 import { IconPrize } from "../components/atoms";
 
-import First from "../../public/images/1.png";
-import Second from "../../public/images/2.png";
-import Third from "../../public/images/3.png";
+// import First from "../../public/images/1.png";
+// import Second from "../../public/images/2.png";
+// import Third from "../../public/images/3.png";
 
 type rankingdata = {
   username: string;
@@ -159,7 +159,9 @@ const Ranking = () => {
                       {data.username}
                     </StyledTableCell>
                     <StyledTableCell align="right">
-                      <IconPrize index={index} image={data.image} />
+                      {data.image == null && (
+                        <IconPrize index={index} image={data.image} />
+                      )}
                     </StyledTableCell>
                     <StyledTableCell align="right">{index + 1}</StyledTableCell>
                     <StyledTableCell align="right">
