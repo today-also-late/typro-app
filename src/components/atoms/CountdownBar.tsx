@@ -69,7 +69,6 @@ const CountdownBar: FunctionComponent = () => {
           trackStrokeWidth={3}
           trackStrokeColor="#e6e6e6"
           pointerRadius={5}
-          //   pointerFill="white"
           pointerStrokeWidth={2}
           pointerStrokeColor="indianred"
         >
