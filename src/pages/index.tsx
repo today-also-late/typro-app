@@ -31,7 +31,6 @@ export default function Home({
   useEffect(() => {
     dispatch(emptyAnswers());
     dispatch(emptyQuestions());
-    console.log(user);
   }, []);
 
   const handleClick = () => {

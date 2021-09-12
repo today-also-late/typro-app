@@ -3,6 +3,7 @@ import { useCallback, useState } from "react";
 import { addUser } from "../../redux/slices/userSlice";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
+import validUserName from "../../hooks/signup/validUserName";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -12,12 +13,19 @@ const SignUp = () => {
     [password, setPassword] = useState(""),
     [confirmPassword, setConfirmPassword] = useState("");
 
+  const [isUnique, setIsUnique] = useState(true);
+
   const inputUsername = useCallback(
     (event) => {
       setUsername(event.target.value);
     },
     [setUsername]
   );
+
+  const blurUserName = useCallback(async (event) => {
+    const username = await validUserName(event.target.value);
+    setIsUnique(username);
+  }, []);
 
   const inputEmail = useCallback(
     (event) => {
@@ -62,6 +70,9 @@ const SignUp = () => {
           value={username}
           type="text"
           onChange={inputUsername}
+          onBlur={blurUserName}
+          error={!isUnique}
+          helperText={isUnique ? "" : "ユーザー名がカブっています"}
         />
         <div className="h-8" />
         <CommonInput
@@ -101,6 +112,7 @@ const SignUp = () => {
           <PrimaryButton
             label={"アカウントを登録する"}
             onClick={() => dispatch(addUser(adduser))}
+            isDisabled={!isUnique}
           />
         </div>
         <div className="h-8" />

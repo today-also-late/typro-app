@@ -1,22 +1,31 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      match /users/{userId} {
-        allow read: if request.auth.uid != null;
-        allow create;
-        allow update: if request.auth.uid == userId;
-        allow delete: if request.auth.uid == userId;
 
-        match /python/{scoreId} {
+    match /{path=**}/userPublic/{userId} {
+      allow read: if true;
+    }
+
+    match /users/{userId} {
+      allow read: if request.auth.uid != null;
+      allow create;
+      allow update: if request.auth.uid == userId;
+      allow delete: if request.auth.uid == userId;
+
+      match /userPublic/{userId} {
+        allow read: if true;
+        allow write: if request.auth.uid == userId;
+      }
+
+      match /python/{scoreId} {
         allow read,write: if request.auth.uid == userId;
       }
 
-       match /javascript/{scoreId} {
+      match /javascript/{scoreId} {
         allow read,write: if request.auth.uid == userId;
       }
-      }
-      match /questions/{quetionId} {
+    }
+    match /questions/{quetionId} {
       allow read;
       allow write;
     }
@@ -24,18 +33,15 @@ service cloud.firestore {
       allow read;
       allow write;
 
-        match /python/{scoreId} {
+      match /python/{scoreId} {
         allow read;
         allow write;
       } 
 
-       match /javascript/{scoreId} {
+      match /javascript/{scoreId} {
         allow read;
         allow write;
       }
-
-
-    }
     }
   }
 }

@@ -13,6 +13,9 @@ type TextField = {
   type: string;
   variant?: string;
   onChange: React.ChangeEventHandler;
+  onBlur?: React.FocusEventHandler;
+  error?: boolean;
+  helperText?: string;
 };
 
 const CommonInput = (props: TextField) => {
@@ -30,6 +33,9 @@ const CommonInput = (props: TextField) => {
       type={props.type}
       variant={"outlined"}
       onChange={props.onChange}
+      onBlur={props.onBlur}
+      error={props.error}
+      helperText={props.helperText}
     />
   );
 };

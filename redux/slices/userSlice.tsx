@@ -150,45 +150,35 @@ export const addUser = createAsyncThunk(
     //     return false
     // }
 
-    return auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((result) => {
-        const user = result.user;
+    const result = await auth.createUserWithEmailAndPassword(email, password);
+    const user = result.user;
 
-        if (user) {
-          const uid = user.uid;
-          const timestamp = FirebaseTimestamp.now();
-          const userInitialData = {
-            created_at: timestamp,
-            email: email,
-            uid: uid,
-            updated_at: timestamp,
-            username: username,
-            image: {
-              id: "",
-              path: "",
-            },
-          };
+    if (user) {
+      const uid = user.uid;
+      const timestamp = FirebaseTimestamp.now();
+      const userInitialData = {
+        created_at: timestamp,
+        email: email,
+        uid: uid,
+        updated_at: timestamp,
+        username: username,
+        image: {
+          id: "",
+          path: "",
+        },
+      };
 
-          db.collection("users")
-            .doc(uid)
-            .set(userInitialData)
-            .then(() => {
-              console.log("登録成功");
-            });
+      await db.collection("users").doc(uid).set(userInitialData);
+      await db
+        .collection("users")
+        .doc(uid)
+        .collection("userPublic")
+        .doc(uid)
+        .set({ username: username });
+      console.log("登録成功");
 
-          return {
-            uid: uid,
-            username: username,
-            email: email,
-            isSignedIn: true,
-            image: {
-              id: "",
-              path: "",
-            },
-          };
-        }
-      });
+      return userInitialData;
+    }
   }
 );
 
