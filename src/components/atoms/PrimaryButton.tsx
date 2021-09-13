@@ -3,7 +3,12 @@ import Button from "@material-ui/core/Button";
 
 const PrimaryButton = (props: any) => {
   return (
-    <Button color="primary" variant="contained" onClick={() => props.onClick()}>
+    <Button
+      color="primary"
+      variant="contained"
+      onClick={() => props.onClick()}
+      disabled={props.isDisabled}
+    >
       {props.label}
     </Button>
   );
