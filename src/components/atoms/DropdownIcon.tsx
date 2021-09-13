@@ -1,9 +1,10 @@
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-export const DropdownIcon = () => {
+const DropdownIcon = () => {
   return (
     <>
       <ExpandMoreIcon fontSize="small" />
     </>
   );
 };
+export default DropdownIcon;

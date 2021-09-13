@@ -9,6 +9,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import React from "react";
 import NoProfileImage from "../../../public/images/no-profile.png";
+import { DropdownIcon } from "../atoms";
 
 const AfterLoginButton = () => {
   const dispatch = useDispatch();
@@ -31,9 +32,9 @@ const AfterLoginButton = () => {
   };
 
   return (
-    <div className="flex items-center justify-evenly w-full">
+    <div className="flex items-center justify-end w-full">
       {user.image.path !== "" ? (
-        <button onClick={handleClick} className="flex items-center">
+        <IconButton onClick={handleClick}>
           <Image
             className="rounded-full"
             src={user.image.path}
@@ -41,11 +42,13 @@ const AfterLoginButton = () => {
             width={48}
             height={48}
           />
-        </button>
+          <DropdownIcon />
+        </IconButton>
       ) : (
         <div>
           <IconButton onClick={handleClick}>
             <AccountCircleIcon />
+            <DropdownIcon />
           </IconButton>
         </div>
       )}
