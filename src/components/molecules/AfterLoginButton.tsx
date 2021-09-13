@@ -49,7 +49,12 @@ const AfterLoginButton = () => {
           </IconButton>
         </div>
       )}
-      <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)}>
+      <Menu
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
         <div className="mx-12 mt-2 flex items-center justify-evenly">
           {user.image.path !== "" ? (
             <Image

@@ -26,7 +26,12 @@ const RankingDrawer = (props: any) => {
 
   return (
     <div>
-      <Menu anchorEl={props.anchorEl} keepMounted open={props.open}>
+      <Menu
+        anchorEl={props.anchorEl}
+        keepMounted
+        open={props.open}
+        onClose={props.onClose}
+      >
         {filters.map((filter) => (
           <MenuItem
             button
