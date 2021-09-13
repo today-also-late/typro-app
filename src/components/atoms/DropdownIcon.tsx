@@ -1,10 +1,9 @@
-import React from "react";
-import DetailsRoundedIcon from "@material-ui/icons/DetailsRounded";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 export const DropdownIcon = () => {
   return (
     <>
-      <DetailsRoundedIcon fontSize="small" />
+      <ExpandMoreIcon fontSize="small" />
     </>
   );
 };

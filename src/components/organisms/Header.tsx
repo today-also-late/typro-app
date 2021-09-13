@@ -32,7 +32,7 @@ const Header: React.FC<PROPS> = () => {
         <Label labelText="概要" href={"/outline"} />
         <Label labelText="問題" href={"/users/selectlanguage"} />
         <div>
-          <button onClick={handleClick} className="text-white">
+          <button onClick={handleClick} className="font-semibold text-white">
             ランキング
             <DropdownIcon />
           </button>
