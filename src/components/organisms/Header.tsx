@@ -5,7 +5,7 @@ import { Label, PrimaryButton } from "../atoms/index";
 import TyproLogo from "../atoms/TyproLogo";
 import { AfterLoginButton, BeforeLoginButton } from "../molecules/index";
 import { RankingDrawer } from "../molecules";
-import { DropdownIcon } from "../atoms/DropdownIcon";
+import { DropdownIcon } from "../atoms/";
 
 type PROPS = {};
 
@@ -24,7 +24,7 @@ const Header: React.FC<PROPS> = () => {
 
   return (
     <div className="w-screen fixed flex items-center h-16 bg-gray-400">
-      <div className="flex items-center w-1/10">
+      <div className="flex items-center w-1/10 pl-16">
         <TyproLogo />
       </div>
       <div className="flex justify-evenly w-1/2 items-center">
@@ -45,7 +45,7 @@ const Header: React.FC<PROPS> = () => {
         <Label labelText="投稿" href={"/users/submit"} />
       </div>
       <div className="w-1/5"></div>
-      <div className="flex items-center justify-evenly w-1/5">
+      <div className="w-1/5 flex items-center justify-evenly  ">
         {user.isSignedIn ? <AfterLoginButton /> : <BeforeLoginButton />}
       </div>
     </div>

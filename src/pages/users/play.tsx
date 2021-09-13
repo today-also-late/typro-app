@@ -143,7 +143,7 @@ const Play = () => {
   };
 
   return (
-    <body className="w-screen h-screen">
+    <body className="w-full h-screen items-center justify-center">
       <div className="pt-24 py-12 flex justify-center">
         <CountdownBar />
       </div>

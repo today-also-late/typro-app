@@ -18,17 +18,13 @@ const Selectlanguage = () => {
   };
 
   return (
-    <div className="w-full h-full">
-      <div className="pt-72  flex items-center justify-center">
-        <div className="w-1/3 h-1/3 text-center text-6xl">
-          <PrimaryButton label={"easy"} onClick={() => goToPlay("easy")} />
-          <PrimaryButton label={"normal"} onClick={() => goToPlay("normal")} />
-          <PrimaryButton
-            label={"difficult"}
-            onClick={() => goToPlay("difficult")}
-          />
-        </div>
-      </div>
+    <div className="w-hull h-screen flex items-center justify-evenly">
+      <PrimaryButton label={"easy"} onClick={() => goToPlay("easy")} />
+      <PrimaryButton label={"normal"} onClick={() => goToPlay("normal")} />
+      <PrimaryButton
+        label={"difficult"}
+        onClick={() => goToPlay("difficult")}
+      />
     </div>
   );
 };
