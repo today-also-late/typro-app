@@ -30,18 +30,6 @@ const Profile = () => {
     if (user.image.path) {
       setImage(user.image);
     }
-    dispatch(
-      fetchPythonScore({
-        uid: user.uid,
-        level: pythonLevel,
-      })
-    );
-    dispatch(
-      fetchJavascriptScore({
-        uid: user.uid,
-        level: javascriptLevel,
-      })
-    );
   }, []);
 
   useEffect(() => {
@@ -61,10 +49,6 @@ const Profile = () => {
       })
     );
   }, [javascriptLevel]);
-
-  useEffect(() => {
-    console.log(scores);
-  }, [scores]);
 
   return (
     <>
