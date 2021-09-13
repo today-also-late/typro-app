@@ -25,6 +25,10 @@ service cloud.firestore {
         allow read,write: if request.auth.uid == userId;
       }
     }
+     match /rooms/{roomId} {
+      allow read;
+      allow write;
+    }
     match /questions/{quetionId} {
       allow read;
       allow write;

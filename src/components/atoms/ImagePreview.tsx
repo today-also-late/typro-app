@@ -2,7 +2,6 @@ import NoProfileImage from "../../../public/images/no-profile.png";
 import Image from "next/image";
 
 const ImagePreview = (props: any) => {
-  console.log(props.image);
   return (
     <div className="pt-20">
       {props.image.path ? (
