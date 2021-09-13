@@ -159,7 +159,7 @@ const Ranking = () => {
                       {data.username}
                     </StyledTableCell>
                     <StyledTableCell align="right">
-                      {data.image == null && (
+                      {data.image !== null && (
                         <IconPrize index={index} image={data.image} />
                       )}
                     </StyledTableCell>
