@@ -18,7 +18,7 @@ import Keybord from "../../../public/audios/keybord.mp3";
 import DisplayQ from "../../../public/audios/displayquestion1.mp3";
 import Miss from "../../../public/audios/miss.mp3";
 import Success from "../../../public/audios/success.mp3";
-import CountdownBar from "../../components/atoms/CountdownBar";
+import { CountdownBar } from "../../components/atoms";
 
 const Play = () => {
   const dispatch = useDispatch();

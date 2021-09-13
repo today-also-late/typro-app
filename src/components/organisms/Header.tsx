@@ -1,22 +1,26 @@
-import React, { useCallback, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { getUser } from "../../../redux/slices/userSlice";
 import { Label, PrimaryButton } from "../atoms/index";
 import TyproLogo from "../atoms/TyproLogo";
 import { AfterLoginButton, BeforeLoginButton } from "../molecules/index";
-import { ClosableDrawer } from "../molecules";
+import { RankingDrawer } from "../molecules";
+
 type PROPS = {};
 
 const Header: React.FC<PROPS> = () => {
   const user = useSelector(getUser).user;
-  const [open, setOpen] = useState(false);
 
-  const handleDrawerToggle = useCallback(
-    (event: any) => {
-      setOpen(!open);
-    },
-    [setOpen, open]
-  );
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <div className="w-screen fixed flex items-center h-16 bg-gray-400">
       <div className="flex items-center w-1/10">
@@ -26,15 +30,17 @@ const Header: React.FC<PROPS> = () => {
         <Label labelText="TyPro" href={"/"} />
         <Label labelText="概要" href={"/outline"} />
         <Label labelText="問題" href={"/users/selectlanguage"} />
-        <PrimaryButton
-          label={"ランキング"}
-          onClick={(e: any) => handleDrawerToggle(e)}
-        />
+        <div>
+          <button onClick={handleClick}>ランキング</button>
+          <RankingDrawer
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          />
+        </div>
         <Label labelText="投稿" href={"/users/submit"} />
       </div>
-      <div className="w-1/5">
-        <ClosableDrawer open={open} onClose={handleDrawerToggle} />
-      </div>
+      <div className="w-1/5"></div>
       <div className="flex items-center justify-evenly w-1/5">
         {user.isSignedIn ? <AfterLoginButton /> : <BeforeLoginButton />}
       </div>

@@ -14,10 +14,6 @@ const AfterLoginButton = () => {
   const dispatch = useDispatch();
   const user = useSelector(getUser).user;
 
-  const goToProfile = () => {
-    Router.push("/users/profile");
-  };
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   // クッリク時にドロップダウンを表示
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -27,6 +23,11 @@ const AfterLoginButton = () => {
   // ドロップダウンメニューを閉じる
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const goToProfile = () => {
+    Router.push("/users/profile");
+    handleClose();
   };
 
   return (
@@ -48,13 +49,7 @@ const AfterLoginButton = () => {
           </IconButton>
         </div>
       )}
-      <Menu
-        id="dropdownmenu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
+      <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)}>
         <div className="mx-12 mt-2 flex items-center justify-evenly">
           {user.image.path !== "" ? (
             <Image
