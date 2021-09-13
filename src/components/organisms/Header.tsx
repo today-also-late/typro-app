@@ -5,6 +5,7 @@ import { Label, PrimaryButton } from "../atoms/index";
 import TyproLogo from "../atoms/TyproLogo";
 import { AfterLoginButton, BeforeLoginButton } from "../molecules/index";
 import { RankingDrawer } from "../molecules";
+import { DropdownIcon } from "../atoms/DropdownIcon";
 
 type PROPS = {};
 
@@ -31,7 +32,10 @@ const Header: React.FC<PROPS> = () => {
         <Label labelText="概要" href={"/outline"} />
         <Label labelText="問題" href={"/users/selectlanguage"} />
         <div>
-          <button onClick={handleClick}>ランキング</button>
+          <button onClick={handleClick} className="text-white">
+            ランキング
+            <DropdownIcon />
+          </button>
           <RankingDrawer
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
