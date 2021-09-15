@@ -96,6 +96,23 @@ const CoopOutput = () => {
     e.returnValue = "";
   };
 
+  const goResult = () => {
+    performance.mark("question2:end");
+    performance.mark("question:end");
+    performance.measure("question", "question:start", "question:end");
+    performance.measure("question1", "question1:start", "question1:end");
+    performance.measure("question2", "question2:start", "question2:end");
+    alert("おめでとうございます。クリアです。");
+    Router.push({
+      pathname: "/users/result",
+      query: {
+        language: language,
+        level: level,
+        roomId: roomId,
+      },
+    });
+  };
+
   useEffect(() => {
     const unsubscribeRoom = db
       .collection("rooms")
@@ -140,19 +157,7 @@ const CoopOutput = () => {
 
         if (data.isEnd) {
           // すべての問題が終了したとき
-          performance.mark("question2:end");
-          performance.mark("question:end");
-          performance.measure("question", "question:start", "question:end");
-          performance.measure("question1", "question1:start", "question1:end");
-          performance.measure("question2", "question2:start", "question2:end");
-          alert("おめでとうございます。クリアです。");
-          Router.push({
-            pathname: "/users/result",
-            query: {
-              language: language,
-              level: level,
-            },
-          });
+          goResult();
         }
 
         setAnothorCode(data.code); // 相手が入力しているコード
