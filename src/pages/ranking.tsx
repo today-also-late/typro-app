@@ -124,7 +124,6 @@ const Ranking = () => {
             image: image,
           });
         });
-        console.log(scoreList);
         setRankingData(scoreList);
       });
   }, [language]);

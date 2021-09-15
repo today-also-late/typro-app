@@ -190,7 +190,6 @@ export const addAnswersToRoom = createAsyncThunk(
         const data: any = snapshot.data();
         let prevCode: string[] = data.answers[count][isSrc];
         prevCode.push(code);
-        console.log(prevCode);
         const roomData = {
           answers: {
             [count]: {
@@ -362,7 +361,6 @@ export const fetchRooms = createAsyncThunk(
           console.log(data);
           rooms.push(data);
         });
-        console.log(rooms);
         thunkAPI.dispatch(updateRooms(rooms));
       })
       .catch((error) => {

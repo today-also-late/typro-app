@@ -108,15 +108,14 @@ const CoopPlay = () => {
       .doc(roomId)
       .onSnapshot((snapshot) => {
         const data: any = snapshot.data();
-        console.log(data);
-
-        if (data.nextQuestionId > currentId) {
-          displayNextQuestion(data.nextQuestionId);
-        }
 
         if (data.answers.miss.length > answers.miss.length) {
           dispatch(fetchAnswersFromRoom(roomId));
           // dbのroomからstoreのanswerに反映させる
+        }
+
+        if (data.nextQuestionId > currentId) {
+          displayNextQuestion(data.nextQuestionId);
         }
 
         if (data.nextTurn == "creator") {

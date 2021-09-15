@@ -128,7 +128,6 @@ const questionsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(updateQuestionsState.fulfilled, (state, action: any) => {
       state.questions = action.payload; // payloadCreatorでreturnされた値
-      console.log(action.payload);
     });
     builder.addCase(updateQuestionsState.rejected, (error) => {
       console.log(error);
