@@ -14,7 +14,12 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/components/organisms/Room.jsx"
+  ],
   "exclude": ["node_modules"],
 
   // firebaseの設定

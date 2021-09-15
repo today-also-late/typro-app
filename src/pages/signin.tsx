@@ -1,6 +1,6 @@
 import { CommonInput } from "../components/atoms";
 import { useCallback, useState } from "react";
-import { fetchUser } from "../../redux/slices/userSlice";
+import { fetchuser, fetchUser } from "../../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import PrimaryButton from "../components/atoms/PrimaryButton";
 import { getUser } from "../../redux/slices/userSlice";
@@ -26,6 +26,15 @@ const SignIn = () => {
     },
     [setPassword]
   );
+
+  const validate = (fetchuser: fetchuser) => {
+    if (fetchuser.email === "" || fetchuser.password === "") {
+      alert("必須項目が未入力です");
+      return false;
+    } else {
+      dispatch(fetchUser(fetchuser));
+    }
+  };
 
   const fetchuser = { email: email, password: password };
 
@@ -60,7 +69,7 @@ const SignIn = () => {
         <div className="flex items-center justify-center">
           <PrimaryButton
             label={"Sign In"}
-            onClick={() => dispatch(fetchUser(fetchuser))}
+            onClick={() => validate(fetchuser)}
           />
         </div>
         <div className="h-8" />

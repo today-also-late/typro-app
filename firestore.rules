@@ -28,6 +28,8 @@ service cloud.firestore {
      match /rooms/{roomId} {
       allow read;
       allow write;
+      allow update: if request.auth.uid == userId;
+      allow delete: if request.auth.uid == userId;
     }
     match /questions/{quetionId} {
       allow read;

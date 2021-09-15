@@ -12,8 +12,8 @@ type TextField = {
   value: string;
   type: string;
   variant?: string;
-  onChange: React.ChangeEventHandler;
-  onKeyDown: React.KeyboardEventHandler<HTMLDivElement>; // React.KeyboardEventHandlerだと'?'をつけるとエラーになるためanyにしている
+  onChange?: React.ChangeEventHandler;
+  onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>; // React.KeyboardEventHandlerだと'?'をつけるとエラーになるためanyにしている
 };
 
 const TextInput = (props: TextField) => {
@@ -31,7 +31,7 @@ const TextInput = (props: TextField) => {
       type={props.type}
       variant="outlined"
       onChange={props.onChange}
-      onKeyDown={(e) => props.onKeyDown(e)}
+      onKeyDown={props.onKeyDown}
     />
   );
 };

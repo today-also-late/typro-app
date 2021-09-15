@@ -6,6 +6,7 @@ import { getQuestions } from "../../../redux/slices/questionsSlice";
 import { getUser } from "../../../redux/slices/userSlice";
 import { addRanking, addScore } from "../../../redux/slices/scoreSlice";
 import { PrimaryButton } from "../../components/atoms";
+import { deleteRoom } from "../../../redux/slices/roomsSlice";
 
 const Result = () => {
   const answers = useSelector(getAnswers).answers;
@@ -17,6 +18,7 @@ const Result = () => {
 
   const language: any = router.query["language"];
   const level: any = router.query["level"];
+  const roomId: any = router.query["roomId"];
 
   const p1 = performance.getEntriesByName("question1");
   const p2 = performance.getEntriesByName("question2");

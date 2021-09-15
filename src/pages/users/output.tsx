@@ -17,7 +17,7 @@ import Miss from "../../../public/audios/miss.mp3";
 import Success from "../../../public/audios/success.mp3";
 import CountdownBar from "../../components/atoms/CountdownBar";
 
-const Play = () => {
+const Output = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -193,4 +193,4 @@ const Play = () => {
     </body>
   );
 };
-export default Play;
+export default Output;
