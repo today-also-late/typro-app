@@ -66,7 +66,7 @@ export default function Home({
               <div className="w-1/2 text-center">
                 <ContainedButton
                   label={"協力プレイ"}
-                  href={"/users/selectrooms"}
+                  href={"/users/selectroom"}
                 />
               </div>
             </div>

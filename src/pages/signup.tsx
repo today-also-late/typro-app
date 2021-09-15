@@ -1,6 +1,6 @@
 import { PrimaryButton, CommonInput } from "../components/atoms";
 import { useCallback, useState } from "react";
-import { addUser } from "../../redux/slices/userSlice";
+import { adduser, addUser } from "../../redux/slices/userSlice";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
 import validUserName from "../../hooks/signup/validUserName";
@@ -48,6 +48,23 @@ const SignUp = () => {
     [setConfirmPassword]
   );
 
+  const validate = (adduser: adduser) => {
+    if (
+      adduser.username === "" ||
+      adduser.email === "" ||
+      adduser.password === "" ||
+      adduser.confirmPassword === ""
+    ) {
+      alert("必須項目が未入力です");
+      return false;
+    } else if (password !== confirmPassword) {
+      alert("パスワードが一致していません");
+      return false;
+    } else {
+      dispatch(addUser(adduser));
+    }
+  };
+
   const adduser = {
     username: username,
     email: email,
@@ -72,7 +89,7 @@ const SignUp = () => {
           onChange={inputUsername}
           onBlur={blurUserName}
           error={!isUnique}
-          helperText={isUnique ? "" : "ユーザー名がカブっています"}
+          helperText={isUnique ? "" : "ユーザー名が被っています"}
         />
         <div className="h-8" />
         <CommonInput
@@ -111,7 +128,7 @@ const SignUp = () => {
         <div className="flex items-center justify-center">
           <PrimaryButton
             label={"アカウントを登録する"}
-            onClick={() => dispatch(addUser(adduser))}
+            onClick={() => validate(adduser)}
             isDisabled={!isUnique}
           />
         </div>
