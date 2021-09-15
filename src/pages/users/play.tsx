@@ -19,6 +19,7 @@ import DisplayQ from "../../../public/audios/displayquestion1.mp3";
 import Miss from "../../../public/audios/miss.mp3";
 import Success from "../../../public/audios/success.mp3";
 import { CountdownBar } from "../../components/atoms";
+import { getTimeLimit } from "../../../redux/slices/timelimitSlice";
 
 const Play = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,8 @@ const Play = () => {
   const [currentId, setCurrentId] = useState(1);
   const [alertText, setAlertText] = useState("");
   const [missCount, setMissCount] = useState(0);
+  const [questionTimeLimit, setQuestionTimeLimit] = useState(0);
+  const [outputTimeLimit, setOutputTimeLimit] = useState(0);
 
   const [audioKeybord, setAudioKeybord] = useState<HTMLAudioElement | null>(
     null
@@ -76,10 +79,25 @@ const Play = () => {
       dispatch(updateQuestionsState(selected)); // dbからquestionをとってくる
       performance.mark("question:start");
       performance.mark("question1:start");
+      // console.log("questionの時間制限", questions[1].src[1].length);
+      // console.log("outputの時間制限", questions[1].output[1].length);
+      // dispatch(
+      //   getTimeLimit([
+      //     questions[1].src[1].length,
+      //     questions[1].output[1].length,
+      //   ])
+      // );
+
+      setQuestionTimeLimit(questions[1].src[1].length);
+      setOutputTimeLimit(questions[1].output[1].length);
     }
 
     if (Number(count) === 2) {
       performance.mark("question2:start");
+      // console.log("questionの時間制限", questions[2].src[1].length);
+      // console.log("outputの時間制限", questions[2].output[1].length);
+      setQuestionTimeLimit(questions[2].src[1].length);
+      setOutputTimeLimit(questions[2].output[1].length);
     }
 
     window.addEventListener("beforeunload", onUnload);
@@ -141,11 +159,17 @@ const Play = () => {
       }
     }
   };
+  // 確認済み
+  // console.log("test", questionTimeLimit);
+  // console.log("test2", outputTimeLimit);
 
   return (
     <body className="w-full h-screen items-center justify-center">
       <div className="pt-24 py-12 flex justify-center">
-        <CountdownBar />
+        <CountdownBar
+          questionTimeLimit={questionTimeLimit}
+          outputTimeLimit={outputTimeLimit}
+        />
       </div>
       <div className="flex justify-center items-center">
         <div className="w-1/4  text-lg"></div>

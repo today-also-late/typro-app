@@ -42,12 +42,14 @@ import { createStore } from "redux";
 import { applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import scoreSlice from "./slices/scoreSlice";
+import timeLimitSlice from "./slices/timelimitSlice";
 
 const rootReducer = combineReducers({
   answers: answersSlice.reducer,
   user: userSlice.reducer,
   questions: questionsSlice.reducer,
   score: scoreSlice.reducer,
+  timeLimit: timeLimitSlice.reducer,
 });
 
 const persistConfig = {
