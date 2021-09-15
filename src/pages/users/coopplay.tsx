@@ -261,17 +261,19 @@ const CoopPlay = () => {
             </div>
           ) : (
             <div>
-              <TextInput
-                fullWidth={true}
-                autoFocus={true}
-                margin="dense"
-                multiline={false}
-                required={true}
-                rows={1}
-                value={anothorCode}
-                type={"text"}
-                variant={"outlined"}
-              />
+              <div className="bg-gray-100">
+                <TextInput
+                  fullWidth={true}
+                  autoFocus={true}
+                  margin="dense"
+                  multiline={false}
+                  required={true}
+                  rows={1}
+                  value={anothorCode}
+                  type={"text"}
+                  variant={"outlined"}
+                />
+              </div>
               <div className="text-center text-red-500">
                 相手が入力する番です
               </div>
