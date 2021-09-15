@@ -117,15 +117,20 @@ const CoopOutput = () => {
     const unsubscribeRoom = db
       .collection("rooms")
       .doc(roomId)
-      .onSnapshot((snapshot) => {
+      .onSnapshot(async (snapshot) => {
         const data: any = snapshot.data();
-        console.log(data);
 
         if (data.answers.miss.length > answers.miss.length) {
           dispatch(fetchAnswersFromRoom(roomId));
         }
 
+        if (data.isEnd) {
+          // すべての問題が終了したとき
+          goResult();
+        }
+
         if (data.count > Number(count)) {
+          // 1問目の出力の回答が終わったとき
           performance.mark("question1:end");
           Router.push({
             pathname: "/users/coopplay",
@@ -155,19 +160,12 @@ const CoopOutput = () => {
           }
         }
 
-        if (data.isEnd) {
-          // すべての問題が終了したとき
-          goResult();
-        }
-
         setAnothorCode(data.code); // 相手が入力しているコード
       });
     return () => unsubscribeRoom();
   }, []);
 
   const displayNextQuestion = (nextQuestionId: number) => {
-    setQuesiton(questions[Number(count)]["output"][nextQuestionId]);
-    setCurrentId(nextQuestionId);
     if (
       nextQuestionId > Object.keys(questions[Number(count)]["output"]).length
     ) {
@@ -204,6 +202,8 @@ const CoopOutput = () => {
         );
       }
     }
+    setQuesiton(questions[Number(count)]["output"][nextQuestionId]);
+    setCurrentId(nextQuestionId);
   };
 
   const Judge = (e: any, code: string) => {

@@ -22,10 +22,10 @@ const SelectRoom = () => {
 
   return (
     <div className="w-full h-screen">
-      <div className="w-full h-1/6 pt-20 pl-36">
+      <div className="w-full h-2/6 flex items-center justify-center">
         <ContainedButton label="部屋を作成する" href="/users/createroom" />
       </div>
-      <div className="h-3/6 flex items-center justify-evenly">
+      <div className="h-2/6 flex items-center justify-evenly">
         {rooms.length > 0 &&
           rooms.map((room: any, index: number) => (
             <div key={index}>
