@@ -51,6 +51,9 @@ const Result = () => {
     );
     console.log(t1);
     console.log(t2);
+    if (roomId) {
+      dispatch(deleteRoom(roomId));
+    }
   }, []);
 
   const score: number = tp1 + tp2 + rwp;

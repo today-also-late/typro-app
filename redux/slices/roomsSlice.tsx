@@ -319,6 +319,7 @@ export const addRoom = createAsyncThunk(
       roomId: roomRef.id,
       creator: creator,
       creatorName: creatorName,
+      participant: null,
       password: password,
       description: description,
       created_at: timestamp,
@@ -352,7 +353,7 @@ export const fetchRooms = createAsyncThunk(
   async (uid: string, thunkAPI) => {
     await db
       .collection("rooms")
-      .where("participant", "!=", null)
+      .where("participant", "==", null) // nullの部屋を表示
       .get()
       .then((snapshots) => {
         const rooms: Array<object> = [];

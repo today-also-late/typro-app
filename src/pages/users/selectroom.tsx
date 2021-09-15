@@ -14,11 +14,11 @@ import { db } from "../../firebase/firebase";
 const SelectRoom = () => {
   const dispatch = useDispatch();
   const user = useSelector(getUser).user;
-  let rooms: Array<any> = useSelector(getRooms).rooms;
+  const rooms: Array<any> = useSelector(getRooms).rooms;
 
   useEffect(() => {
     dispatch(fetchRooms(user.uid));
-  }, [rooms]);
+  }, []);
 
   return (
     <div className="w-full h-screen">
