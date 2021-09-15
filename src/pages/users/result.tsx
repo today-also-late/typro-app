@@ -55,59 +55,74 @@ const Result = () => {
 
   return (
     <div className="w-full h-full flex items-center justify-center">
-      <div className="pt-16 text-center text-4xl">
-        <p>Score: {score > 0 ? Math.floor(score) : 0}</p>
-        <p>Miss: {totalmiss} 回</p>
-      </div>
-      <div className="pt-16 text-center text-4xl">
-        Result
-        <br></br>
-        <div className="text-xl">
-          1問目
-          <br></br>
+      <div className="pt-16 text-center mt-10">
+        <p className="text-5xl underline">Result</p>
+        <div className="text-3xl mt-10">
+          <div>Score　:　 {score > 0 ? Math.floor(score) : 0}</div>
+          <div>
+            Miss　:　
+            {totalmiss}
+          </div>
+        </div>
+        <div className="border-solid border-2 border-gray-400 mt-10">
+          <div className="border-b-2 border-gray-400 px-28 mx-10 text-2xl mt-3 mb-2">
+            1問目
+          </div>
           {answers[1]["src"].length > 0 &&
             answers[1]["src"].map((src: string, index: number) => (
-              <div className="ml-24" key={index}>
-                {"code" + (index + 1)} : {src}
+              <div className="" key={index}>
+                {/* {"code" + (index + 1)} */}
+                <div>{src}</div>
               </div>
             ))}
           {answers[1]["output"].length > 0 &&
             answers[1]["output"].map((output: string, index: number) => (
-              <div className="ml-24" key={index}>
-                {"output"} : {output}
+              <div className="mt-4 mb-3" key={index}>
+                <div className="text-2xl border-b-2 border-gray-400 px-28 mx-10">
+                  {"出力"}
+                </div>
+                <div>{output}</div>
               </div>
             ))}
-          <br></br>
-          2問目
-          <br></br>
+        </div>
+
+        <div className="order-solid border-2 border-gray-400 mt-10">
+          <div className="border-b-2 border-gray-400 px-28 mx-10 text-2xl mt-3 mb-2">
+            2問目
+          </div>
           {answers[2]["src"].length > 0 &&
             answers[2]["src"].map((src: string, index: number) => (
-              <div className="ml-24" key={index}>
-                {"code" + (index + 1)} : {src}
+              <div className="" key={index}>
+                {src}
               </div>
             ))}
           {answers[2]["output"].length > 0 &&
             answers[2]["output"].map((output: string, index: number) => (
-              <div className="ml-24" key={index}>
-                {"output"} : {output}
+              <div className="mt-4 mb-3" key={index}>
+                <div className="text-2xl border-b-2 border-gray-400 px-28 mx-10">
+                  {"出力"}
+                </div>
+                {output}
               </div>
             ))}
         </div>
+        <div className="mt-10">
+          <PrimaryButton
+            label={"ランキングに登録する"}
+            onClick={() =>
+              dispatch(
+                addRanking({
+                  username: user.username,
+                  score: Math.floor(score),
+                  language: language,
+                  level: level,
+                  image: user.image,
+                })
+              )
+            }
+          />
+        </div>
       </div>
-      <PrimaryButton
-        label={"ランキングに登録する"}
-        onClick={() =>
-          dispatch(
-            addRanking({
-              username: user.username,
-              score: Math.floor(score),
-              language: language,
-              level: level,
-              image: user.image,
-            })
-          )
-        }
-      />
     </div>
   );
 };
