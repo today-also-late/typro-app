@@ -16,7 +16,9 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { useRouter } from "next/router";
 // import Image from "next/image";
-import { IconPrize } from "../components/atoms";
+import { DropdownIcon, IconPrize } from "../components/atoms";
+import { RankingDrawer } from "../components/molecules";
+import { Menu, MenuItem } from "@material-ui/core";
 
 // import First from "../../public/images/1.png";
 // import Second from "../../public/images/2.png";
@@ -37,8 +39,11 @@ type rankingdata = {
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
     head: {
-      backgroundColor: theme.palette.common.black,
+      backgroundColor: "#424242",
       color: theme.palette.common.white,
+      "&:hover": {
+        color: "#bdbdbd",
+      },
     },
     body: {
       fontSize: 14,
@@ -66,6 +71,27 @@ const Ranking = () => {
   const classes = useStyles();
   const router = useRouter();
 
+  const [openLangDrawer, setOpenLangDrawer] = useState<null | HTMLElement>(
+    null
+  );
+  const [openLevelDrawer, setOpenLevelDrawer] = useState<null | HTMLElement>(
+    null
+  );
+
+  const langClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setOpenLangDrawer(event.currentTarget);
+  };
+  const levelClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setOpenLevelDrawer(event.currentTarget);
+  };
+
+  const langDrawerClose = () => {
+    setOpenLangDrawer(null);
+  };
+  const levelDrawerClose = () => {
+    setOpenLevelDrawer(null);
+  };
+
   const language: any = router.query["language"];
 
   const [rankingData, setRankingData] = useState<Array<rankingdata>>([
@@ -84,14 +110,9 @@ const Ranking = () => {
 
   const [level, setLevel] = useState("easy");
 
-  const handleClick = (level: string) => {
-    if (level === "easy") {
-      setLevel("normal");
-    } else if (level === "normal") {
-      setLevel("difficult");
-    } else {
-      setLevel("easy");
-    }
+  const changeLevel = (level: string) => {
+    setLevel(level);
+    levelDrawerClose();
   };
 
   useEffect(() => {
@@ -139,12 +160,38 @@ const Ranking = () => {
                 <StyledTableCell align="right">Icon</StyledTableCell>
                 <StyledTableCell align="right">Ranking</StyledTableCell>
                 <StyledTableCell align="right">Score</StyledTableCell>
-                <StyledTableCell align="right">Language</StyledTableCell>
-                <StyledTableCell
-                  align="right"
-                  onClick={() => handleClick(level)}
-                >
-                  {level}
+                <StyledTableCell align="right">
+                  <button onClick={(e: any) => langClick(e)}>
+                    Language
+                    <DropdownIcon />
+                  </button>
+                  <RankingDrawer
+                    anchorEl={openLangDrawer}
+                    open={Boolean(openLangDrawer)}
+                    onClose={langDrawerClose}
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  <button onClick={(e: any) => levelClick(e)}>
+                    Level
+                    <DropdownIcon />
+                  </button>
+                  <Menu
+                    anchorEl={openLevelDrawer}
+                    keepMounted
+                    open={Boolean(openLevelDrawer)}
+                    onClose={levelDrawerClose}
+                  >
+                    <MenuItem button onClick={() => changeLevel("easy")}>
+                      easy
+                    </MenuItem>
+                    <MenuItem button onClick={() => changeLevel("normal")}>
+                      normal
+                    </MenuItem>
+                    <MenuItem button onClick={() => changeLevel("difficult")}>
+                      difficult
+                    </MenuItem>
+                  </Menu>
                 </StyledTableCell>
                 <StyledTableCell align="right">Date</StyledTableCell>
               </TableRow>

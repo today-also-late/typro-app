@@ -24,15 +24,18 @@ const Header: React.FC<PROPS> = () => {
 
   return (
     <div className="w-screen flex items-center h-16 bg-gray-400">
-      <div className="flex items-center w-1/10 pl-16">
+      <button className="flex items-center w-1/10 pl-16">
         <TyproLogo />
-      </div>
+      </button>
       <div className="flex justify-evenly w-1/2 items-center">
         <Label labelText="TyPro" href={"/"} />
         <Label labelText="概要" href={"/outline"} />
         <Label labelText="問題" href={"/users/selectlanguage"} />
         <div>
-          <button onClick={handleClick} className="font-semibold text-white">
+          <button
+            onClick={handleClick}
+            className="font-semibold text-white hover:text-gray-600"
+          >
             ランキング
             <DropdownIcon />
           </button>

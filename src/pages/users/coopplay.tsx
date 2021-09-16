@@ -234,7 +234,7 @@ const CoopPlay = () => {
   return (
     <body className="w-full h-screen items-center justify-center">
       <div className="pt-24 py-12 flex justify-center">
-        <CountdownBar />
+        {/* <CountdownBar /> */}
       </div>
       <div className="flex justify-center items-center">
         <div className="w-1/4  text-lg"></div>
