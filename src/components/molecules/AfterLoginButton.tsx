@@ -80,13 +80,13 @@ const AfterLoginButton = () => {
         <h3 className="text-xl flex items-center justify-evenly border-b mx-2 my-1 border-gray-400">
           {user.username}
         </h3>
-        <MenuItem onClick={goToProfile}>Profile</MenuItem>
+        <MenuItem onClick={goToProfile}>プロフィール</MenuItem>
         <MenuItem
           onClick={() => {
             dispatch(signOutUser());
           }}
         >
-          Logout
+          ログアウト
         </MenuItem>
       </Menu>
     </div>

@@ -40,7 +40,7 @@ const SignIn = () => {
 
   return (
     <div className="w-screen h-screen">
-      <h2 className="text-center text-4xl pt-16">サインイン</h2>
+      <h2 className="text-center text-4xl pt-16">ログイン</h2>
       <div className="w-1/3 container mx-auto">
         <div className="h-8" />
         <CommonInput
@@ -67,7 +67,7 @@ const SignIn = () => {
         <div className="h-16" />
         <div className="flex items-center justify-center">
           <PrimaryButton
-            label={"Sign In"}
+            label={"ログイン"}
             onClick={() => validate(fetchuser)}
           />
         </div>

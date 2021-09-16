@@ -10,7 +10,7 @@ type PROPS = {
 const ContainedButton: React.FC<PROPS> = (props) => {
   return (
     <div className="items-center justify-center">
-      <Button variant="contained" color="primary">
+      <Button variant="outlined" color="primary">
         <Link href={props.href}>
           <div className="text-2xl">{props.label}</div>
         </Link>

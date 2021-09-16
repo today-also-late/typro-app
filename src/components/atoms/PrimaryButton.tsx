@@ -5,7 +5,7 @@ const PrimaryButton = (props: any) => {
   return (
     <Button
       color="primary"
-      variant="contained"
+      variant="outlined"
       onClick={() => props.onClick()}
       disabled={props.isDisabled}
     >
