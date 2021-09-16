@@ -44,6 +44,8 @@ const Output = () => {
   const [audioSuccess, setAudioSuccess] = useState<HTMLAudioElement | null>(
     null
   );
+  const [questionTimeLimit, setQuestionTimeLimit] = useState(10);
+  const [outputTimeLimit, setOutputTimeLimit] = useState(10);
 
   const InputCode = useCallback(
     (event) => {
@@ -94,6 +96,8 @@ const Output = () => {
         performance.measure("question", "question:start", "question:end");
         performance.measure("question1", "question1:start", "question1:end");
         performance.measure("question2", "question2:start", "question2:end");
+        setQuestionTimeLimit(questions[1].src[1].length);
+        setOutputTimeLimit(questions[1].output[1].length);
         alert("おめでとうございます。クリアです。");
         Router.push({
           pathname: "/users/result",
@@ -105,6 +109,8 @@ const Output = () => {
       } else {
         dispatch(addMissAnswers(missCount));
         performance.mark("question1:end");
+        setQuestionTimeLimit(questions[1].src[1].length);
+        setOutputTimeLimit(questions[1].output[1].length);
         Router.push({
           pathname: "/users/play",
           query: {
@@ -144,7 +150,10 @@ const Output = () => {
   return (
     <body className="w-screen h-screen ">
       <div className="pt-24 py-12 flex justify-center">
-        <CountdownBar />
+        <CountdownBar
+          questionTimeLimit={questionTimeLimit}
+          outputTimeLimit={outputTimeLimit}
+        />
       </div>
       <div className="flex justify-center items-center">
         <div className="w-1/4  text-lg">
