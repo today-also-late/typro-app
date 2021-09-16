@@ -40,8 +40,7 @@ const SignIn = () => {
 
   return (
     <div className="w-screen h-screen">
-      <div className="h-1/6"></div>
-      <h2 className="text-center text-4xl">サインイン</h2>
+      <h2 className="text-center text-4xl pt-16">サインイン</h2>
       <div className="w-1/3 container mx-auto">
         <div className="h-8" />
         <CommonInput
@@ -73,7 +72,7 @@ const SignIn = () => {
           />
         </div>
         <div className="h-8" />
-        <div className="text-center hover:text-blue-500">
+        <div className="text-center hover:text-blue-500 underline">
           <Link href="/signup">アカウントをお持ちでない方はこちら</Link>
         </div>
       </div>

@@ -60,7 +60,7 @@ const Result = () => {
 
   return (
     <div className="w-full h-full flex items-center justify-center">
-      <div className="pt-16 text-center mt-10">
+      <div className="text-center pt-10">
         <p className="text-5xl underline">Result</p>
         <div className="text-3xl mt-10">
           <div>Score　:　 {score > 0 ? Math.floor(score) : 0}</div>
@@ -68,6 +68,22 @@ const Result = () => {
             Miss　:　
             {totalmiss}
           </div>
+        </div>
+        <div className="mt-10">
+          <PrimaryButton
+            label={"ランキングに登録する"}
+            onClick={() =>
+              dispatch(
+                addRanking({
+                  username: user.username,
+                  score: Math.floor(score),
+                  language: language,
+                  level: level,
+                  image: user.image,
+                })
+              )
+            }
+          />
         </div>
         <div className="border-solid border-2 border-gray-400 mt-10">
           <div className="border-b-2 border-gray-400 px-28 mx-10 text-2xl mt-3 mb-2">
@@ -110,22 +126,6 @@ const Result = () => {
                 {output}
               </div>
             ))}
-        </div>
-        <div className="mt-10">
-          <PrimaryButton
-            label={"ランキングに登録する"}
-            onClick={() =>
-              dispatch(
-                addRanking({
-                  username: user.username,
-                  score: Math.floor(score),
-                  language: language,
-                  level: level,
-                  image: user.image,
-                })
-              )
-            }
-          />
         </div>
       </div>
     </div>

@@ -84,8 +84,7 @@ const CreateRoom = () => {
 
   return (
     <div className="w-screen h-screen">
-      <div className="h-1/6"></div>
-      <h2 className="text-center text-4xl">部屋を作成</h2>
+      <h2 className="text-center text-4xl pt-16">部屋を作成</h2>
       <div className="w-1/3 container mx-auto">
         <div className="h-8" />
         <div className="h-8 flex items-center justify-center">
@@ -99,6 +98,8 @@ const CreateRoom = () => {
             >
               <MenuItem value={"python"}>Python</MenuItem>
               <MenuItem value={"javascript"}>JavaScript</MenuItem>
+              <MenuItem value={"c"}>C</MenuItem>
+              <MenuItem value={"go"}>Go</MenuItem>
             </Select>
           </FormControl>
         </div>
