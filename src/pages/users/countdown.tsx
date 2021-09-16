@@ -22,13 +22,6 @@ const renderTime = ({ remainingTime }) => {
     isNewTimeFirstTick.current = false;
   }
 
-  // force one last re-render when the time is over to tirgger the last animation
-  // if (remainingTime === 0) {
-  //   setTimeout(() => {
-  //     setOneLastRerender((val) => val + 1);
-  //   }, 20);
-  // }
-
   if (remainingTime === 0) {
     Router.push({
       pathname: "/users/play",
@@ -66,7 +59,7 @@ const countdown = () => {
       <div className="timer-wrapper">
         <CountdownCircleTimer
           isPlaying
-          duration={10}
+          duration={3}
           colors={[["#004777", 0.33], ["#F7B801", 0.33], ["#A30000"]]}
         >
           {renderTime}
