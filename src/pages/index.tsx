@@ -46,17 +46,16 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="w-screen h-screen">
-        <div className="h-1/6"></div>
-        <div className="h-2/6 text-center text-5xl">
+        <div className="h-1/6 text-center text-5xl pt-16">
           <ITyped />
         </div>
-        <div className="h-2/6 text-center font-mono text-2xl">
-          {content2}
-          <div className="mt-16">{content2_1}</div>
+        <div className="text-center font-mono text-2xl">
+          <div className="pt-16 pb-4">{content2}</div>
+          <div className="">{content2_1}</div>
         </div>
-        <div className="h-1/6">
+        <div className="">
           {user.isSignedIn ? (
-            <div className="w-full flex">
+            <div className="w-full flex pt-24">
               <div className="w-1/2 text-center">
                 <ContainedButton
                   label={"プレイ"}
@@ -71,7 +70,7 @@ export default function Home({
               </div>
             </div>
           ) : (
-            <div className="w-full flex">
+            <div className="w-full flex pt-24">
               <div className="w-1/2 text-center">
                 <ContainedButton label={"今すぐプレイ"} href={"/guests/play"} />
               </div>

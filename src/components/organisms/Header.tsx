@@ -23,7 +23,7 @@ const Header: React.FC<PROPS> = () => {
   };
 
   return (
-    <div className="w-screen fixed flex items-center h-16 bg-gray-400">
+    <div className="w-screen flex items-center h-16 bg-gray-400">
       <div className="flex items-center w-1/10 pl-16">
         <TyproLogo />
       </div>

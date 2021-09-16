@@ -130,7 +130,7 @@ const Ranking = () => {
 
   return (
     <div className="w-full h-full">
-      <div className="pt-16">
+      <div className="">
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="customized table">
             <TableHead>
