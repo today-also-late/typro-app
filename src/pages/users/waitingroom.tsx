@@ -2,6 +2,7 @@ import router from "next/router";
 import Router from "next/router";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { Progress } from "../../components/atoms";
 import { db } from "../../firebase/firebase";
 
 const WaitingRoom = () => {
@@ -29,9 +30,14 @@ const WaitingRoom = () => {
     return () => unsubscribeRoom();
   }, []);
   return (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="pt-16 text-center text-4xl">
-        <p>協力相手が参加するまでしばらくお待ち下さい</p>
+    <div className="w-full h-screen bg-gray-200">
+      <div className="h-2/6 flex items-center justify-center">
+        <div className="text-3xl">
+          協力相手が参加するまでしばらくお待ち下さい
+        </div>
+      </div>
+      <div className="h-2/6 flex items-center justify-center">
+        <Progress size={80} />
       </div>
     </div>
   );
