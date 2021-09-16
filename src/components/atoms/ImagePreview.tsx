@@ -2,9 +2,8 @@ import NoProfileImage from "../../../public/images/no-profile.png";
 import Image from "next/image";
 
 const ImagePreview = (props: any) => {
-  console.log(props.image);
   return (
-    <div className="pt-20">
+    <div className="pt-8">
       {props.image.path ? (
         <div
           className="w-56 h-56 mx-auto"

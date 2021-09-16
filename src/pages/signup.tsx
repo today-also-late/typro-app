@@ -1,6 +1,6 @@
 import { PrimaryButton, CommonInput } from "../components/atoms";
 import { useCallback, useState } from "react";
-import { addUser } from "../../redux/slices/userSlice";
+import { adduser, addUser } from "../../redux/slices/userSlice";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
 import validUserName from "../../hooks/signup/validUserName";
@@ -48,6 +48,23 @@ const SignUp = () => {
     [setConfirmPassword]
   );
 
+  const validate = (adduser: adduser) => {
+    if (
+      adduser.username === "" ||
+      adduser.email === "" ||
+      adduser.password === "" ||
+      adduser.confirmPassword === ""
+    ) {
+      alert("必須項目が未入力です");
+      return false;
+    } else if (password !== confirmPassword) {
+      alert("パスワードが一致していません");
+      return false;
+    } else {
+      dispatch(addUser(adduser));
+    }
+  };
+
   const adduser = {
     username: username,
     email: email,
@@ -57,8 +74,7 @@ const SignUp = () => {
 
   return (
     <div className="w-screen h-screen">
-      <div className="h-1/6"></div>
-      <h2 className="text-center text-4xl">新規登録</h2>
+      <h2 className="text-center text-4xl pt-16">新規登録</h2>
       <div className="w-1/3 container mx-auto">
         <div className="h-8" />
         <CommonInput
@@ -72,7 +88,7 @@ const SignUp = () => {
           onChange={inputUsername}
           onBlur={blurUserName}
           error={!isUnique}
-          helperText={isUnique ? "" : "ユーザー名がカブっています"}
+          helperText={isUnique ? "" : "ユーザー名が被っています"}
         />
         <div className="h-8" />
         <CommonInput
@@ -111,12 +127,12 @@ const SignUp = () => {
         <div className="flex items-center justify-center">
           <PrimaryButton
             label={"アカウントを登録する"}
-            onClick={() => dispatch(addUser(adduser))}
+            onClick={() => validate(adduser)}
             isDisabled={!isUnique}
           />
         </div>
         <div className="h-8" />
-        <div className="text-center hover:text-blue-500">
+        <div className="text-center hover:text-blue-500 underline">
           <Link href="/signin">アカウントをお持ちの方はこちら</Link>
         </div>
       </div>

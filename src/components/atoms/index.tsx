@@ -9,3 +9,4 @@ export { default as TyproLogo } from "./TyproLogo";
 export { default as IconPrize } from "./IconPrize";
 export { default as CountdownBar } from "./CountdownBar";
 export { default as DropdownIcon } from "./DropdownIcon";
+export { default as Progress } from "./Progress";

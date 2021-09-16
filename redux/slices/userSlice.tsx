@@ -33,12 +33,12 @@ export const initialState: userState = {
     },
   },
 };
-type fetchuser = {
+export type fetchuser = {
   email: string;
   password: string;
 };
 
-type adduser = {
+export type adduser = {
   username: string;
   email: string;
   password: string;
@@ -138,17 +138,7 @@ export const signOutUser = createAsyncThunk("user/signOutUser", async () => {
 export const addUser = createAsyncThunk(
   "user/addUser",
   async (adduser: adduser) => {
-    // validation
     const { username, email, password, confirmPassword } = adduser;
-    // if (username === '' || email === '' || password === '' || confirmPassword === ''){
-    //     alert('必須項目が未入力です')
-    //     return false
-    // }
-
-    // if (password !== confirmPassword){
-    //     alert('パスワードが一致していません')
-    //     return false
-    // }
 
     const result = await auth.createUserWithEmailAndPassword(email, password);
     const user = result.user;
@@ -186,11 +176,6 @@ export const fetchUser = createAsyncThunk(
   "user/fetchUser",
   async (fetchuser: fetchuser) => {
     const { email, password } = fetchuser;
-
-    //   if (email === '' || password === ''){
-    //     alert('必須項目が未入力です')
-    //     return false
-    // }
 
     const response: any = await auth.signInWithEmailAndPassword(
       email,

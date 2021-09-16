@@ -17,7 +17,7 @@ import Miss from "../../../public/audios/miss.mp3";
 import Success from "../../../public/audios/success.mp3";
 import CountdownBar from "../../components/atoms/CountdownBar";
 
-const Play = () => {
+const Output = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -90,7 +90,6 @@ const Play = () => {
       nextQuestionId > Object.keys(questions[Number(count)]["output"]).length
     ) {
       if (Number(count) === 2) {
-        console.log(answers);
         dispatch(addMissAnswers(missCount));
         performance.mark("question2:end");
         performance.mark("question:end");
@@ -129,7 +128,6 @@ const Play = () => {
       if (code.match(/'/)) {
         code = code.replace(/'/g, '"');
       }
-      console.log(question);
       if (code === question) {
         audioSuccess?.play();
         if (Number(count) === 1) {
@@ -202,4 +200,4 @@ const Play = () => {
     </body>
   );
 };
-export default Play;
+export default Output;

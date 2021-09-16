@@ -103,6 +103,20 @@ export const updateQuestionsState = createAsyncThunk(
   }
 );
 
+export const fetchQuestonsFromRoom = createAsyncThunk(
+  "questions/fetchQuestonsFromRoom",
+  async (roomId: string) => {
+    const roomRef = db.collection("rooms").doc(roomId);
+
+    const response: firebase.default.firestore.DocumentData | any =
+      await roomRef.get();
+
+    const questions: any = await response.data().questions;
+
+    return questions;
+  }
+);
+
 const questionsSlice = createSlice({
   name: "questions",
   initialState,
@@ -114,10 +128,12 @@ const questionsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(updateQuestionsState.fulfilled, (state, action: any) => {
       state.questions = action.payload; // payloadCreatorでreturnされた値
-      console.log(action.payload);
     });
     builder.addCase(updateQuestionsState.rejected, (error) => {
       console.log(error);
+    });
+    builder.addCase(fetchQuestonsFromRoom.fulfilled, (state, action: any) => {
+      state.questions = action.payload;
     });
   },
 });

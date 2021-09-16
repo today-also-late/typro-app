@@ -30,18 +30,6 @@ const Profile = () => {
     if (user.image.path) {
       setImage(user.image);
     }
-    dispatch(
-      fetchPythonScore({
-        uid: user.uid,
-        level: pythonLevel,
-      })
-    );
-    dispatch(
-      fetchJavascriptScore({
-        uid: user.uid,
-        level: javascriptLevel,
-      })
-    );
   }, []);
 
   useEffect(() => {
@@ -62,15 +50,11 @@ const Profile = () => {
     );
   }, [javascriptLevel]);
 
-  useEffect(() => {
-    console.log(scores);
-  }, [scores]);
-
   return (
     <>
       <section className="w-full h-full flex items-center justify-center">
         {user && (
-          <div className="pt-20">
+          <div className="">
             <ImageArea image={image} setImage={setImage} required={true} />
 
             <div className="text-center">

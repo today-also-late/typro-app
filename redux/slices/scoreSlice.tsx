@@ -61,7 +61,6 @@ export type fetchscore = {
 export const fetchJavascriptScore = createAsyncThunk(
   "score/fetchJavascriptScore",
   async (fetchscore: fetchscore, thunkAPI) => {
-    console.log(fetchscore);
     const uid = fetchscore.uid;
     const level = fetchscore.level;
 
@@ -83,10 +82,8 @@ export const fetchJavascriptScore = createAsyncThunk(
           "/" +
           dateData.getDate();
         const scoreData = snapshot.data().score;
-        console.log(dateData);
         scoreList.push({ date: dateData, score: scoreData });
       });
-      console.log(scoreList);
       thunkAPI.dispatch(updateJavascriptScore(scoreList));
     });
   }
@@ -116,10 +113,8 @@ export const fetchPythonScore = createAsyncThunk(
           "/" +
           dateData.getDate();
         const scoreData = snapshot.data().score;
-        console.log(dateData);
         scoreList.push({ date: dateData, score: scoreData });
       });
-      console.log(scoreList);
       thunkAPI.dispatch(updatePythonScore(scoreList));
     });
   }
@@ -180,7 +175,7 @@ export const addScore = createAsyncThunk(
 );
 
 const scoreSlice = createSlice({
-  name: "user", //スライスの名前を設定
+  name: "score", //スライスの名前を設定
   initialState, //stateの初期値を設定
   reducers: {
     updatePythonScore: (state: scoreState, action: any) => {

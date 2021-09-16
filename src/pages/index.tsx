@@ -3,11 +3,16 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../redux/slices/userSlice";
 import styles from "../../styles/Home.module.css";
-import { ContainedButton, PrimaryButton } from "../components/atoms";
+import {
+  ContainedButton,
+  DropdownIcon,
+  PrimaryButton,
+} from "../components/atoms";
 import ITyped from "../firebase/ityped";
 import { emptyAnswers, getAnswers } from "../../redux/slices/answersSlice";
 import Router from "next/router";
 import { emptyQuestions } from "../../redux/slices/questionsSlice";
+import { IconButton } from "@material-ui/core";
 
 type HOME = {
   title: string;
@@ -33,14 +38,6 @@ export default function Home({
     dispatch(emptyQuestions());
   }, []);
 
-  const handleClick = () => {
-    if (user.isSignedIn) {
-      Router.push("/users/selectlanguage");
-    } else {
-      Router.push("/signin");
-    }
-  };
-
   return (
     <div className={styles.container}>
       <Head>
@@ -49,26 +46,39 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="w-screen h-screen">
-        <div className="h-1/6"></div>
-        <div className="h-2/6 text-center text-5xl">
+        <div className="h-1/6 text-center text-5xl pt-16">
           <ITyped />
         </div>
-        <div className="h-2/6 text-center font-mono text-2xl">
-          {content2}
-          <div className="mt-16">{content2_1}</div>
+        <div className="text-center font-mono text-2xl">
+          <div className="pt-16 pb-4">{content2}</div>
+          <div className="">{content2_1}</div>
         </div>
-        <div className="h-1/6">
-          {user.uid ? (
-            <div className="w-full text-center">
-              <PrimaryButton label={"プレイ"} onClick={handleClick} />
+        <div className="">
+          {user.isSignedIn ? (
+            <div className="w-full flex pt-24">
+              <div className="w-1/2 text-center">
+                <ContainedButton
+                  label={"プレイ"}
+                  href={"/users/selectlanguage"}
+                />
+              </div>
+              <div className="w-1/2 text-center">
+                <ContainedButton
+                  label={"協力プレイ"}
+                  href={"/users/selectroom"}
+                />
+              </div>
             </div>
           ) : (
-            <div className="w-full flex">
+            <div className="w-full flex pt-24">
               <div className="w-1/2 text-center">
                 <ContainedButton label={"今すぐプレイ"} href={"/guests/play"} />
               </div>
               <div className="w-1/2 text-center">
-                <PrimaryButton label={"登録してプレイ"} onClick={handleClick} />
+                <ContainedButton
+                  label={"ログインしてプレイ"}
+                  href={"/signin"}
+                />
               </div>
             </div>
           )}

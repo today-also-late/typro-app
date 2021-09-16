@@ -22,6 +22,18 @@ const RankingDrawer = (props: any) => {
       id: "javascript",
       value: "/ranking/?language=javascript",
     },
+    {
+      func: selectMenu,
+      label: "C",
+      id: "c",
+      value: "/ranking/?language=c",
+    },
+    {
+      func: selectMenu,
+      label: "Go",
+      id: "go",
+      value: "/ranking/?language=go",
+    },
   ]);
 
   return (

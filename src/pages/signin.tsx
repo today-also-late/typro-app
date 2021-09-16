@@ -1,6 +1,6 @@
 import { CommonInput } from "../components/atoms";
 import { useCallback, useState } from "react";
-import { fetchUser } from "../../redux/slices/userSlice";
+import { fetchuser, fetchUser } from "../../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import PrimaryButton from "../components/atoms/PrimaryButton";
 import { getUser } from "../../redux/slices/userSlice";
@@ -27,12 +27,20 @@ const SignIn = () => {
     [setPassword]
   );
 
+  const validate = (fetchuser: fetchuser) => {
+    if (fetchuser.email === "" || fetchuser.password === "") {
+      alert("必須項目が未入力です");
+      return false;
+    } else {
+      dispatch(fetchUser(fetchuser));
+    }
+  };
+
   const fetchuser = { email: email, password: password };
 
   return (
     <div className="w-screen h-screen">
-      <div className="h-1/6"></div>
-      <h2 className="text-center text-4xl">サインイン</h2>
+      <h2 className="text-center text-4xl pt-16">サインイン</h2>
       <div className="w-1/3 container mx-auto">
         <div className="h-8" />
         <CommonInput
@@ -60,11 +68,11 @@ const SignIn = () => {
         <div className="flex items-center justify-center">
           <PrimaryButton
             label={"Sign In"}
-            onClick={() => dispatch(fetchUser(fetchuser))}
+            onClick={() => validate(fetchuser)}
           />
         </div>
         <div className="h-8" />
-        <div className="text-center hover:text-blue-500">
+        <div className="text-center hover:text-blue-500 underline">
           <Link href="/signup">アカウントをお持ちでない方はこちら</Link>
         </div>
       </div>

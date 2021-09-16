@@ -1,8 +1,10 @@
 import {
   bindActionCreators,
+  createAsyncThunk,
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
+import { db } from "../../src/firebase/firebase";
 import { RootState } from "../store";
 
 export type AnswersState = {
@@ -33,6 +35,20 @@ export const initialState: AnswersState = {
   },
 };
 
+export const fetchAnswersFromRoom = createAsyncThunk(
+  "questions/fetchAnswersFromRoom",
+  async (roomId: string) => {
+    const roomRef = db.collection("rooms").doc(roomId);
+
+    const response: firebase.default.firestore.DocumentData | any =
+      await roomRef.get();
+
+    const answers: any = await response.data().answers;
+
+    return answers;
+  }
+);
+
 const answersSlice = createSlice({
   name: "answers",
   initialState,
@@ -50,6 +66,11 @@ const answersSlice = createSlice({
     emptyAnswers: () => {
       return initialState;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchAnswersFromRoom.fulfilled, (state, action: any) => {
+      state.answers = action.payload;
+    });
   },
 });
 
