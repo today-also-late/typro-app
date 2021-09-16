@@ -4,7 +4,7 @@ import ProgressBar from "react-customizable-progressbar";
 import moment, { Moment } from "moment";
 import Timer from "./Timer";
 import { useSelector } from "react-redux";
-import { getTimeLimit } from "../../../redux/slices/timelimitSlice";
+// import { getTimeLimit } from "../../../redux/slices/timelimitSlice";
 
 type Props = {
   questionTimeLimit: number;
@@ -13,11 +13,11 @@ type Props = {
 
 const CountdownBar = (props: Props) => {
   // const totalSeconds = useSelector(getTimeLimit);
-  const total = props.questionTimeLimit;
-  console.log("test", total);
-  const totalSeconds = total * 0.8;
+  const totalSeconds = props.questionTimeLimit;
+  // console.log("test", total);
+  // const totalSeconds = total * 0.8;
   console.log("test2", totalSeconds);
-  // const totalSeconds = 31;
+  // const totalSeconds: number = 31;
   // console.log("test", totalSeconds);
   const initialSeconds = 0;
   const initialProgress = (initialSeconds / totalSeconds) * 100;

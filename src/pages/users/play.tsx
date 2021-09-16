@@ -19,7 +19,7 @@ import DisplayQ from "../../../public/audios/displayquestion1.mp3";
 import Miss from "../../../public/audios/miss.mp3";
 import Success from "../../../public/audios/success.mp3";
 import { CountdownBar } from "../../components/atoms";
-import { getTimeLimit } from "../../../redux/slices/timelimitSlice";
+// import { getTimeLimit } from "../../../redux/slices/timelimitSlice";
 
 const Play = () => {
   const dispatch = useDispatch();
@@ -39,8 +39,8 @@ const Play = () => {
   const [currentId, setCurrentId] = useState(1);
   const [alertText, setAlertText] = useState("");
   const [missCount, setMissCount] = useState(0);
-  const [questionTimeLimit, setQuestionTimeLimit] = useState(0);
-  const [outputTimeLimit, setOutputTimeLimit] = useState(0);
+  const [questionTimeLimit, setQuestionTimeLimit] = useState(10);
+  const [outputTimeLimit, setOutputTimeLimit] = useState(10);
 
   const [audioKeybord, setAudioKeybord] = useState<HTMLAudioElement | null>(
     null
