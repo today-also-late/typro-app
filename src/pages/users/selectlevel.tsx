@@ -9,13 +9,14 @@ import Modal from "../../components/organisms/Modal";
 // ファイル名は[uid].tsxに後から変更
 const Selectlanguage = () => {
   const router = useRouter();
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
 
   const goToPlay = (selectedLevel: string) => {
-    setShow(true);
+    // setShow(true);
 
     Router.push({
-      pathname: "/users/play",
+      // pathname: "/users/play",
+      pathname: "/users/countdown",
       query: {
         language: router.query["language"],
         level: selectedLevel,
@@ -54,20 +55,18 @@ const Selectlanguage = () => {
             <PaLogo />
           </div>
           <div className="grid justify-items-center items-center text-center pt-8">
-            <PrimaryButton label={"difficult"} onClick={() => setShow(true)} />
+            <PrimaryButton
+              label={"difficult"}
+              onClick={() => goToPlay("easy")}
+            />
           </div>
         </div>
       </div>
-      <Modal
+      {/* <Modal
         show={show}
         setShow={setShow}
-        // query={{
-        //   language: router.query["language"],
-        //   level: selectedLevel,
-        //   count: 1,
-        // }}
         onClick={() => goToPlay}
-      />
+      /> */}
     </div>
   );
 };

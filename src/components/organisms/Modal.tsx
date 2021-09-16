@@ -22,9 +22,9 @@ const Modal: React.FC<PROPS> = ({ show, setShow, onClick }) => {
         <div
           id="content"
           onClick={(e) => e.stopPropagation()}
-          className="z-10 w-3/4 p-4 bg-white"
+          className="z-10 w-3/5 p-4 bg-white h-96 text-center"
         >
-          <p>スペースを押してゲーム開始</p>
+          <p className="font-bold text-2xl">スペースを押してゲーム開始</p>
           <p>{onClick}</p>
           <p>{}</p>
           {console.log("test", onClick)}
