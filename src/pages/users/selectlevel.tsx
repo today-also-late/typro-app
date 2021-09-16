@@ -31,36 +31,39 @@ const Selectlanguage = () => {
         <p>難易度を選択してください</p>
       </div>
       <div className="grid grid-cols-3 text-center">
-        <div className="bg-gray-200 rounded-lg shadow-xl overflow-hidden py-8 mr-4 ml-8">
+        <button
+          className="bg-gray-200 hover:bg-gray-300 rounded-lg shadow-xl overflow-hidden py-8 mr-4 ml-8"
+          onClick={() => goToPlay("easy")}
+        >
           <div className=" w-full object-cover">
             <GuLogo />
           </div>
-          <div className="grid justify-items-center items-center text-center pt-8">
-            <PrimaryButton label={"easy"} onClick={() => goToPlay("easy")} />
+          <div className="grid justify-items-center items-center text-center text-xl font-bold pt-8">
+            <p>easy</p>
           </div>
-        </div>
-        <div className="bg-gray-200 rounded-lg shadow-xl overflow-hidden py-8 mx-4">
+        </button>
+        <button
+          className="bg-gray-200 hover:bg-gray-300 rounded-lg shadow-xl overflow-hidden py-8 mx-4"
+          onClick={() => goToPlay("normal")}
+        >
           <div className=" w-full object-cover">
             <ChokiLogo />
           </div>
-          <div className="grid justify-items-center items-center text-center pt-8">
-            <PrimaryButton
-              label={"normal"}
-              onClick={() => goToPlay("normal")}
-            />
+          <div className="grid justify-items-center items-center text-center text-xl font-bold  pt-8">
+            <p>normal</p>
           </div>
-        </div>
-        <div className="bg-gray-200 rounded-lg shadow-xl overflow-hidden py-8 ml-4 mr-8">
+        </button>
+        <button
+          className="bg-gray-200 hover:bg-gray-300 rounded-lg shadow-xl overflow-hidden py-8 ml-4 mr-8"
+          onClick={() => goToPlay("difficult")}
+        >
           <div className=" w-full object-cover">
             <PaLogo />
           </div>
-          <div className="grid justify-items-center items-center text-center pt-8">
-            <PrimaryButton
-              label={"difficult"}
-              onClick={() => goToPlay("easy")}
-            />
+          <div className="grid justify-items-center items-center text-center text-xl font-bold  pt-8">
+            <p>difficult</p>
           </div>
-        </div>
+        </button>
       </div>
       {/* <Modal
         show={show}
