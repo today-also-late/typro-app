@@ -7,13 +7,12 @@ import { useSelector } from "react-redux";
 // import { getTimeLimit } from "../../../redux/slices/timelimitSlice";
 
 type Props = {
-  questionTimeLimit: number;
-  outputTimeLimit: number;
+  timeLimit: number;
 };
 
 const CountdownBar = (props: Props) => {
   // const totalSeconds: number = 31;
-  const totalSeconds = props.questionTimeLimit;
+  const totalSeconds = props.timeLimit;
   console.log("test", totalSeconds);
 
   const initialSeconds = 0;
@@ -40,12 +39,11 @@ const CountdownBar = (props: Props) => {
     return (
       <div className="flex items-center justify-center text-center absolute top-0 w-full h-full m-auto text-xl">
         <div>
-          <div className={seconds > 0 ? "caption" : "caption big"}>
-            時間切れです
-          </div>
-          <div className={seconds > 0 ? "time" : "time hidden"}>
-            {getText(date)}
-          </div>
+          {seconds > 0 ? (
+            <div className="time">{getText(date)}</div>
+          ) : (
+            <div className="caption big">時間切れです</div>
+          )}
         </div>
       </div>
     );

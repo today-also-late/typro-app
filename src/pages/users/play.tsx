@@ -39,8 +39,7 @@ const Play = () => {
   const [currentId, setCurrentId] = useState(1);
   const [alertText, setAlertText] = useState("");
   const [missCount, setMissCount] = useState(0);
-  const [questionTimeLimit, setQuestionTimeLimit] = useState(10);
-  const [outputTimeLimit, setOutputTimeLimit] = useState(10);
+  const [srcTimeLimit, setSrcTimeLimit] = useState(10);
 
   const [audioKeybord, setAudioKeybord] = useState<HTMLAudioElement | null>(
     null
@@ -73,31 +72,23 @@ const Play = () => {
   };
 
   useEffect(() => {
+    if (typeof question == "string") {
+      // これがないとerrorがでる
+      setSrcTimeLimit(question.length);
+    }
+  }, [question]);
+
+  useEffect(() => {
     settingAudio();
 
     if (Number(count) === 1) {
       dispatch(updateQuestionsState(selected)); // dbからquestionをとってくる
       performance.mark("question:start");
       performance.mark("question1:start");
-      // console.log("questionの時間制限", questions[1].src[1].length);
-      // console.log("outputの時間制限", questions[1].output[1].length);
-      // dispatch(
-      //   getTimeLimit([
-      //     questions[1].src[1].length,
-      //     questions[1].output[1].length,
-      //   ])
-      // );
-
-      setQuestionTimeLimit(questions[1].src[1].length);
-      setOutputTimeLimit(questions[1].output[1].length);
     }
 
     if (Number(count) === 2) {
       performance.mark("question2:start");
-      // console.log("questionの時間制限", questions[2].src[1].length);
-      // console.log("outputの時間制限", questions[2].output[1].length);
-      setQuestionTimeLimit(questions[2].src[1].length);
-      setOutputTimeLimit(questions[2].output[1].length);
     }
 
     window.addEventListener("beforeunload", onUnload);
@@ -166,10 +157,7 @@ const Play = () => {
   return (
     <body className="w-full h-screen items-center justify-center">
       <div className="pt-24 py-12 flex justify-center">
-        <CountdownBar
-          questionTimeLimit={questionTimeLimit}
-          outputTimeLimit={outputTimeLimit}
-        />
+        <CountdownBar timeLimit={srcTimeLimit} />
       </div>
       <div className="flex justify-center items-center">
         <div className="w-1/4  text-lg"></div>
