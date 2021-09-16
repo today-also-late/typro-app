@@ -54,7 +54,7 @@ const Profile = () => {
     <>
       <section className="w-full h-full flex items-center justify-center">
         {user && (
-          <div className="pt-20">
+          <div className="">
             <ImageArea image={image} setImage={setImage} required={true} />
 
             <div className="text-center">
