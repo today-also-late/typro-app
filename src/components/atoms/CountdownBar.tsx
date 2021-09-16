@@ -12,13 +12,10 @@ type Props = {
 };
 
 const CountdownBar = (props: Props) => {
-  // const totalSeconds = useSelector(getTimeLimit);
-  const totalSeconds = props.questionTimeLimit;
-  // console.log("test", total);
-  // const totalSeconds = total * 0.8;
-  console.log("test2", totalSeconds);
   // const totalSeconds: number = 31;
-  // console.log("test", totalSeconds);
+  const totalSeconds = props.questionTimeLimit;
+  console.log("test", totalSeconds);
+
   const initialSeconds = 0;
   const initialProgress = (initialSeconds / totalSeconds) * 100;
 
