@@ -23,7 +23,7 @@ const Selectlanguage = () => {
         <p>言語を選択してください</p>
       </div>
       <div className="grid grid-cols-2 xl:grid-cols-4 text-center">
-        <div className="bg-gray-200 rounded-lg shadow-xl overflow-hidden py-8 mr-4 ml-8">
+        <div className="bg-gray-200 rounded-lg shadow-xl overflow-hidden py-8 mr-4 ml-8 sm:mb-8">
           <div className=" w-full object-cover">
             <PythonLogo />
           </div>
@@ -35,7 +35,7 @@ const Selectlanguage = () => {
           </div>
         </div>
 
-        <div className="bg-gray-200 rounded-lg shadow-xl overflow-hidden py-8 mx-4">
+        <div className="bg-gray-200 rounded-lg shadow-xl overflow-hidden py-8 mx-4 sm:mb-8 sm:mr-8">
           <div className=" w-full object-cover">
             <JsLogo />
           </div>
@@ -47,7 +47,7 @@ const Selectlanguage = () => {
           </div>
         </div>
 
-        <div className="bg-gray-200 rounded-lg shadow-xl overflow-hidden py-8 mx-4">
+        <div className="bg-gray-200 rounded-lg shadow-xl overflow-hidden py-8 mx-4 sm:mb-8 sm:ml-8">
           <div className=" w-full object-cover">
             <CLogo />
           </div>
@@ -59,7 +59,7 @@ const Selectlanguage = () => {
           </div>
         </div>
 
-        <div className="bg-gray-200 rounded-lg shadow-xl overflow-hidden py-8 ml-4 mr-8">
+        <div className="bg-gray-200 rounded-lg shadow-xl overflow-hidden py-8 ml-4 sm:mb-8 mr-8">
           <div className=" w-full object-cover">
             <GoLogo />
           </div>

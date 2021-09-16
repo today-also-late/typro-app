@@ -1,17 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { PrimaryButton } from "../../components/atoms";
 import Router, { useRouter } from "next/router";
 import GuLogo from "../../components/atoms/Gu";
 import ChokiLogo from "../../components/atoms/Choki";
 import PaLogo from "../../components/atoms/Pa";
+import Modal from "../../components/organisms/Modal";
 
 // ファイル名は[uid].tsxに後から変更
 const Selectlanguage = () => {
   const router = useRouter();
+  // const [show, setShow] = useState(false);
 
   const goToPlay = (selectedLevel: string) => {
+    // setShow(true);
+
     Router.push({
-      pathname: "/users/play",
+      // pathname: "/users/play",
+      pathname: "/users/countdown",
       query: {
         language: router.query["language"],
         level: selectedLevel,
@@ -52,11 +57,16 @@ const Selectlanguage = () => {
           <div className="grid justify-items-center items-center text-center pt-8">
             <PrimaryButton
               label={"difficult"}
-              onClick={() => goToPlay("difficult")}
+              onClick={() => goToPlay("easy")}
             />
           </div>
         </div>
       </div>
+      {/* <Modal
+        show={show}
+        setShow={setShow}
+        onClick={() => goToPlay}
+      /> */}
     </div>
   );
 };
