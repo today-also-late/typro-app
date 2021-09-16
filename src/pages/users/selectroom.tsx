@@ -7,7 +7,7 @@ import roomsSlice, {
   updateRooms,
 } from "../../../redux/slices/roomsSlice";
 import { getUser } from "../../../redux/slices/userSlice";
-import { ContainedButton } from "../../components/atoms";
+import { PrimaryButton } from "../../components/atoms";
 import { Room } from "../../components/organisms";
 import { db } from "../../firebase/firebase";
 
@@ -23,7 +23,7 @@ const SelectRoom = () => {
   return (
     <div className="w-full h-screen">
       <div className="w-full h-1/6 flex items-center justify-center">
-        <ContainedButton label="部屋を作成する" href="/users/createroom" />
+        <PrimaryButton label="部屋を作成する" href="/users/createroom" />
       </div>
       <div className="h-2/6 flex flex-wrap items-center justify-center ">
         {rooms.length > 0 &&

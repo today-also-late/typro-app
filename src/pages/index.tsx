@@ -3,11 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../redux/slices/userSlice";
 import styles from "../../styles/Home.module.css";
-import {
-  ContainedButton,
-  DropdownIcon,
-  PrimaryButton,
-} from "../components/atoms";
+import { PlayButton, DropdownIcon, PrimaryButton } from "../components/atoms";
 import ITyped from "../firebase/ityped";
 import { emptyAnswers, getAnswers } from "../../redux/slices/answersSlice";
 import Router from "next/router";
@@ -57,27 +53,35 @@ export default function Home({
           {user.isSignedIn ? (
             <div className="w-full flex pt-24">
               <div className="w-1/2 text-center">
-                <ContainedButton
+                <PlayButton
                   label={"プレイ"}
-                  href={"/users/selectlanguage"}
+                  onClick={() => Router.push("/users/selectlanguage")}
+                  person={true}
+                  isSignedIn={true}
                 />
               </div>
               <div className="w-1/2 text-center">
-                <ContainedButton
+                <PlayButton
                   label={"協力プレイ"}
-                  href={"/users/selectroom"}
+                  onClick={() => Router.push("/users/selectroom")}
+                  isSignedIn={true}
                 />
               </div>
             </div>
           ) : (
             <div className="w-full flex pt-24">
               <div className="w-1/2 text-center">
-                <ContainedButton label={"今すぐプレイ"} href={"/guests/play"} />
+                <PlayButton
+                  label={"今すぐプレイ"}
+                  onClick={() => Router.push("/guests/play")}
+                  isSignedIn={false}
+                />
               </div>
               <div className="w-1/2 text-center">
-                <ContainedButton
+                <PlayButton
                   label={"ログインしてプレイ"}
-                  href={"/signin"}
+                  onClick={() => Router.push("/signin")}
+                  isSignedIn={false}
                 />
               </div>
             </div>
