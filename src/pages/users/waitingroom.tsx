@@ -17,12 +17,12 @@ const WaitingRoom = () => {
         const data: any = snapshot.data();
         if (data.participant) {
           Router.push({
-            pathname: "/users/coopplay",
+            pathname: "/users/countdown",
             query: {
               language: data.language,
               level: data.level,
               count: 1,
-              roomId: data.roomId,
+              roomId: roomId,
             },
           });
         }

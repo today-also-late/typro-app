@@ -4,7 +4,7 @@ import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import Router, { useRouter } from "next/router";
 import router from "next/router";
 
-const renderTime = ({ remainingTime }) => {
+const renderTime = ({ remainingTime }: any) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const currentTime = useRef(remainingTime);
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -22,15 +22,31 @@ const renderTime = ({ remainingTime }) => {
     isNewTimeFirstTick.current = false;
   }
 
+  const language = router.query["language"];
+  const level = router.query["level"];
+  const roomId: string | string[] | undefined = router.query["roomId"];
+
   if (remainingTime === 0) {
-    Router.push({
-      pathname: "/users/play",
-      query: {
-        language: router.query["language"],
-        level: router.query["level"],
-        count: 1,
-      },
-    });
+    if (roomId) {
+      Router.push({
+        pathname: "/users/coopplay",
+        query: {
+          language: language,
+          level: level,
+          count: 1,
+          roomId: roomId,
+        },
+      });
+    } else {
+      Router.push({
+        pathname: "/users/play",
+        query: {
+          language: language,
+          level: level,
+          count: 1,
+        },
+      });
+    }
   }
 
   const isTimeUp = isNewTimeFirstTick.current;
@@ -60,7 +76,11 @@ const countdown = () => {
         <CountdownCircleTimer
           isPlaying
           duration={3}
-          colors={[["#004777", 0.33], ["#F7B801", 0.33], ["#A30000"]]}
+          colors={[
+            ["#004777", 0.33],
+            ["#F7B801", 0.33],
+            ["#A30000", 0],
+          ]}
         >
           {renderTime}
         </CountdownCircleTimer>

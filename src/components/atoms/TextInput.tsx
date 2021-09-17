@@ -1,5 +1,10 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles({
+  root: {},
+});
 
 type TextField = {
   fullWidth: boolean;
@@ -17,9 +22,10 @@ type TextField = {
 };
 
 const TextInput = (props: TextField) => {
+  const classes = useStyles();
   return (
     <TextField
-      className=""
+      className={classes.root}
       fullWidth={props.fullWidth}
       autoFocus={props.autoFocus}
       label={props.label}

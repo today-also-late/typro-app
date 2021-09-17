@@ -49,6 +49,7 @@ const CoopPlay = () => {
   const [isMyTurn, setIsMyTurn] = useState(false);
   const [anothorCode, setAnothorCode] = useState("");
   const [turn, setTurn] = useState("");
+  const [srcTimeLimit, setSrcTimeLimit] = useState(30);
 
   const [audioKeybord, setAudioKeybord] = useState<HTMLAudioElement | null>(
     null
@@ -79,6 +80,12 @@ const CoopPlay = () => {
     setAudioMiss(new Audio(Miss));
     setAudioSuccess(new Audio(Success));
   };
+  useEffect(() => {
+    if (typeof question == "string") {
+      // これがないとerrorがでる
+      setSrcTimeLimit(question.length);
+    }
+  }, [question]);
 
   useEffect(() => {
     settingAudio();
@@ -234,7 +241,7 @@ const CoopPlay = () => {
   return (
     <body className="w-full h-screen items-center justify-center">
       <div className="pt-24 py-12 flex justify-center">
-        {/* <CountdownBar /> */}
+        <CountdownBar timeLimit={srcTimeLimit} />
       </div>
       <div className="flex justify-center items-center">
         <div className="w-1/4  text-lg"></div>

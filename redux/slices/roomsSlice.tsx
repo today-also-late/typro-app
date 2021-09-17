@@ -274,7 +274,7 @@ export const enterRoom = createAsyncThunk(
     await roomRef.get().then((snapshot) => {
       const data: any = snapshot.data();
       Router.push({
-        pathname: "/users/coopplay",
+        pathname: "/users/countdown",
         query: {
           language: data.language,
           level: data.level,

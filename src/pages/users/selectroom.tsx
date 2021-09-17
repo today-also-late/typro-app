@@ -10,6 +10,7 @@ import { getUser } from "../../../redux/slices/userSlice";
 import { PrimaryButton } from "../../components/atoms";
 import { Room } from "../../components/organisms";
 import { db } from "../../firebase/firebase";
+import Router from "next/router";
 
 const SelectRoom = () => {
   const dispatch = useDispatch();
@@ -23,7 +24,10 @@ const SelectRoom = () => {
   return (
     <div className="w-full h-screen">
       <div className="w-full h-1/6 flex items-center justify-center">
-        <PrimaryButton label="部屋を作成する" href="/users/createroom" />
+        <PrimaryButton
+          label="部屋を作成する"
+          onClick={() => Router.push("/users/createroom")}
+        />
       </div>
       <div className="h-2/6 flex flex-wrap items-center justify-center ">
         {rooms.length > 0 &&
