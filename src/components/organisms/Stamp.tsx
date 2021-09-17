@@ -7,27 +7,25 @@ import genius from "../../../public/images/stamp/genius.gif";
 import { Button } from "@material-ui/core";
 import router from "next/router";
 import { db } from "../../firebase/firebase";
+import { useSelector } from "react-redux";
+import { getUser } from "../../../redux/slices/userSlice";
 
 const Stamp = () => {
+  const user = useSelector(getUser).user;
   const roomId: any = router.query["roomId"];
+  const [isCreater, setIsCreater] = useState(false);
+  const [isParticipant, setIsParticipant] = useState(false);
+  const [createrName, setCreaterName] = useState("");
+  const [participantName, setParticipantName] = useState("");
   const [createrSelected, setCreaterSelected] = useState<null | number>(null);
   const [participantSelected, setParticipantSelected] = useState<null | number>(
     null
   );
 
   //   自分のスタンプを相手に送る
-  //   useEffect(() => {
-  //     const mySelectedStamp = db
-  //       .collection("rooms")
-  //       .doc(roomId)
-  //       .set({ mySelected: mySelected });
-  //   }, [mySelected]);
-
   useEffect(() => {
-    if (createrSelected !== null) {
-    }
-    const createrSelectedStamp = db
-      .collection("rooms")
+    console.log("useEffect1");
+    db.collection("rooms")
       .doc(roomId)
       .update({ createrSelected: createrSelected });
     //   .onSnapshot((snapshot) => {
@@ -38,31 +36,48 @@ const Stamp = () => {
   }, [createrSelected]);
 
   //   相手のスタンプを取得する
-  //   useEffect(() => {
-  //     const coopSelectedStamp = db
-  //       .collection("rooms")
-  //       .doc(roomId)
-  //       .set({ coopSelected: coopSelected });
-  //   }, [coopSelected]);
+  useEffect(() => {
+    console.log("useEffect2");
+    db.collection("rooms")
+      .doc(roomId)
+      .update({ participantSelected: participantSelected });
+    //   .onSnapshot((snapshot) => {
+    //     const data: any = snapshot.data();
+    //     console.log(data);
+    //     return () => mySelectedStamp();
+    //   });
+  }, [participantSelected]);
 
   useEffect(() => {
-    const participantSelectedStamp = db
+    console.log("useEffect3");
+    const nowUser = db
       .collection("rooms")
       .doc(roomId)
       .onSnapshot((snapshot) => {
         const data: any = snapshot.data();
-        console.log(data);
-        return () => participantSelectedStamp();
+        if (data.creator == user.uid) {
+          setCreaterName(data.createrName);
+          setIsCreater(true);
+          setParticipantSelected(data.participantSelected);
+        }
+        if (data.participant == user.uid) {
+          setParticipantName(data.participantName);
+          setIsParticipant(true);
+          setCreaterSelected(data.createrSelected);
+        }
+        return () => nowUser();
       });
-  }, [participantSelected]);
+  }, []);
 
   const clickAction = (index: null | number) => {
-    setCreaterSelected(index);
+    isCreater == true
+      ? setCreaterSelected(index)
+      : setParticipantSelected(index);
     setTimeout(toNull, 5000);
   };
 
   const toNull = () => {
-    setCreaterSelected(null);
+    isCreater == true ? setCreaterSelected(null) : setParticipantSelected(null);
   };
 
   const gifName = ["ファイト", "ナイスプレイ", "おしい", "天才か？"];
@@ -79,7 +94,11 @@ const Stamp = () => {
       <div>
         <div className="text-right">
           <div className={` ${createrSelected !== null ? "block" : "hidden"}`}>
-            <p>自分のスタンプ</p>
+            {isCreater == true ? (
+              <p>{createrName}</p>
+            ) : (
+              <p>{participantName}</p>
+            )}
             {createrSelected === null ? (
               <></>
             ) : (
@@ -91,7 +110,11 @@ const Stamp = () => {
           <div
             className={` ${participantSelected !== null ? "block" : "hidden"}`}
           >
-            <p>相手のスタンプ</p>
+            {isParticipant == true ? (
+              <p>{participantName}</p>
+            ) : (
+              <p>{createrName}</p>
+            )}
             {participantSelected === null ? (
               <></>
             ) : (
@@ -105,3 +128,6 @@ const Stamp = () => {
 };
 
 export default Stamp;
+function useMount(arg0: () => void, arg1: never[]) {
+  throw new Error("Function not implemented.");
+}
