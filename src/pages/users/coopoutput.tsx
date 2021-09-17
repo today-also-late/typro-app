@@ -47,6 +47,7 @@ const CoopOutput = () => {
   const [isMyTurn, setIsMyTurn] = useState(false);
   const [anothorCode, setAnothorCode] = useState("");
   const [turn, setTurn] = useState("");
+  const [outputTimeLimit, setOutputTimeLimit] = useState(30);
 
   const [audioKeybord, setAudioKeybord] = useState<HTMLAudioElement | null>(
     null
@@ -254,7 +255,7 @@ const CoopOutput = () => {
   return (
     <body className="w-screen h-screen ">
       <div className="pt-24 py-12 flex justify-center">
-        {/* <CountdownBar /> */}
+        <CountdownBar timeLimit={outputTimeLimit} />
       </div>
       <div className="flex justify-center items-center">
         <div className="w-1/4  text-lg">
