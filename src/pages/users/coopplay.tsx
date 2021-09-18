@@ -27,6 +27,7 @@ import {
   changeTurn,
 } from "../../../redux/slices/roomsSlice";
 import { db } from "../../firebase/firebase";
+import Stamp from "../../components/organisms/Stamp";
 
 const CoopPlay = () => {
   const dispatch = useDispatch();
@@ -306,6 +307,7 @@ const CoopPlay = () => {
             )}
         </div>
       </div>
+      <Stamp />
     </body>
   );
 };
