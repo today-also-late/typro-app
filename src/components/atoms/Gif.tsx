@@ -7,7 +7,7 @@ type Gif = {
 const Gif = (props: Gif) => {
   return (
     <div>
-      <Image src={props.gifSorce} alt="stamp-gif" width={60} height={60} />
+      <Image src={props.gifSorce} alt="stamp-gif" width={100} height={100} />
     </div>
   );
 };

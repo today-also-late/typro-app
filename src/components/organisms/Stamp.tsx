@@ -32,34 +32,19 @@ const Stamp = () => {
     setAnchorEl(null);
   };
 
-  //   自分のスタンプを相手に送る
   useEffect(() => {
-    console.log("useEffect1");
     db.collection("rooms")
       .doc(roomId)
       .update({ createrSelected: createrSelected });
-    //   .onSnapshot((snapshot) => {
-    //     const data: any = snapshot.data();
-    //     console.log(data);
-    //     return () => mySelectedStamp();
-    //   });
   }, [createrSelected]);
 
-  //   相手のスタンプを取得する
   useEffect(() => {
-    console.log("useEffect2");
     db.collection("rooms")
       .doc(roomId)
       .update({ participantSelected: participantSelected });
-    //   .onSnapshot((snapshot) => {
-    //     const data: any = snapshot.data();
-    //     console.log(data);
-    //     return () => mySelectedStamp();
-    //   });
   }, [participantSelected]);
 
   useEffect(() => {
-    console.log("useEffect3");
     const nowUser = db
       .collection("rooms")
       .doc(roomId)
@@ -127,14 +112,8 @@ const Stamp = () => {
 
       <div>
         <div className="text-right mr-16">
+          <p>{createrName}</p>
           <div className={` ${createrSelected !== null ? "block" : "hidden"}`}>
-            {isCreater == true ? (
-              // console.log(createrName)
-              <p className="text-black">{createrName}</p>
-            ) : (
-              // console.log(participantName)
-              <p className="text-black">{participantName}</p>
-            )}
             {createrSelected === null ? (
               <></>
             ) : (
@@ -143,16 +122,10 @@ const Stamp = () => {
           </div>
         </div>
         <div className="text-left ml-16">
+          <p>{participantName}</p>
           <div
             className={` ${participantSelected !== null ? "block" : "hidden"}`}
           >
-            {isParticipant == true ? (
-              // console.log(participantName)
-              <p className="text-black">{participantName}</p>
-            ) : (
-              // console.log(createrName)
-              <p className="text-black">{createrName}</p>
-            )}
             {participantSelected === null ? (
               <></>
             ) : (
