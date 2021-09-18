@@ -5,6 +5,8 @@ import nicePlay from "../../../public/images/stamp/niceplay.gif";
 import osii from "../../../public/images/stamp/osii.gif";
 import genius from "../../../public/images/stamp/genius.gif";
 import { Button } from "@material-ui/core";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import router from "next/router";
 import { db } from "../../firebase/firebase";
 import { useSelector } from "react-redux";
@@ -21,6 +23,14 @@ const Stamp = () => {
   const [participantSelected, setParticipantSelected] = useState<null | number>(
     null
   );
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   //   自分のスタンプを相手に送る
   useEffect(() => {
@@ -73,6 +83,7 @@ const Stamp = () => {
     isCreater == true
       ? setCreaterSelected(index)
       : setParticipantSelected(index);
+    handleClose();
     setTimeout(toNull, 5000);
   };
 
@@ -85,19 +96,44 @@ const Stamp = () => {
 
   return (
     <div className="w-full">
-      {gifName.map((name, index) => (
-        <div key={name} className="text-center">
-          <Button onClick={() => clickAction(index)}>{name}</Button>
-        </div>
-      ))}
+      {/* ドロップダウンボタン */}
+      <div className="text-center mt-12">
+        <Button
+          id="basic-button"
+          variant="contained"
+          aria-controls="basic-menu"
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+          onClick={handleClick}
+        >
+          スタンプを送る
+        </Button>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          {gifName.map((name, index) => (
+            <div key={name} className="text-center">
+              <MenuItem onClick={() => clickAction(index)}>{name}</MenuItem>
+            </div>
+          ))}
+        </Menu>
+      </div>
 
       <div>
-        <div className="text-right">
+        <div className="text-right mr-16">
           <div className={` ${createrSelected !== null ? "block" : "hidden"}`}>
             {isCreater == true ? (
-              <p>{createrName}</p>
+              // console.log(createrName)
+              <p className="text-black">{createrName}</p>
             ) : (
-              <p>{participantName}</p>
+              // console.log(participantName)
+              <p className="text-black">{participantName}</p>
             )}
             {createrSelected === null ? (
               <></>
@@ -106,14 +142,16 @@ const Stamp = () => {
             )}
           </div>
         </div>
-        <div className="text-left">
+        <div className="text-left ml-16">
           <div
             className={` ${participantSelected !== null ? "block" : "hidden"}`}
           >
             {isParticipant == true ? (
-              <p>{participantName}</p>
+              // console.log(participantName)
+              <p className="text-black">{participantName}</p>
             ) : (
-              <p>{createrName}</p>
+              // console.log(createrName)
+              <p className="text-black">{createrName}</p>
             )}
             {participantSelected === null ? (
               <></>
