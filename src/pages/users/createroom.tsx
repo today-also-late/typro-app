@@ -65,6 +65,7 @@ const CreateRoom = () => {
     level: level,
     creator: user.uid,
     creatorName: user.username,
+    creatorImage: user.image.path,
     password: password,
     description: description,
     nextTurn: "creator",
