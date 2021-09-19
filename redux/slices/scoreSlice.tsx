@@ -40,10 +40,7 @@ type addranking = {
   language: string;
   level: string;
   score: number;
-  image: {
-    id: string;
-    path: string;
-  };
+  uid: string;
 };
 
 type addscore = {
@@ -127,7 +124,7 @@ export const addRanking = createAsyncThunk(
     const score = addranking.score;
     const language = addranking.language;
     const level = addranking.level;
-    const image = addranking.image;
+    const uid = addranking.uid;
 
     const rankingRef = db.collection("ranking").doc();
 
@@ -140,7 +137,7 @@ export const addRanking = createAsyncThunk(
       rankingId: rankingRef.id,
       score: score,
       created_at: timestamp,
-      image: image,
+      uid: uid,
     };
 
     rankingRef.set(rankingData, { merge: true }).then(() => {

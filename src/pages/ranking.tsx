@@ -19,12 +19,14 @@ import { useRouter } from "next/router";
 import { DropdownIcon, IconPrize } from "../components/atoms";
 import { RankingDrawer } from "../components/molecules";
 import { Menu, MenuItem } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { getScore } from "../../redux/slices/scoreSlice";
 
 // import First from "../../public/images/1.png";
 // import Second from "../../public/images/2.png";
 // import Third from "../../public/images/3.png";
 
-type rankingdata = {
+export type rankingdata = {
   username: string;
   language: string;
   level: string;
@@ -70,6 +72,9 @@ const useStyles = makeStyles({
 const Ranking = () => {
   const classes = useStyles();
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const scores = useSelector(getScore).score;
 
   const [openLangDrawer, setOpenLangDrawer] = useState<null | HTMLElement>(
     null
@@ -115,38 +120,58 @@ const Ranking = () => {
     levelDrawerClose();
   };
 
+  const inputRankingData = (scoreList: Array<rankingdata>) => {
+    setRankingData(scoreList);
+  };
+
   useEffect(() => {
-    db.collection("ranking")
-      .orderBy("score", "desc")
-      .where("language", "==", language)
-      .limit(30)
-      .get()
-      .then((snapshots) => {
-        const scoreList: Array<rankingdata> = [];
-        snapshots.forEach((snapshot) => {
-          let dateData = snapshot.data().created_at.toDate();
-          dateData =
-            dateData.getFullYear() +
-            "/" +
-            (Number(dateData.getMonth()) + 1).toString() +
-            "/" +
-            dateData.getDate();
-          const scoreData = snapshot.data().score;
-          const username = snapshot.data().username;
-          const language = snapshot.data().language;
-          const level = snapshot.data().level;
-          const image = snapshot.data().image;
-          scoreList.push({
-            date: dateData,
-            language: language,
-            level: level,
-            score: scoreData,
-            username: username,
-            image: image,
+    const fetchRankingScores = async () => {
+      await db
+        .collection("ranking")
+        .orderBy("score", "desc")
+        .where("language", "==", language)
+        .limit(30)
+        .get()
+        .then(async (snapshots) => {
+          const scoreList: Array<rankingdata> = [];
+          await snapshots.forEach(async (snapshot) => {
+            let dateData = snapshot.data().created_at.toDate();
+            dateData =
+              dateData.getFullYear() +
+              "/" +
+              (Number(dateData.getMonth()) + 1).toString() +
+              "/" +
+              dateData.getDate();
+            const scoreData = snapshot.data().score;
+            const username = snapshot.data().username;
+            const language = snapshot.data().language;
+            const level = snapshot.data().level;
+            const uid = snapshot.data().uid;
+            const data: any = await (
+              await db.collection("users").doc(uid).get()
+            ).data();
+
+            console.log(data);
+
+            scoreList.push({
+              date: dateData,
+              language: language,
+              level: level,
+              score: scoreData,
+              username: username,
+              image: data.image,
+            });
           });
+          setTimeout(() => inputRankingData(scoreList), 500); // 非同期処理で先に実行されてしまうため,無理やり時間を作る
+        })
+        .catch((e: any) => {
+          console.log(e);
+        })
+        .catch((e: any) => {
+          console.log(e);
         });
-        setRankingData(scoreList);
-      });
+    };
+    fetchRankingScores();
   }, [language]);
 
   return (

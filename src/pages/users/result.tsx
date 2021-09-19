@@ -115,7 +115,7 @@ const Result = () => {
                   score: Math.floor(score),
                   language: language,
                   level: level,
-                  image: user.image,
+                  uid: user.uid,
                 })
               )
             }
