@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TextInput } from "../../components/atoms";
+import { TextInput, TimeUpCountDown } from "../../components/atoms";
 import {
   addFirstOutputAnswers,
   addSecondOutputAnswers,
@@ -15,7 +15,6 @@ import Keybord from "../../../public/audios/keybord.mp3";
 import DisplayQ2 from "../../../public/audios/displayquestion2.mp3";
 import Miss from "../../../public/audios/miss.mp3";
 import Success from "../../../public/audios/success.mp3";
-import CountdownBar from "../../components/atoms/CountdownBar";
 
 const Output = () => {
   const dispatch = useDispatch();
@@ -67,6 +66,14 @@ const Output = () => {
   useEffect(() => {
     settingAudio();
 
+    if (Number(count) === 1) {
+      performance.mark("question1output:start");
+    }
+
+    if (Number(count) === 2) {
+      performance.mark("question2output:start");
+    }
+
     displayNextQuestion(currentId);
 
     // リロード,タブを閉じるときに警告(禁止はできない)
@@ -90,11 +97,29 @@ const Output = () => {
     ) {
       if (Number(count) === 2) {
         dispatch(addMissAnswers(missCount));
-        performance.mark("question2:end");
+        performance.mark("question2output:end");
         performance.mark("question:end");
         performance.measure("question", "question:start", "question:end");
-        performance.measure("question1", "question1:start", "question1:end");
-        performance.measure("question2", "question2:start", "question2:end");
+        performance.measure(
+          "question1src",
+          "question1src:start",
+          "question1src:end"
+        );
+        performance.measure(
+          "question2src",
+          "question2src:start",
+          "question2src:end"
+        );
+        performance.measure(
+          "question1output",
+          "question1output:start",
+          "question1output:end"
+        );
+        performance.measure(
+          "question2output",
+          "question2output:start",
+          "question2output:end"
+        );
         alert("おめでとうございます。クリアです。");
         Router.push({
           pathname: "/users/result",
@@ -105,7 +130,7 @@ const Output = () => {
         });
       } else {
         dispatch(addMissAnswers(missCount));
-        performance.mark("question1:end");
+        performance.mark("question1output:end");
         Router.push({
           pathname: "/users/play",
           query: {
@@ -145,7 +170,7 @@ const Output = () => {
   return (
     <body className="w-screen h-screen ">
       <div className="pt-24 py-12 flex justify-center">
-        <CountdownBar timeLimit={outputTimeLimit} />
+        <TimeUpCountDown question={questions[Number(count)]["timelimit"]} />
       </div>
       <div className="flex justify-center items-center">
         <div className="w-1/4  text-lg">
@@ -159,9 +184,7 @@ const Output = () => {
             )}
         </div>
         <div className="w-2/4">
-          <h1 className="text-center font-mono text-2xl">
-            {currentId + "の出力は?"}
-          </h1>
+          <h1 className="text-center font-mono text-2xl">{"出力は?"}</h1>
           <TextInput
             fullWidth={true}
             autoFocus={true}

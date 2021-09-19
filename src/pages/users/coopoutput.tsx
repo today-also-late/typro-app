@@ -1,7 +1,7 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TextInput } from "../../components/atoms";
+import { TextInput, TimeUpCountDown } from "../../components/atoms";
 import {
   addMissAnswers,
   fetchAnswersFromRoom,
@@ -14,7 +14,6 @@ import Keybord from "../../../public/audios/keybord.mp3";
 import DisplayQ2 from "../../../public/audios/displayquestion2.mp3";
 import Miss from "../../../public/audios/miss.mp3";
 import Success from "../../../public/audios/success.mp3";
-import CountdownBar from "../../components/atoms/CountdownBar";
 import {
   addAnswersToRoom,
   addMissAnswersToRoom,
@@ -82,6 +81,14 @@ const CoopOutput = () => {
   useEffect(() => {
     settingAudio();
 
+    if (Number(count) === 1) {
+      performance.mark("question1output:start");
+    }
+
+    if (Number(count) === 2) {
+      performance.mark("question2output:start");
+    }
+
     displayNextQuestion(currentId);
 
     // リロード,タブを閉じるときに警告(禁止はできない)
@@ -98,11 +105,29 @@ const CoopOutput = () => {
   };
 
   const goResult = () => {
-    performance.mark("question2:end");
+    performance.mark("question2output:end");
     performance.mark("question:end");
     performance.measure("question", "question:start", "question:end");
-    performance.measure("question1", "question1:start", "question1:end");
-    performance.measure("question2", "question2:start", "question2:end");
+    performance.measure(
+      "question1src",
+      "question1src:start",
+      "question1src:end"
+    );
+    performance.measure(
+      "question2src",
+      "question2src:start",
+      "question2src:end"
+    );
+    performance.measure(
+      "question1output",
+      "question1output:start",
+      "question1output:end"
+    );
+    performance.measure(
+      "question2output",
+      "question2output:start",
+      "question2output:end"
+    );
     alert("おめでとうございます。クリアです。");
     Router.push({
       pathname: "/users/result",
@@ -128,11 +153,13 @@ const CoopOutput = () => {
         if (data.isEnd) {
           // すべての問題が終了したとき
           goResult();
+
+          return () => unsubscribeRoom();
         }
 
         if (data.count > Number(count)) {
           // 1問目の出力の回答が終わったとき
-          performance.mark("question1:end");
+          performance.mark("question1output:end");
           Router.push({
             pathname: "/users/coopplay",
             query: {
@@ -255,7 +282,7 @@ const CoopOutput = () => {
   return (
     <body className="w-screen h-screen ">
       <div className="pt-24 py-12 flex justify-center">
-        <CountdownBar timeLimit={outputTimeLimit} />
+        <TimeUpCountDown question={questions[Number(count)]["timelimit"]} />
       </div>
       <div className="flex justify-center items-center">
         <div className="w-1/4  text-lg">

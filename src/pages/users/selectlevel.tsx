@@ -4,7 +4,6 @@ import Router, { useRouter } from "next/router";
 import GuLogo from "../../components/atoms/Gu";
 import ChokiLogo from "../../components/atoms/Choki";
 import PaLogo from "../../components/atoms/Pa";
-import Modal from "../../components/organisms/Modal";
 
 // ファイル名は[uid].tsxに後から変更
 const Selectlanguage = () => {
@@ -65,11 +64,6 @@ const Selectlanguage = () => {
           </div>
         </button>
       </div>
-      {/* <Modal
-        show={show}
-        setShow={setShow}
-        onClick={() => goToPlay}
-      /> */}
     </div>
   );
 };

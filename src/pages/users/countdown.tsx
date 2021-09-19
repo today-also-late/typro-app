@@ -3,6 +3,13 @@ import ReactDOM from "react-dom";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import Router, { useRouter } from "next/router";
 import router from "next/router";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import {
+  fetchQuestonsFromRoom,
+  Selected,
+  updateQuestionsState,
+} from "../../../redux/slices/questionsSlice";
 
 const renderTime = ({ remainingTime }: any) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -14,6 +21,10 @@ const renderTime = ({ remainingTime }: any) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [, setOneLastRerender] = useState(0);
 
+  const language: string | string[] | undefined = router.query["language"];
+  const level: string | string[] | undefined = router.query["level"];
+  const roomId: string | string[] | undefined = router.query["roomId"];
+
   if (currentTime.current !== remainingTime) {
     isNewTimeFirstTick.current = true;
     prevTime.current = currentTime.current;
@@ -21,10 +32,6 @@ const renderTime = ({ remainingTime }: any) => {
   } else {
     isNewTimeFirstTick.current = false;
   }
-
-  const language = router.query["language"];
-  const level = router.query["level"];
-  const roomId: string | string[] | undefined = router.query["roomId"];
 
   if (remainingTime === 0) {
     if (roomId) {
@@ -68,7 +75,25 @@ const renderTime = ({ remainingTime }: any) => {
   );
 };
 
-const countdown = () => {
+const CountDown = () => {
+  const dispatch = useDispatch();
+
+  const language: string | string[] | undefined = router.query["language"];
+  const level: string | string[] | undefined = router.query["level"];
+  const roomId: any = router.query["roomId"];
+
+  const selected: any = { language: language, level: level };
+
+  useEffect(() => {
+    if (roomId) {
+      // 協力プレイのときにdbからstateにquestionを反映させる(participantだけ)
+      dispatch(fetchQuestonsFromRoom(roomId));
+    } else {
+      // ソロプレイのときにdbからstateにquestionを反映させる
+      dispatch(updateQuestionsState(selected)); // dbからquestionをとってくる
+    }
+  }, []);
+
   return (
     <div className="App">
       <p className="font-bold text-2xl text-center py-24">ゲーム開始まで</p>
@@ -89,4 +114,4 @@ const countdown = () => {
   );
 };
 
-export default countdown;
+export default CountDown;

@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TextInput } from "../../components/atoms";
+import { TextInput, TimeUpCountDown } from "../../components/atoms";
 
 import { useEffect } from "react";
 import {
@@ -18,7 +18,6 @@ import Keybord from "../../../public/audios/keybord.mp3";
 import DisplayQ from "../../../public/audios/displayquestion1.mp3";
 import Miss from "../../../public/audios/miss.mp3";
 import Success from "../../../public/audios/success.mp3";
-import { CountdownBar } from "../../components/atoms";
 import { getUser } from "../../../redux/slices/userSlice";
 import {
   addAnswersToRoom,
@@ -50,7 +49,6 @@ const CoopPlay = () => {
   const [isMyTurn, setIsMyTurn] = useState(false);
   const [anothorCode, setAnothorCode] = useState("");
   const [turn, setTurn] = useState("");
-  const [srcTimeLimit, setSrcTimeLimit] = useState(30);
 
   const [audioKeybord, setAudioKeybord] = useState<HTMLAudioElement | null>(
     null
@@ -81,12 +79,6 @@ const CoopPlay = () => {
     setAudioMiss(new Audio(Miss));
     setAudioSuccess(new Audio(Success));
   };
-  useEffect(() => {
-    if (typeof question == "string") {
-      // これがないとerrorがでる
-      setSrcTimeLimit(question.length);
-    }
-  }, [question]);
 
   useEffect(() => {
     settingAudio();
@@ -94,12 +86,12 @@ const CoopPlay = () => {
     if (Number(count) === 1) {
       displayNextQuestion(currentId); // 最初の問題を表示
       performance.mark("question:start");
-      performance.mark("question1:start");
+      performance.mark("question1src:start");
     }
 
     if (Number(count) === 2) {
       displayNextQuestion(currentId); // 最初の問題を表示
-      performance.mark("question2:start");
+      performance.mark("question2src:start");
     }
 
     window.addEventListener("beforeunload", onUnload);
@@ -156,6 +148,12 @@ const CoopPlay = () => {
 
   const displayNextQuestion = (nextQuestionId: number) => {
     if (nextQuestionId > Object.keys(questions[Number(count)]["src"]).length) {
+      if (Number(count) === 1) {
+        performance.mark("question1src:end");
+      }
+      if (Number(count) === 2) {
+        performance.mark("question2src:end");
+      }
       Router.push({
         pathname: "/users/coopoutput",
         query: {
@@ -242,7 +240,7 @@ const CoopPlay = () => {
   return (
     <body className="w-full h-screen items-center justify-center">
       <div className="pt-24 py-12 flex justify-center">
-        <CountdownBar timeLimit={srcTimeLimit} />
+        <TimeUpCountDown question={question} />
       </div>
       <div className="flex justify-center items-center">
         <div className="w-1/4  text-lg"></div>
