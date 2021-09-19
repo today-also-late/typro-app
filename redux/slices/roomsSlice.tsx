@@ -259,7 +259,7 @@ export const changeTurn = createAsyncThunk(
 
 export const enterRoom = createAsyncThunk(
   "rooms/enterRoom",
-  async (enterroom: enterroom, thunkAPI) => {
+  async (enterroom: enterroom) => {
     const { roomId, participant } = enterroom;
 
     const roomRef = db.collection("rooms").doc(roomId);
@@ -268,8 +268,6 @@ export const enterRoom = createAsyncThunk(
     };
 
     await roomRef.set(roomData, { merge: true });
-
-    await thunkAPI.dispatch(fetchQuestonsFromRoom(roomId)); //roomからquestionをとってきてstateに反映
 
     await roomRef.get().then((snapshot) => {
       const data: any = snapshot.data();

@@ -53,7 +53,7 @@ export const initialState: QuestionsState = {
   },
 };
 
-type Selected = {
+export type Selected = {
   language: string;
   level: string;
 };

@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TextInput } from "../../components/atoms";
+import { TextInput, TimeUpCountDown } from "../../components/atoms";
 import {
   addFirstSrcAnswers,
   addSecondSrcAnswers,
@@ -18,8 +18,6 @@ import Keybord from "../../../public/audios/keybord.mp3";
 import DisplayQ from "../../../public/audios/displayquestion1.mp3";
 import Miss from "../../../public/audios/miss.mp3";
 import Success from "../../../public/audios/success.mp3";
-import { CountdownBar } from "../../components/atoms";
-// import { getTimeLimit } from "../../../redux/slices/timelimitSlice";
 
 const Play = () => {
   const dispatch = useDispatch();
@@ -32,14 +30,11 @@ const Play = () => {
   const level: any = router.query["level"];
   const count: any = router.query["count"];
 
-  const selected = { language: language, level: level };
-
   const [code, setCode] = useState("");
   const [question, setQuestion] = useState("");
   const [currentId, setCurrentId] = useState(1);
   const [alertText, setAlertText] = useState("");
   const [missCount, setMissCount] = useState(0);
-  const [srcTimeLimit, setSrcTimeLimit] = useState(10);
 
   const [audioKeybord, setAudioKeybord] = useState<HTMLAudioElement | null>(
     null
@@ -72,23 +67,17 @@ const Play = () => {
   };
 
   useEffect(() => {
-    if (typeof question == "string") {
-      // これがないとerrorがでる
-      setSrcTimeLimit(question.length);
-    }
-  }, [question]);
-
-  useEffect(() => {
     settingAudio();
 
+    audioDisplayQ?.play(); // 鳴らない
+
     if (Number(count) === 1) {
-      dispatch(updateQuestionsState(selected)); // dbからquestionをとってくる
       performance.mark("question:start");
-      performance.mark("question1:start");
+      performance.mark("question1src:start");
     }
 
     if (Number(count) === 2) {
-      performance.mark("question2:start");
+      performance.mark("question2src:start");
     }
 
     window.addEventListener("beforeunload", onUnload);
@@ -105,12 +94,17 @@ const Play = () => {
   };
 
   useEffect(() => {
-    audioDisplayQ?.play();
     displayNextQuestion(currentId);
   }, [questions]);
 
   const displayNextQuestion = (nextQuestionId: number) => {
     if (nextQuestionId > Object.keys(questions[Number(count)]["src"]).length) {
+      if (Number(count) === 1) {
+        performance.mark("question1src:end");
+      }
+      if (Number(count) === 2) {
+        performance.mark("question2src:end");
+      }
       dispatch(addMissAnswers(missCount));
       Router.push({
         pathname: "/users/output",
@@ -150,14 +144,11 @@ const Play = () => {
       }
     }
   };
-  // 確認済み
-  // console.log("test", questionTimeLimit);
-  // console.log("test2", outputTimeLimit);
 
   return (
     <body className="w-full h-screen items-center justify-center">
       <div className="pt-24 py-12 flex justify-center">
-        <CountdownBar timeLimit={srcTimeLimit} />
+        <TimeUpCountDown question={question} />
       </div>
       <div className="flex justify-center items-center">
         <div className="w-1/4  text-lg"></div>
