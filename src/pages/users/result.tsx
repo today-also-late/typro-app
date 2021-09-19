@@ -7,6 +7,7 @@ import { getUser } from "../../../redux/slices/userSlice";
 import { addRanking, addScore } from "../../../redux/slices/scoreSlice";
 import { PrimaryButton } from "../../components/atoms";
 import { deleteRoom } from "../../../redux/slices/roomsSlice";
+import { useState } from "react";
 
 const Result = () => {
   const answers = useSelector(getAnswers).answers;
@@ -20,25 +21,34 @@ const Result = () => {
   const level: any = router.query["level"];
   const roomId: any = router.query["roomId"];
 
-  const p1 = performance.getEntriesByName("question1");
-  const p2 = performance.getEntriesByName("question2");
-  const t1: number = p1[0].duration;
-  const t2: number = p2[0].duration;
-  const tl1: number = questions[1].timelimit;
-  const tl2: number = questions[2].timelimit;
-  const rw1: number = questions[1].reward;
-  const rw2: number = questions[2].reward;
-  const t_w: number = 0.0002; // (timelimit - time) * t_w
-  const tp1: number = (tl1 - t1) * t_w > 0 ? (tl1 - t1) * t_w : 0;
-  const tp2: number = (tl2 - t2) * t_w > 0 ? (tl2 - t2) * t_w : 0;
+  // const allEntries = performance.getEntriesByType("mark");
+
+  const p1src = performance.getEntriesByName("question1src");
+  const p2src = performance.getEntriesByName("question2src");
+  const p1output = performance.getEntriesByName("question1output");
+  const p2output = performance.getEntriesByName("question2output");
+  const t1src: number = p1src[0].duration / 1000; // 1問目のsrcにかかった時間
+  const t2src: number = p2src[0].duration / 1000; // 2問目のsrcにかかった時間
+  const t1output: number = p1output[0].duration / 1000; // 1問目のoutputにかかった時間
+  const t2output: number = p2output[0].duration / 1000; // 2問目のoutputにかかった時間
+
+  const firstSrc = answers[1]["src"].join("");
+  const secondSrc = answers[2]["src"].join("");
+  const TypePerSecond: number =
+    (t1src + t2src) / (firstSrc.length + secondSrc.length);
+  const tl1: number = questions[1].timelimit; // 1問目のoutputの制限時間
+  const tl2: number = questions[2].timelimit; // 2問目のoutputの制限時間
+  const rw1: number = t1output < tl1 ? questions[1].reward : 0; // 1問目の報酬 outputの制限時間内に答えられればもらえる
+  const rw2: number = t2output < tl2 ? questions[2].reward : 0; // 2問目の報酬
+  const tp: number = 30 / TypePerSecond; // timepoint : タイピング数が早ければ早いほどpointが上がる
 
   const totalmiss = answers.miss.reduce(
     (sum: number, element: number) => sum + element,
     0
   );
-  const m_w: number = 0.2; // 5回ミスでreward-1
-  const rwp: number =
-    rw1 + rw2 - totalmiss * m_w > 0 ? rw1 + rw2 - totalmiss * m_w : 0;
+  const m_w: number = 5; // missの重み 1回ミスで-5
+
+  const score: number = tp + rw1 + rw2 - totalmiss * m_w; // score
 
   useEffect(() => {
     dispatch(
@@ -49,24 +59,50 @@ const Result = () => {
         level: level,
       })
     );
-    console.log(t1);
-    console.log(t2);
+    console.log(t1src);
+    console.log(t2src);
+    console.log(t1output);
+    console.log(t2output);
+
+    // リロード,タブを閉じるときに警告(禁止はできない)
+    window.addEventListener("beforeunload", onUnload);
+
     if (roomId) {
       dispatch(deleteRoom(roomId));
     }
+    return () => (
+      performance.clearMeasures(),
+      performance.clearMarks(),
+      window.removeEventListener("beforeunload", onUnload)
+    );
   }, []);
 
-  const score: number = tp1 + tp2 + rwp;
+  const onUnload = (e: any) => {
+    e.preventDefault();
+    e.returnValue = "";
+  };
 
   return (
     <div className="w-full h-full flex items-center justify-center">
       <div className="text-center pt-10">
         <p className="text-5xl underline">Result</p>
-        <div className="text-3xl mt-10">
-          <div>Score　:　 {score > 0 ? Math.floor(score) : 0}</div>
+        <div className="h-8" />
+        <div className="text-3xl">
+          <div className="flex items-center justify-center">
+            Score　:　{" "}
+            <p className="text-blue-800 font-bold">
+              {score > 0 ? Math.floor(score) : 0}{" "}
+            </p>
+          </div>
+          <div className="h-4" />
           <div>
             Miss　:　
             {totalmiss}
+          </div>
+          <div className="h-4" />
+          <div className="text-xl">
+            1秒あたりの入力数　:　
+            {TypePerSecond.toPrecision(3)}&nbsp;&nbsp;[秒/文字]
           </div>
         </div>
         <div className="mt-10">
