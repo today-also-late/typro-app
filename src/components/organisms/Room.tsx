@@ -68,6 +68,8 @@ const Room = (props: any) => {
           enterRoom({
             roomId: props.roomId,
             participant: user.uid,
+            participantName: user.username,
+            participantImage: user.image.path,
           })
         );
       } else {
@@ -153,6 +155,8 @@ const Room = (props: any) => {
                     enterRoom({
                       roomId: props.roomId,
                       participant: user.uid,
+                      participantName: user.username,
+                      participantImage: user.image.path,
                     })
                   )
                 }

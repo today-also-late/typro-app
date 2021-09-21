@@ -139,11 +139,14 @@ export type changeturn = {
 export type enterroom = {
   roomId: string;
   participant: string;
+  participantName: string;
+  participantImage: string;
 };
 
 export type addroom = {
   creator: string;
   creatorName: string;
+  creatorImage: string;
   language: string;
   level: string;
   password: string | null;
@@ -260,11 +263,14 @@ export const changeTurn = createAsyncThunk(
 export const enterRoom = createAsyncThunk(
   "rooms/enterRoom",
   async (enterroom: enterroom) => {
-    const { roomId, participant } = enterroom;
+    const { roomId, participant, participantName, participantImage } =
+      enterroom;
 
     const roomRef = db.collection("rooms").doc(roomId);
     const roomData = {
       participant: participant,
+      participantName: participantName,
+      participantImage: participantImage,
     };
 
     await roomRef.set(roomData, { merge: true });
@@ -289,6 +295,7 @@ export const addRoom = createAsyncThunk(
   async (addroom: addroom, thunkAPI) => {
     const creator = addroom.creator;
     const creatorName = addroom.creatorName;
+    const creatorImage = addroom.creatorImage;
     const password = addroom.password;
     const language = addroom.language;
     const level = addroom.level;
@@ -316,6 +323,7 @@ export const addRoom = createAsyncThunk(
       roomId: roomRef.id,
       creator: creator,
       creatorName: creatorName,
+      creatorImage: creatorImage,
       participant: null,
       password: password,
       description: description,
@@ -351,6 +359,7 @@ export const fetchRooms = createAsyncThunk(
     await db
       .collection("rooms")
       .where("participant", "==", null) // nullの部屋を表示
+      .orderBy("created_at", "asc")
       .get()
       .then((snapshots) => {
         const rooms: Array<object> = [];

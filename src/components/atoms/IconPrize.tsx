@@ -26,36 +26,37 @@ const IconPrize = (props: any) => {
 
   return (
     <>
-      {props.index + 1 <= 3 ? (
-        <div>
-          <div className="relative">
-            <Image
-              className="rounded-full"
-              src={props.image.path}
-              alt="userProfileImage"
-              width={36}
-              height={36}
-            />
-            <div className="absolute inset-0 top-1 -right-1">
+      {props.image.path &&
+        (props.index + 1 <= 3 ? (
+          <div>
+            <div className="relative">
               <Image
                 className="rounded-full"
-                src={prize}
+                src={props.image.path}
                 alt="userProfileImage"
-                width={44}
-                height={44}
+                width={36}
+                height={36}
               />
+              <div className="absolute inset-0 top-1 -right-1">
+                <Image
+                  className="rounded-full"
+                  src={prize}
+                  alt="userProfileImage"
+                  width={44}
+                  height={44}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <Image
-          className="rounded-full"
-          src={props.image.path}
-          alt="userProfileImage"
-          width={36}
-          height={36}
-        />
-      )}
+        ) : (
+          <Image
+            className="rounded-full"
+            src={props.image.path}
+            alt="userProfileImage"
+            width={36}
+            height={36}
+          />
+        ))}
     </>
   );
 };

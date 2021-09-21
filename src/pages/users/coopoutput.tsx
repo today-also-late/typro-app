@@ -24,6 +24,7 @@ import {
 } from "../../../redux/slices/roomsSlice";
 import { db } from "../../firebase/firebase";
 import { getUser } from "../../../redux/slices/userSlice";
+import Stamp from "../../components/organisms/Stamp";
 
 const CoopOutput = () => {
   const dispatch = useDispatch();
@@ -356,6 +357,7 @@ const CoopOutput = () => {
             )}
         </div>
       </div>
+      <Stamp />
     </body>
   );
 };

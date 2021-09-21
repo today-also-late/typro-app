@@ -28,7 +28,7 @@ const CircularProgressWithLabel = (
         size={160}
         color={
           props.value >= 20
-            ? "primary"
+            ? "success"
             : props.value >= 10
             ? "warning"
             : "error"
