@@ -152,25 +152,31 @@ const Play = () => {
       </div>
       <div className="flex justify-center items-center">
         <div className="w-1/4  text-lg"></div>
-        <div className="w-2/4">
-          <h1 className="text-center font-mono text-2xl">{question}</h1>
-          <TextInput
-            fullWidth={true}
-            autoFocus={true}
-            margin="dense"
-            multiline={false}
-            required={true}
-            rows={1}
-            value={code}
-            type={"text"}
-            variant={"outlined"}
-            onChange={InputCode}
-            onKeyDown={(e) => Judge(e, code)}
-          />
+        <div className="w-2/4  text-center ">
+          <h1 className="font-mono text-2xl">{question}</h1>
+          <div className="flex justify-center items-center">
+            <div className="w-1/6" />
+            <div className="w-2/3">
+              <TextInput
+                fullWidth={true}
+                autoFocus={true}
+                margin="dense"
+                multiline={false}
+                required={true}
+                rows={1}
+                value={code}
+                type={"text"}
+                variant={"outlined"}
+                onChange={InputCode}
+                onKeyDown={(e) => Judge(e, code)}
+              />
+            </div>
+            <div className="w-1/6" />
+          </div>
           <div className="text-center text-red-500">{alertText}</div>
           <div className="text-center text-red-500">{"miss:" + missCount}</div>
         </div>
-        <div className="w-1/4  text-lg">
+        <div className="w-1/4   text-lg">
           {answers[Number(count)]["src"].length > 0 &&
             answers[Number(count)]["src"].map(
               (answer: string, index: number) => (

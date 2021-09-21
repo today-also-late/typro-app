@@ -359,6 +359,7 @@ export const fetchRooms = createAsyncThunk(
     await db
       .collection("rooms")
       .where("participant", "==", null) // nullの部屋を表示
+      .orderBy("created_at", "asc")
       .get()
       .then((snapshots) => {
         const rooms: Array<object> = [];

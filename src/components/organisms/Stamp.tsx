@@ -85,7 +85,7 @@ const Stamp = () => {
   }, [participantSelected]);
 
   useEffect(() => {
-    const nowUser = db
+    const unsubscribeRoom = db
       .collection("rooms")
       .doc(roomId)
       .onSnapshot((snapshot) => {
@@ -106,8 +106,12 @@ const Stamp = () => {
         setCreatorImage(data.creatorImage);
         setParticipantImage(data.participantImage);
 
-        return () => nowUser();
+        if (data.isEnd) {
+          return () => unsubscribeRoom();
+        }
       });
+
+    return () => unsubscribeRoom();
   }, []);
 
   const clickAction = (index: null | number) => {

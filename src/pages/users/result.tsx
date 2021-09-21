@@ -34,13 +34,15 @@ const Result = () => {
 
   const firstSrc = answers[1]["src"].join("");
   const secondSrc = answers[2]["src"].join("");
-  const TypePerSecond: number =
+  const SecondPerSecond: number =
     (t1src + t2src) / (firstSrc.length + secondSrc.length);
+  const TypePerSecond: number =
+    (firstSrc.length + secondSrc.length) / (t1src + t2src);
   const tl1: number = questions[1].timelimit; // 1問目のoutputの制限時間
   const tl2: number = questions[2].timelimit; // 2問目のoutputの制限時間
   const rw1: number = t1output < tl1 ? questions[1].reward : 0; // 1問目の報酬 outputの制限時間内に答えられればもらえる
   const rw2: number = t2output < tl2 ? questions[2].reward : 0; // 2問目の報酬
-  const tp: number = 30 / TypePerSecond; // timepoint : タイピング数が早ければ早いほどpointが上がる
+  const tp: number = 30 / SecondPerSecond; // timepoint : タイピング速度が早ければ早いほどpointが上がる
 
   const totalmiss = answers.miss.reduce(
     (sum: number, element: number) => sum + element,
@@ -102,7 +104,7 @@ const Result = () => {
           <div className="h-4" />
           <div className="text-xl">
             1秒あたりの入力数　:　
-            {TypePerSecond.toPrecision(3)}&nbsp;&nbsp;[秒/文字]
+            {TypePerSecond.toPrecision(3)}&nbsp;&nbsp;[文字/秒]
           </div>
         </div>
         <div className="mt-10">

@@ -6,7 +6,6 @@ import { Progress } from "../../components/atoms";
 import { db } from "../../firebase/firebase";
 
 const WaitingRoom = () => {
-  const dispatch = useDispatch();
   const roomId: any = router.query["roomId"];
 
   useEffect(() => {
@@ -29,6 +28,21 @@ const WaitingRoom = () => {
       });
     return () => unsubscribeRoom();
   }, []);
+
+  useEffect(() => {
+    // リロード,タブを閉じるときに警告(禁止はできない)
+    window.addEventListener("beforeunload", onUnload);
+    return () => {
+      // イベントの設定解除
+      window.removeEventListener("beforeunload", onUnload);
+    };
+  }, []);
+
+  const onUnload = (e: any) => {
+    e.preventDefault();
+    e.returnValue = "";
+  };
+
   return (
     <div className="w-full h-screen bg-gray-200">
       <div className="h-2/6 flex items-center justify-center">

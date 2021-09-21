@@ -134,7 +134,7 @@ const Ranking = () => {
         .get()
         .then(async (snapshots) => {
           const scoreList: Array<rankingdata> = [];
-          await snapshots.forEach(async (snapshot) => {
+          snapshots.forEach(async (snapshot) => {
             let dateData = snapshot.data().created_at.toDate();
             dateData =
               dateData.getFullYear() +
@@ -147,11 +147,8 @@ const Ranking = () => {
             const language = snapshot.data().language;
             const level = snapshot.data().level;
             const uid = snapshot.data().uid;
-            const data: any = await (
-              await db.collection("users").doc(uid).get()
-            ).data();
-
-            console.log(data);
+            const response = await db.collection("users").doc(uid).get();
+            const data: any = response.data();
 
             scoreList.push({
               date: dateData,
@@ -162,7 +159,8 @@ const Ranking = () => {
               image: data.image,
             });
           });
-          setTimeout(() => inputRankingData(scoreList), 500); // 非同期処理で先に実行されてしまうため,無理やり時間を作る
+          setTimeout(() => inputRankingData(scoreList), 500);
+          setTimeout(() => console.log(scoreList), 500); // 非同期処理で先に実行されてしまうため,無理やり時間を作る
         })
         .catch((e: any) => {
           console.log(e);
