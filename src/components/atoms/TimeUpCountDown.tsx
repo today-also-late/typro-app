@@ -21,7 +21,13 @@ const CircularProgressWithLabel = (
 ) => {
   const classes = useStyles();
   return (
-    <Box sx={{ position: "relative", display: "inline-flex" }}>
+    <Box
+      sx={{
+        position: "relative",
+        display: "inline-flex",
+        alignItems: "center",
+      }}
+    >
       <CircularProgress
         variant="determinate"
         {...props}

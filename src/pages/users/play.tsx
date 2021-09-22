@@ -146,12 +146,24 @@ const Play = () => {
   };
 
   return (
-    <body className="w-full h-screen items-center justify-center">
-      <div className="pt-24 py-12 flex justify-center">
-        <TimeUpCountDown question={question} />
+    <body className="w-full h-screen">
+      <div className="h-1/3 pt-24 flex justify-center">
+        <div className="w-1/4 h-screen text-lg" />
+        <div className="w-1/2 flex justify-center">
+          <TimeUpCountDown question={question} />
+        </div>
+        <div className="w-1/4 h-screen text-lg">
+          {answers[Number(count)]["src"].length > 0 &&
+            answers[Number(count)]["src"].map(
+              (answer: string, index: number) => (
+                <div className="ml-6" key={index}>
+                  {index + 1} : {answer}
+                </div>
+              )
+            )}
+        </div>
       </div>
       <div className="flex justify-center items-center">
-        <div className="w-1/4  text-lg"></div>
         <div className="w-2/4  text-center ">
           <h1 className="font-mono text-2xl">{question}</h1>
           <div className="flex justify-center items-center">
@@ -175,16 +187,6 @@ const Play = () => {
           </div>
           <div className="text-center text-red-500">{alertText}</div>
           <div className="text-center text-red-500">{"miss:" + missCount}</div>
-        </div>
-        <div className="w-1/4   text-lg">
-          {answers[Number(count)]["src"].length > 0 &&
-            answers[Number(count)]["src"].map(
-              (answer: string, index: number) => (
-                <div className="ml-24" key={index}>
-                  {index + 1} : {answer}
-                </div>
-              )
-            )}
         </div>
       </div>
     </body>
