@@ -21,12 +21,14 @@ import { RankingDrawer } from "../components/molecules";
 import { Menu, MenuItem } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getScore } from "../../redux/slices/scoreSlice";
+import { SettingsEthernetRounded } from "@material-ui/icons";
 
 // import First from "../../public/images/1.png";
 // import Second from "../../public/images/2.png";
 // import Third from "../../public/images/3.png";
 
 export type rankingdata = {
+  uid: string;
   username: string;
   language: string;
   level: string;
@@ -36,6 +38,14 @@ export type rankingdata = {
     id: string;
     path: string;
   };
+};
+
+type icondata = {
+  image: {
+    id: string;
+    path: string;
+  };
+  username: string;
 };
 
 const StyledTableCell = withStyles((theme: Theme) =>
@@ -99,8 +109,9 @@ const Ranking = () => {
 
   const language: any = router.query["language"];
 
-  const [rankingData, setRankingData] = useState<Array<rankingdata>>([
+  const [rankingDataList, setRankingDataList] = useState<Array<rankingdata>>([
     {
+      uid: "",
       username: "",
       language: "",
       level: "",
@@ -113,6 +124,10 @@ const Ranking = () => {
     },
   ]);
 
+  const [iconDataList, setIconDataList] = useState<Array<icondata> | null>(
+    null
+  );
+
   const [level, setLevel] = useState("easy");
 
   const changeLevel = (level: string) => {
@@ -120,12 +135,8 @@ const Ranking = () => {
     levelDrawerClose();
   };
 
-  const inputRankingData = (scoreList: Array<rankingdata>) => {
-    setRankingData(scoreList);
-  };
-
   useEffect(() => {
-    const fetchRankingScores = async () => {
+    const fetchRankingData = async () => {
       await db
         .collection("ranking")
         .orderBy("score", "desc")
@@ -147,20 +158,23 @@ const Ranking = () => {
             const language = snapshot.data().language;
             const level = snapshot.data().level;
             const uid = snapshot.data().uid;
-            const response = await db.collection("users").doc(uid).get();
-            const data: any = response.data();
+            // const response = await db.collection("users").doc(uid).get();
+            // const data: any = response.data();
 
             scoreList.push({
+              uid: uid,
               date: dateData,
               language: language,
               level: level,
               score: scoreData,
               username: username,
-              image: data.image,
+              image: {
+                id: "",
+                path: "",
+              },
             });
           });
-          setTimeout(() => inputRankingData(scoreList), 500);
-          setTimeout(() => console.log(scoreList), 500); // 非同期処理で先に実行されてしまうため,無理やり時間を作る
+          setRankingDataList(scoreList);
         })
         .catch((e: any) => {
           console.log(e);
@@ -169,8 +183,46 @@ const Ranking = () => {
           console.log(e);
         });
     };
-    fetchRankingScores();
+    fetchRankingData();
   }, [language]);
+
+  useEffect(() => {
+    const fetchIcon = async () => {
+      const dataList: Array<icondata> = [];
+      rankingDataList.map(async (rankingdata: rankingdata) => {
+        if (rankingdata.uid) {
+          const response = await db
+            .collection("users")
+            .doc(rankingdata.uid)
+            .get();
+          const data: any = response.data();
+          dataList.push({
+            image: data.image,
+            username: rankingdata.username,
+          });
+          if (rankingDataList.length === dataList.length) {
+            setIconDataList(dataList);
+          }
+        }
+      });
+    };
+    fetchIcon();
+  }, [rankingDataList]);
+
+  useEffect(() => {
+    if (iconDataList) {
+      const scoreList: Array<rankingdata> = [];
+      rankingDataList.map((rankingdata: rankingdata, index: number) => {
+        console.log(index);
+        if (iconDataList[index]) {
+          scoreList.push({
+            ...rankingdata,
+            image: iconDataList[index].image,
+          });
+        }
+      });
+    }
+  }, [iconDataList]);
 
   return (
     <div className="w-full h-full">
@@ -220,7 +272,7 @@ const Ranking = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rankingData
+              {rankingDataList
                 .filter((data) => data.level === level)
                 .map((data: rankingdata, index: number) => (
                   <StyledTableRow key={index}>
@@ -228,8 +280,17 @@ const Ranking = () => {
                       {data.username}
                     </StyledTableCell>
                     <StyledTableCell align="right">
-                      {data.image !== null && (
-                        <IconPrize index={index} image={data.image} />
+                      {iconDataList ? (
+                        <IconPrize
+                          index={index}
+                          image={
+                            iconDataList.filter(
+                              (icondata) => icondata.username === data.username
+                            )[0].image
+                          }
+                        />
+                      ) : (
+                        <></>
                       )}
                     </StyledTableCell>
                     <StyledTableCell align="right">{index + 1}</StyledTableCell>
