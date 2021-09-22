@@ -134,19 +134,27 @@ const Stamp = () => {
       <div className="flex pt-12">
         <div className="w-1/3 text-center">
           <p className="">{creatorName}</p>
-          {creatorImage !== "" ? (
-            <Image
-              className="rounded-full"
-              src={creatorImage}
-              alt="userProfileImage"
-              width={48}
-              height={48}
-            />
-          ) : (
-            <></>
-          )}
-          <div className={` ${creatorChat !== null ? "block" : "hidden"}`}>
-            {creatorChat === null ? <></> : <p>{creatorChat}</p>}
+          <div className="flex items-center justify-center">
+            {creatorImage !== "" ? (
+              <Image
+                className="rounded-full"
+                src={creatorImage}
+                alt="userProfileImage"
+                width={48}
+                height={48}
+              />
+            ) : (
+              <></>
+            )}
+            <div
+              className={` ${
+                creatorChat
+                  ? "mx-2  p-2 rounded-full bg-blue-200 shadow-md"
+                  : "hidden"
+              }`}
+            >
+              {creatorChat === null ? <></> : <p>{creatorChat}</p>}
+            </div>
           </div>
           <div className={` ${creatorSelected !== null ? "block" : "hidden"}`}>
             {creatorSelected === null ? (
@@ -216,19 +224,27 @@ const Stamp = () => {
 
         <div className="w-1/3 text-center">
           <p>{participantName}</p>
-          {participantImage !== "" ? (
-            <Image
-              className="rounded-full"
-              src={participantImage}
-              alt="userProfileImage"
-              width={48}
-              height={48}
-            />
-          ) : (
-            <></>
-          )}
-          <div className={` ${participantChat !== null ? "block" : "hidden"}`}>
-            {participantChat === null ? <></> : <p>{participantChat}</p>}
+          <div className="flex items-center justify-center">
+            <div
+              className={` ${
+                participantChat
+                  ? "mx-2  p-2 rounded-full bg-blue-200 shadow-md"
+                  : "hidden"
+              }`}
+            >
+              {participantChat === null ? <></> : <p>{participantChat}</p>}
+            </div>
+            {participantImage !== "" ? (
+              <Image
+                className="rounded-full"
+                src={participantImage}
+                alt="userProfileImage"
+                width={48}
+                height={48}
+              />
+            ) : (
+              <></>
+            )}
           </div>
           <div
             className={` ${participantSelected !== null ? "block" : "hidden"}`}
