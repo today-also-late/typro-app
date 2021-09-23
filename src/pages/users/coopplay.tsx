@@ -238,36 +238,37 @@ const CoopPlay = () => {
   };
 
   return (
-    <body className="w-full h-screen items-center justify-center">
-      <div className="pt-24 py-12 flex justify-center">
-        <TimeUpCountDown question={question} />
+    <body className="w-full h-screen">
+      <div className="h-1/3 pt-24 flex justify-center">
+        <div className="w-1/4 h-1/2 text-lg" />
+        <div className="w-1/2 flex justify-center">
+          <TimeUpCountDown question={question} />
+        </div>
+        <div className="w-1/4 h-1/2 text-lg">
+          {answers[Number(count)]["src"].length > 0 &&
+            answers[Number(count)]["src"].map(
+              (answer: string, index: number) => (
+                <div className="ml-6" key={index}>
+                  {index + 1} : {answer}
+                </div>
+              )
+            )}
+        </div>
       </div>
       <div className="flex justify-center items-center">
-        <div className="w-1/4  text-lg"></div>
-        <div className="w-2/4">
+        <div className="w-2/4  text-center ">
           <h1 className="text-center font-mono text-2xl">{question}</h1>
-          {isMyTurn ? (
-            <div>
-              <TextInput
-                fullWidth={true}
-                autoFocus={true}
-                margin="dense"
-                multiline={false}
-                required={true}
-                rows={1}
-                value={code}
-                type={"text"}
-                variant={"outlined"}
-                onChange={InputCode}
-                onKeyDown={(e) => Judge(e, code)}
-              />
+          {isMyTurn && (
+            <div className="flex justify-center">
+              <div className="text-center text-red-500">{alertText}</div>
               <div className="text-center text-red-500">
-                あなたが入力する番です
+                {"miss:" + missCount}
               </div>
             </div>
-          ) : (
-            <div>
-              <div className="bg-gray-100">
+          )}
+          <div className="flex justify-center items-center">
+            {isMyTurn ? (
+              <div className="w-full">
                 <TextInput
                   fullWidth={true}
                   autoFocus={true}
@@ -275,34 +276,37 @@ const CoopPlay = () => {
                   multiline={false}
                   required={true}
                   rows={1}
-                  value={anothorCode}
+                  value={code}
                   type={"text"}
                   variant={"outlined"}
+                  onChange={InputCode}
+                  onKeyDown={(e) => Judge(e, code)}
                 />
-              </div>
-              <div className="text-center text-red-500">
-                相手が入力する番です
-              </div>
-            </div>
-          )}
-          {isMyTurn && (
-            <>
-              <div className="text-center text-red-500">{alertText}</div>
-              <div className="text-center text-red-500">
-                {"miss:" + missCount}
-              </div>
-            </>
-          )}
-        </div>
-        <div className="w-1/4  text-lg">
-          {answers[Number(count)]["src"].length > 0 &&
-            answers[Number(count)]["src"].map(
-              (answer: string, index: number) => (
-                <div className="ml-24" key={index}>
-                  {index + 1} : {answer}
+                <div className="text-center text-red-500">
+                  あなたが入力する番です
                 </div>
-              )
+              </div>
+            ) : (
+              <div className="w-full">
+                <div className="bg-gray-100">
+                  <TextInput
+                    fullWidth={true}
+                    autoFocus={true}
+                    margin="dense"
+                    multiline={false}
+                    required={true}
+                    rows={1}
+                    value={anothorCode}
+                    type={"text"}
+                    variant={"outlined"}
+                  />
+                </div>
+                <div className="text-center text-red-500">
+                  相手が入力する番です
+                </div>
+              </div>
             )}
+          </div>
         </div>
       </div>
       <Stamp />
