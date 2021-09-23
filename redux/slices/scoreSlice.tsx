@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { auth, FirebaseTimestamp, db, fb } from "../../src/firebase/firebase";
+import { rankingdata } from "../../src/pages/ranking";
 
 export type scoreState = {
   score: {
@@ -126,23 +127,61 @@ export const addRanking = createAsyncThunk(
     const level = addranking.level;
     const uid = addranking.uid;
 
-    const rankingRef = db.collection("ranking").doc();
+    await db
+      .collection("ranking")
+      .where("language", "==", language)
+      .where("level", "==", level)
+      .where("uid", "==", uid)
+      .get()
+      .then((snapshots) => {
+        if (snapshots.size) {
+          snapshots.forEach((snapshot) => {
+            const data = snapshot.data();
+            console.log(data);
+            const result: boolean = window.confirm(
+              username +
+                "さんが前回登録した\n" +
+                data.score +
+                "のスコアがランキングに存在しますが、上書きしてもよろしいでしょうか?"
+            );
+            if (result) {
+              const rankingRef = db.collection("ranking").doc(data.rankingId);
 
-    const timestamp = FirebaseTimestamp.now();
+              const timestamp = FirebaseTimestamp.now();
 
-    const rankingData = {
-      username: username,
-      language: language,
-      level: level,
-      rankingId: rankingRef.id,
-      score: score,
-      created_at: timestamp,
-      uid: uid,
-    };
+              const rankingData = {
+                score: score,
+                created_at: timestamp,
+              };
 
-    rankingRef.set(rankingData, { merge: true }).then(() => {
-      console.log("ランキング登録完了");
-    });
+              rankingRef.update(rankingData).then(() => {
+                console.log("ランキング登録完了");
+              });
+            } else {
+              console.log("キャンセル");
+              return false;
+            }
+          });
+        } else {
+          const rankingRef = db.collection("ranking").doc();
+
+          const timestamp = FirebaseTimestamp.now();
+
+          const rankingData = {
+            username: username,
+            language: language,
+            level: level,
+            rankingId: rankingRef.id,
+            score: score,
+            created_at: timestamp,
+            uid: uid,
+          };
+
+          rankingRef.set(rankingData).then(() => {
+            alert("ランキングの登録が完了しました");
+          });
+        }
+      });
   }
 );
 
@@ -186,9 +225,7 @@ const scoreSlice = createSlice({
     builder.addCase(addScore.fulfilled, (state, action: any) => {
       alert("スコアの登録が完了しました。");
     });
-    builder.addCase(addRanking.fulfilled, (state, action: any) => {
-      alert("ランキングの登録が完了しました。");
-    });
+
     builder.addCase(fetchPythonScore.fulfilled, (state, action: any) => {
       console.log("stateにpythonスコアをセット");
     });
