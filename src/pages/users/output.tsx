@@ -15,6 +15,7 @@ import Keybord from "../../../public/audios/keybord.mp3";
 import DisplayQ2 from "../../../public/audios/displayquestion2.mp3";
 import Miss from "../../../public/audios/miss.mp3";
 import Success from "../../../public/audios/success.mp3";
+import ITyped from "../../firebase/ityped";
 
 const Output = () => {
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const Output = () => {
   const [audioSuccess, setAudioSuccess] = useState<HTMLAudioElement | null>(
     null
   );
-  const [outputTimeLimit, setOutputTimeLimit] = useState(30);
+  const [isEnd, setIsEnd] = useState(false);
 
   const InputCode = useCallback(
     (event) => {
@@ -120,14 +121,18 @@ const Output = () => {
           "question2output:start",
           "question2output:end"
         );
-        alert("おめでとうございます。クリアです。");
-        Router.push({
-          pathname: "/users/result",
-          query: {
-            language: language,
-            level: level,
-          },
-        });
+        setIsEnd(true);
+        setTimeout(
+          () =>
+            Router.push({
+              pathname: "/users/result",
+              query: {
+                language: language,
+                level: level,
+              },
+            }),
+          3000
+        );
       } else {
         dispatch(addMissAnswers(missCount));
         performance.mark("question1output:end");
@@ -167,54 +172,66 @@ const Output = () => {
     }
   };
 
-  return (
-    <body className="w-screen h-screen ">
-      <div className="h-1/3 pt-24 flex justify-center">
-        <div className="w-1/4 h-screen text-lg">
-          {answers[Number(count)]["output"].length > 0 &&
-            answers[Number(count)]["output"].map(
-              (answer: string, index: number) => (
-                <div className="ml-24" key={index}>
-                  {index + 1} : {answer}
-                </div>
-              )
-            )}
+  if (!isEnd) {
+    return (
+      <body className="w-screen h-screen ">
+        <div className="h-1/3 pt-24 flex justify-center">
+          <div className="w-1/4 h-screen text-lg">
+            {answers[Number(count)]["output"].length > 0 &&
+              answers[Number(count)]["output"].map(
+                (answer: string, index: number) => (
+                  <div className="ml-24" key={index}>
+                    {index + 1} : {answer}
+                  </div>
+                )
+              )}
+          </div>
+          <div className="w-1/2 flex justify-center">
+            <TimeUpCountDown question={questions[Number(count)]["timelimit"]} />
+          </div>
+          <div className="w-1/4 h-screen text-lg">
+            {answers[Number(count)]["src"].length > 0 &&
+              answers[Number(count)]["src"].map(
+                (answer: string, index: number) => (
+                  <div className="ml-6" key={index}>
+                    {index + 1} : {answer}
+                  </div>
+                )
+              )}
+          </div>
         </div>
-        <div className="w-1/2 flex justify-center">
-          <TimeUpCountDown question={questions[Number(count)]["timelimit"]} />
+        <div className="flex justify-center items-center">
+          <div className="w-2/4 text-center">
+            <h1 className="text-center font-mono text-2xl">{"出力は?"}</h1>
+            <TextInput
+              fullWidth={true}
+              autoFocus={true}
+              margin="dense"
+              multiline={false}
+              required={true}
+              rows={1}
+              value={code}
+              type={"text"}
+              variant={"outlined"}
+              onChange={InputCode}
+              onKeyDown={(e) => Judge(e, code)}
+            />
+            <div className="text-center text-red-500">{alertText}</div>
+            <div className="text-center text-red-500">
+              {"miss:" + missCount}
+            </div>
+          </div>
         </div>
-        <div className="w-1/4 h-screen text-lg">
-          {answers[Number(count)]["src"].length > 0 &&
-            answers[Number(count)]["src"].map(
-              (answer: string, index: number) => (
-                <div className="ml-6" key={index}>
-                  {index + 1} : {answer}
-                </div>
-              )
-            )}
+      </body>
+    );
+  } else {
+    return (
+      <div className="w-screen h-screen ">
+        <div className="h-1/6 text-center text-5xl pt-48">
+          <ITyped strings={["クリアおめでとう!!"]} />
         </div>
       </div>
-      <div className="flex justify-center items-center">
-        <div className="w-2/4 text-center">
-          <h1 className="text-center font-mono text-2xl">{"出力は?"}</h1>
-          <TextInput
-            fullWidth={true}
-            autoFocus={true}
-            margin="dense"
-            multiline={false}
-            required={true}
-            rows={1}
-            value={code}
-            type={"text"}
-            variant={"outlined"}
-            onChange={InputCode}
-            onKeyDown={(e) => Judge(e, code)}
-          />
-          <div className="text-center text-red-500">{alertText}</div>
-          <div className="text-center text-red-500">{"miss:" + missCount}</div>
-        </div>
-      </div>
-    </body>
-  );
+    );
+  }
 };
 export default Output;
