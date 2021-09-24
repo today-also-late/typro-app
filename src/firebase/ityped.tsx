@@ -1,12 +1,16 @@
 import React, { Component, useState, useEffect } from "react";
 import { init } from "ityped";
 
-const ITyped = () => {
+type PROPS = {
+  strings: string[];
+};
+
+const ITyped = (props: PROPS) => {
   useEffect(() => {
     const iTyped: any = document.querySelector("#iTyped");
     init(iTyped, {
       showCursor: false,
-      strings: ["Welcome to TyPro.", "Yeah!"],
+      strings: props.strings,
     });
   }, []);
 

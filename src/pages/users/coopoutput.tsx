@@ -2,10 +2,7 @@ import { useCallback, useMemo } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TextInput, TimeUpCountDown } from "../../components/atoms";
-import {
-  addMissAnswers,
-  fetchAnswersFromRoom,
-} from "../../../redux/slices/answersSlice";
+import { fetchAnswersFromRoom } from "../../../redux/slices/answersSlice";
 import { useEffect } from "react";
 import { getAnswers } from "../../../redux/slices/answersSlice";
 import { getQuestions } from "../../../redux/slices/questionsSlice";
@@ -19,7 +16,6 @@ import {
   addMissAnswersToRoom,
   changeCode,
   changeTurn,
-  deleteRoom,
   endRoom,
 } from "../../../redux/slices/roomsSlice";
 import { db } from "../../firebase/firebase";
@@ -47,7 +43,7 @@ const CoopOutput = () => {
   const [isMyTurn, setIsMyTurn] = useState(false);
   const [anothorCode, setAnothorCode] = useState("");
   const [turn, setTurn] = useState("");
-  const [outputTimeLimit, setOutputTimeLimit] = useState(30);
+  const [isEnd, setIsEnd] = useState(false);
 
   const [audioKeybord, setAudioKeybord] = useState<HTMLAudioElement | null>(
     null
