@@ -9,11 +9,6 @@ import { PersistGate } from "redux-persist/lib/integration/react";
 // export const store = createStore();
 
 function MyApp({ Component, pageProps }: AppProps) {
-  process.on("unhandledRejection", (reason, promise) => {
-    console.error(reason);
-    process.exit(1);
-  });
-
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
