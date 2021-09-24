@@ -43,7 +43,7 @@ export default function Home({
       </Head>
       <div className="w-screen h-screen background-image">
         <div className="h-1/6 text-center text-5xl pt-48">
-          <ITyped />
+          <ITyped strings={["Welcome to TyPro.", "Yeah!"]} />
         </div>
         {/* <div className="text-center font-mono text-2xl">
           <div className="pt-16 pb-4">{content2}</div>
