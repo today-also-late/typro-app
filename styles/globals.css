@@ -102,3 +102,10 @@ h1 {
   background-blend-mode: lighten;
   background-size: cover;
 }
+
+.user-select-none {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
