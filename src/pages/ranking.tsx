@@ -174,6 +174,7 @@ const Ranking = () => {
               },
             });
           });
+          setIconDataList(null); // 一度nullにしないとPython->Javascript->PythonのときにscoreListに値が反映される前に描画されるためエラーが出る
           setRankingDataList(scoreList);
         })
         .catch((e: any) => {
