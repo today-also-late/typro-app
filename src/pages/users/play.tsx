@@ -165,7 +165,7 @@ const Play = () => {
       </div>
       <div className="flex justify-center items-center">
         <div className="w-2/4  text-center ">
-          <h1 className="font-mono text-2xl">{question}</h1>
+          <h1 className="font-mono text-2xl user-select-none ">{question}</h1>
           <div className="flex justify-center items-center">
             <div className="w-1/6" />
             <div className="w-2/3">

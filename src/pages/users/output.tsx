@@ -231,7 +231,34 @@ const Output = () => {
           <ITyped strings={["クリアおめでとう!!"]} />
         </div>
       </div>
+
     );
   }
+
+      <div className="flex justify-center items-center">
+        <div className="w-2/4 text-center">
+          <h1 className="text-center font-mono text-2xl user-select-none ">
+            {"出力は?"}
+          </h1>
+          <TextInput
+            fullWidth={true}
+            autoFocus={true}
+            margin="dense"
+            multiline={false}
+            required={true}
+            rows={1}
+            value={code}
+            type={"text"}
+            variant={"outlined"}
+            onChange={InputCode}
+            onKeyDown={(e) => Judge(e, code)}
+          />
+          <div className="text-center text-red-500">{alertText}</div>
+          <div className="text-center text-red-500">{"miss:" + missCount}</div>
+        </div>
+      </div>
+    </body>
+  );
+
 };
 export default Output;

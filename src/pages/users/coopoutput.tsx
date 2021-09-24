@@ -308,11 +308,52 @@ const CoopOutput = () => {
               )}
           </div>
         </div>
+
         <div className="flex justify-center items-center">
           <div className="w-2/4">
             <h1 className="text-center font-mono text-2xl">{"出力は?"}</h1>
             {isMyTurn ? (
               <div className="w-full">
+
+        <div className="w-1/4 h-1/2 text-lg">
+          {answers[Number(count)]["src"].length > 0 &&
+            answers[Number(count)]["src"].map(
+              (answer: string, index: number) => (
+                <div className="ml-6" key={index}>
+                  {index + 1} : {answer}
+                </div>
+              )
+            )}
+        </div>
+      </div>
+      <div className="flex justify-center items-center">
+        <div className="w-2/4">
+          <h1 className="text-center font-mono text-2xl user-select-none ">
+            {"出力は?"}
+          </h1>
+          {isMyTurn ? (
+            <div className="w-full">
+              <TextInput
+                fullWidth={true}
+                autoFocus={true}
+                margin="dense"
+                multiline={false}
+                required={true}
+                rows={1}
+                value={code}
+                type={"text"}
+                variant={"outlined"}
+                onChange={InputCode}
+                onKeyDown={(e) => Judge(e, code)}
+              />
+              <div className="text-center text-red-500">
+                あなたが入力する番です
+              </div>
+            </div>
+          ) : (
+            <div className="w-full">
+              <div className="bg-gray-100">
+
                 <TextInput
                   fullWidth={true}
                   autoFocus={true}
