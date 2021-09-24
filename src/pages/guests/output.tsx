@@ -125,7 +125,7 @@ const Output = () => {
         setTimeout(
           () =>
             Router.push({
-              pathname: "/users/result",
+              pathname: "/guests/result",
               query: {
                 language: language,
                 level: level,
@@ -137,7 +137,7 @@ const Output = () => {
         dispatch(addMissAnswers(missCount));
         performance.mark("question1output:end");
         Router.push({
-          pathname: "/users/play",
+          pathname: "/guests/play",
           query: {
             language: language,
             level: level,

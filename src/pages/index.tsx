@@ -73,7 +73,7 @@ export default function Home({
               <div className="w-1/2 text-center">
                 <PlayButton
                   label={"今すぐプレイ"}
-                  onClick={() => Router.push("/guests/play")}
+                  onClick={() => Router.push("/guests/countdown")}
                   isSignedIn={false}
                 />
               </div>
