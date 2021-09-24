@@ -21,6 +21,7 @@ import {
 import { db } from "../../firebase/firebase";
 import { getUser } from "../../../redux/slices/userSlice";
 import Stamp from "../../components/organisms/Stamp";
+import ITyped from "../../firebase/ityped";
 
 const CoopOutput = () => {
   const dispatch = useDispatch();
@@ -125,15 +126,18 @@ const CoopOutput = () => {
       "question2output:start",
       "question2output:end"
     );
-    alert("おめでとうございます。クリアです。");
-    Router.push({
-      pathname: "/users/result",
-      query: {
-        language: language,
-        level: level,
-        roomId: roomId,
-      },
-    });
+    setTimeout(
+      () =>
+        Router.push({
+          pathname: "/users/result",
+          query: {
+            language: language,
+            level: level,
+            roomId: roomId,
+          },
+        }),
+      3000
+    );
   };
 
   useEffect(() => {
@@ -149,6 +153,7 @@ const CoopOutput = () => {
 
         if (data.isEnd) {
           // すべての問題が終了したとき
+          setIsEnd(true);
           goResult();
 
           return () => unsubscribeRoom();
@@ -275,61 +280,41 @@ const CoopOutput = () => {
       }
     }
   };
-
-  return (
-    <body className="w-screen h-screen ">
-      <div className="h-1/3 pt-24 flex justify-center">
-        <div className="w-1/4 h-1/2 text-lg">
-          {answers[Number(count)]["output"].length > 0 &&
-            answers[Number(count)]["output"].map(
-              (answer: string, index: number) => (
-                <div className="ml-6" key={index}>
-                  {index + 1} : {answer}
-                </div>
-              )
-            )}
+  if (!isEnd) {
+    return (
+      <body className="w-screen h-screen ">
+        <div className="h-1/3 pt-24 flex justify-center">
+          <div className="w-1/4 h-1/2 text-lg">
+            {answers[Number(count)]["output"].length > 0 &&
+              answers[Number(count)]["output"].map(
+                (answer: string, index: number) => (
+                  <div className="ml-6" key={index}>
+                    {index + 1} : {answer}
+                  </div>
+                )
+              )}
+          </div>
+          <div className="w-1/2 flex justify-center">
+            <TimeUpCountDown question={questions[Number(count)]["timelimit"]} />
+          </div>
+          <div className="w-1/4 h-1/2 text-lg">
+            {answers[Number(count)]["src"].length > 0 &&
+              answers[Number(count)]["src"].map(
+                (answer: string, index: number) => (
+                  <div className="ml-6" key={index}>
+                    {index + 1} : {answer}
+                  </div>
+                )
+              )}
+          </div>
         </div>
-        <div className="w-1/2 flex justify-center">
-          <TimeUpCountDown question={questions[Number(count)]["timelimit"]} />
-        </div>
-        <div className="w-1/4 h-1/2 text-lg">
-          {answers[Number(count)]["src"].length > 0 &&
-            answers[Number(count)]["src"].map(
-              (answer: string, index: number) => (
-                <div className="ml-6" key={index}>
-                  {index + 1} : {answer}
-                </div>
-              )
-            )}
-        </div>
-      </div>
-      <div className="flex justify-center items-center">
-        <div className="w-2/4">
-          <h1 className="text-center font-mono text-2xl user-select-none ">
-            {"出力は?"}
-          </h1>
-          {isMyTurn ? (
-            <div className="w-full">
-              <TextInput
-                fullWidth={true}
-                autoFocus={true}
-                margin="dense"
-                multiline={false}
-                required={true}
-                rows={1}
-                value={code}
-                type={"text"}
-                variant={"outlined"}
-                onChange={InputCode}
-                onKeyDown={(e) => Judge(e, code)}
-              />
-              <div className="text-center text-red-500">
-                あなたが入力する番です
-              </div>
-            </div>
-          ) : (
-            <div className="w-full">
-              <div className="bg-gray-100">
+        <div className="flex justify-center items-center">
+          <div className="w-2/4">
+            <h1 className="text-center font-mono text-2xl user-select-none ">
+              {"出力は?"}
+            </h1>
+            {isMyTurn ? (
+              <div className="w-full">
                 <TextInput
                   fullWidth={true}
                   autoFocus={true}
@@ -337,26 +322,57 @@ const CoopOutput = () => {
                   multiline={false}
                   required={true}
                   rows={1}
-                  value={anothorCode}
+                  value={code}
                   type={"text"}
                   variant={"outlined"}
+                  onChange={InputCode}
+                  onKeyDown={(e) => Judge(e, code)}
                 />
+                <div className="text-center text-red-500">
+                  あなたが入力する番です
+                </div>
               </div>
-              <div className="text-center text-red-500">
-                相手が入力する番です
+            ) : (
+              <div className="w-full">
+                <div className="bg-gray-100">
+                  <TextInput
+                    fullWidth={true}
+                    autoFocus={true}
+                    margin="dense"
+                    multiline={false}
+                    required={true}
+                    rows={1}
+                    value={anothorCode}
+                    type={"text"}
+                    variant={"outlined"}
+                  />
+                </div>
+                <div className="text-center text-red-500">
+                  相手が入力する番です
+                </div>
               </div>
+            )}
+          </div>
+        </div>
+        {isMyTurn && (
+          <div>
+            <div className="text-center text-red-500">{alertText}</div>
+            <div className="text-center text-red-500">
+              {"miss:" + missCount}
             </div>
-          )}
+          </div>
+        )}
+        <Stamp />
+      </body>
+    );
+  } else {
+    return (
+      <div className="w-screen h-screen ">
+        <div className="h-1/6 text-center text-5xl pt-48">
+          <ITyped strings={["クリアおめでとう!!"]} />
         </div>
       </div>
-      {isMyTurn && (
-        <div>
-          <div className="text-center text-red-500">{alertText}</div>
-          <div className="text-center text-red-500">{"miss:" + missCount}</div>
-        </div>
-      )}
-      <Stamp />
-    </body>
-  );
+    );
+  }
 };
 export default CoopOutput;
