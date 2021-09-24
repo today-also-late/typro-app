@@ -310,15 +310,6 @@ const CoopOutput = () => {
       <div className="flex justify-center items-center">
         <div className="w-2/4">
           <h1 className="text-center font-mono text-2xl">{"出力は?"}</h1>
-          {isMyTurn && (
-            <div>
-              <div className="text-center text-red-500">{alertText}</div>
-              <div className="text-center text-red-500">
-                {"miss:" + missCount}
-              </div>
-            </div>
-          )}
-
           {isMyTurn ? (
             <div className="w-full">
               <TextInput
@@ -360,6 +351,12 @@ const CoopOutput = () => {
           )}
         </div>
       </div>
+      {isMyTurn && (
+        <div>
+          <div className="text-center text-red-500">{alertText}</div>
+          <div className="text-center text-red-500">{"miss:" + missCount}</div>
+        </div>
+      )}
       <Stamp />
     </body>
   );

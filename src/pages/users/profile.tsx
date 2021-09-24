@@ -21,7 +21,7 @@ const Profile = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const user = useSelector(getUser).user;
-  const [image, setImage] = useState({});
+  const [image, setImage] = useState({ id: "", path: "" });
   const scores = useSelector(getScore).score;
   const [pythonLevel, setPythonLevel] = useState("easy");
   const [javascriptLevel, setJavascriptLevel] = useState("easy");
