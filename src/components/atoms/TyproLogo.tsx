@@ -1,4 +1,4 @@
-import TyproLogoImage from "../../../public/images/typro-logo.png";
+import TyproLogoImage from "../../../public/favicon.ico";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -6,11 +6,11 @@ const TyproLogo = () => {
   return (
     <Link href="/">
       <Image
-        className="rounded-full"
+        className=""
         src={TyproLogoImage}
         alt="TyproLogoImage"
-        width={48}
-        height={48}
+        width={36}
+        height={36}
       />
     </Link>
   );
