@@ -49,7 +49,7 @@ const Selectlanguage = () => {
 
         <button
           className="bg-gray-200 hover:bg-gray-300  rounded-lg shadow-xl overflow-hidden py-8 mx-4"
-          onClick={() => goSelectLevel("python")}
+          onClick={() => alert("準備中です")}
         >
           <div className=" w-full object-cover">
             <CLogo />
@@ -61,7 +61,7 @@ const Selectlanguage = () => {
 
         <button
           className="bg-gray-200 hover:bg-gray-300  rounded-lg shadow-xl overflow-hidden py-8 ml-4 mr-8"
-          onClick={() => goSelectLevel("python")}
+          onClick={() => alert("準備中です")}
         >
           <div className=" w-full object-cover">
             <GoLogo />
