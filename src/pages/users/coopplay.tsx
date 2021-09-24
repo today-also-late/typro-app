@@ -258,14 +258,6 @@ const CoopPlay = () => {
       <div className="flex justify-center items-center">
         <div className="w-2/4  text-center ">
           <h1 className="text-center font-mono text-2xl">{question}</h1>
-          {isMyTurn && (
-            <div className="flex justify-center">
-              <div className="text-center text-red-500">{alertText}</div>
-              <div className="text-center text-red-500">
-                {"miss:" + missCount}
-              </div>
-            </div>
-          )}
           <div className="flex justify-center items-center">
             {isMyTurn ? (
               <div className="w-full">
@@ -307,6 +299,14 @@ const CoopPlay = () => {
               </div>
             )}
           </div>
+          {isMyTurn && (
+            <div className="flex justify-center">
+              <div className="text-center text-red-500">{alertText}</div>
+              <div className="text-center text-red-500">
+                {"miss:" + missCount}
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <Stamp />
