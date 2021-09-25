@@ -196,14 +196,14 @@
     "difficult": {
       "1": {
         "src": {
-          "1": "const unko=false",
-          "2": "if(unko){",
-          "3": "console.log(\"くさい\")",
+          "1": "const flag=false",
+          "2": "if(!flag){",
+          "3": "console.log(\"foo\")",
           "4": "}else{",
-          "5": "console.log(\"くさくない\")}"
+          "5": "console.log(\"boo\")}"
         },
         "output": {
-          "1": "くさくない"
+          "1": "foo"
         },
         "timelimit": 90,
         "reward": 45
