@@ -6,8 +6,6 @@ import Header from "../components/organisms/Header";
 import Auth from "../firebase/Auth";
 import { PersistGate } from "redux-persist/lib/integration/react";
 
-// export const store = createStore();
-
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>

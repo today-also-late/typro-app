@@ -46,6 +46,13 @@ const Output = () => {
   );
   const [isEnd, setIsEnd] = useState(false);
 
+  const settingAudio = () => {
+    setAudioKeybord(new Audio(Keybord));
+    setAudioDisplayQ(new Audio(DisplayQ2));
+    setAudioMiss(new Audio(Miss));
+    setAudioSuccess(new Audio(Success));
+  };
+
   const InputCode = useCallback(
     (event) => {
       audioKeybord?.play();
@@ -57,38 +64,6 @@ const Output = () => {
     },
     [setCode]
   );
-  const settingAudio = () => {
-    setAudioKeybord(new Audio(Keybord));
-    setAudioDisplayQ(new Audio(DisplayQ2));
-    setAudioMiss(new Audio(Miss));
-    setAudioSuccess(new Audio(Success));
-  };
-
-  useEffect(() => {
-    settingAudio();
-
-    if (Number(count) === 1) {
-      performance.mark("question1output:start");
-    }
-
-    if (Number(count) === 2) {
-      performance.mark("question2output:start");
-    }
-
-    displayNextQuestion(currentId);
-
-    // リロード,タブを閉じるときに警告(禁止はできない)
-    window.addEventListener("beforeunload", onUnload);
-    return () => {
-      // イベントの設定解除
-      window.removeEventListener("beforeunload", onUnload);
-    };
-  }, []);
-
-  const onUnload = (e: any) => {
-    e.preventDefault();
-    e.returnValue = "";
-  };
 
   const displayNextQuestion = (nextQuestionId: number) => {
     setQuesiton(questions[Number(count)]["output"][nextQuestionId]);
@@ -170,6 +145,32 @@ const Output = () => {
         setAlertText("コードが違います。");
       }
     }
+  };
+
+  useEffect(() => {
+    settingAudio();
+
+    if (Number(count) === 1) {
+      performance.mark("question1output:start");
+    }
+
+    if (Number(count) === 2) {
+      performance.mark("question2output:start");
+    }
+
+    displayNextQuestion(currentId);
+
+    // リロード,タブを閉じるときに警告(禁止はできない)
+    window.addEventListener("beforeunload", onUnload);
+    return () => {
+      // イベントの設定解除
+      window.removeEventListener("beforeunload", onUnload);
+    };
+  }, []);
+
+  const onUnload = (e: any) => {
+    e.preventDefault();
+    e.returnValue = "";
   };
 
   if (!isEnd) {

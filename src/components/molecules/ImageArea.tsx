@@ -1,5 +1,3 @@
-import { IconButton, makeStyles } from "@material-ui/core";
-import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 import { Dispatch, SetStateAction, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { storage } from "../../firebase/firebase";
@@ -53,7 +51,7 @@ const ImageArea = (props: PROPS) => {
         });
       });
     },
-    [props.setImage]
+    [dispatch, props, user.uid]
   );
 
   const deleteImage = useCallback(
@@ -73,7 +71,7 @@ const ImageArea = (props: PROPS) => {
         await dispatch(deleteUserImage(deleteuserimage));
       }
     },
-    [props.image]
+    [dispatch, props, user.uid]
   );
 
   return (

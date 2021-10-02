@@ -1,5 +1,4 @@
 import React from "react";
-import { PrimaryButton } from "../../components/atoms";
 import Router from "next/router";
 import PythonLogo from "../../components/atoms/PythonLogo";
 import JsLogo from "../../components/atoms/JsLogo";

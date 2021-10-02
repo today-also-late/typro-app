@@ -4,8 +4,13 @@ import { useState } from "react";
 import Router from "next/router";
 
 const RankingDrawer = (props: any) => {
-  const selectMenu = (event: any, path: string) => {
-    Router.push(path);
+  const selectMenu = (id: string) => {
+    Router.push({
+      pathname: "ranking",
+      query: {
+        language: id,
+      },
+    });
     props.onClose();
   };
 
@@ -14,25 +19,21 @@ const RankingDrawer = (props: any) => {
       func: selectMenu,
       label: "python",
       id: "python",
-      value: "/ranking/?language=python",
     },
     {
       func: selectMenu,
       label: "javascript",
       id: "javascript",
-      value: "/ranking/?language=javascript",
     },
     {
       func: selectMenu,
       label: "C",
       id: "c",
-      value: "/ranking/?language=c",
     },
     {
       func: selectMenu,
       label: "Go",
       id: "go",
-      value: "/ranking/?language=go",
     },
   ]);
 
@@ -48,7 +49,7 @@ const RankingDrawer = (props: any) => {
           <MenuItem
             button
             key={filter.id}
-            onClick={(e) => filter.func(e, filter.value)}
+            onClick={() => filter.func(filter.id)}
           >
             {filter.label}
           </MenuItem>

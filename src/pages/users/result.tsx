@@ -7,7 +7,6 @@ import { getUser } from "../../../redux/slices/userSlice";
 import { addRanking, addScore } from "../../../redux/slices/scoreSlice";
 import { PrimaryButton } from "../../components/atoms";
 import { deleteRoom } from "../../../redux/slices/roomsSlice";
-import { useState } from "react";
 
 const Result = () => {
   const answers = useSelector(getAnswers).answers;

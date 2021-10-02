@@ -1,15 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import roomsSlice, {
-  fetchRooms,
-  getRooms,
-  RoomsState,
-  updateRooms,
-} from "../../../redux/slices/roomsSlice";
+import { fetchRooms, getRooms } from "../../../redux/slices/roomsSlice";
 import { getUser } from "../../../redux/slices/userSlice";
 import { PrimaryButton } from "../../components/atoms";
 import { Room } from "../../components/organisms";
-import { db } from "../../firebase/firebase";
 import Router from "next/router";
 
 const SelectRoom = () => {
