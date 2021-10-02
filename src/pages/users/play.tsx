@@ -33,16 +33,13 @@ const Play = () => {
   const [alertText, setAlertText] = useState("");
   const [missCount, setMissCount] = useState(0);
 
-  const [audioKeybord, setAudioKeybord] = useState<HTMLAudioElement | null>(
-    null
-  );
-  const [audioDisplayQ, setAudioDisplayQ] = useState<HTMLAudioElement | null>(
-    null
-  );
+  const [audioKeybord, setAudioKeybord] =
+    useState<HTMLAudioElement | null>(null);
+  const [audioDisplayQ, setAudioDisplayQ] =
+    useState<HTMLAudioElement | null>(null);
   const [audioMiss, setAudioMiss] = useState<HTMLAudioElement | null>(null);
-  const [audioSuccess, setAudioSuccess] = useState<HTMLAudioElement | null>(
-    null
-  );
+  const [audioSuccess, setAudioSuccess] =
+    useState<HTMLAudioElement | null>(null);
 
   const settingAudio = () => {
     setAudioKeybord(new Audio(Keybord));
@@ -62,6 +59,20 @@ const Play = () => {
     },
     [setCode]
   );
+
+  const DeleateIndent = (question: String) => {
+    let noIndentQuestion = "";
+    let indent = true;
+    for (let i = 0; i < question.length; i++) {
+      if (question[i] === " " && indent) {
+        continue;
+      } else if (indent) {
+        indent = false;
+      }
+      noIndentQuestion += question[i];
+    }
+    return noIndentQuestion;
+  };
 
   const displayNextQuestion = (nextQuestionId: number) => {
     if (nextQuestionId > Object.keys(questions[Number(count)]["src"]).length) {
@@ -90,13 +101,14 @@ const Play = () => {
       if (code.match(/'/)) {
         code = code.replace(/'/g, '"');
       }
-      if (code === question) {
+      const noIndentQuestion = DeleateIndent(question);
+      if (code === noIndentQuestion) {
         audioSuccess?.play();
 
         if (Number(count) === 1) {
-          dispatch(addFirstSrcAnswers(code));
+          dispatch(addFirstSrcAnswers(question));
         } else if (Number(count) === 2) {
-          dispatch(addSecondSrcAnswers(code));
+          dispatch(addSecondSrcAnswers(question));
         }
         setCode("");
         setAlertText("正解です。");
