@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { auth, FirebaseTimestamp, db, fb } from "../../src/firebase/firebase";
-import Router from "next/router";
+import { db } from "../../src/firebase/firebase";
 
 export type QuestionsState = {
   questions: {

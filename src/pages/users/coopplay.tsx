@@ -61,6 +61,13 @@ const CoopPlay = () => {
     null
   );
 
+  const settingAudio = () => {
+    setAudioKeybord(new Audio(Keybord));
+    setAudioDisplayQ(new Audio(DisplayQ));
+    setAudioMiss(new Audio(Miss));
+    setAudioSuccess(new Audio(Success));
+  };
+
   const InputCode = useCallback(
     (event) => {
       setAlertText("");
@@ -72,79 +79,6 @@ const CoopPlay = () => {
     },
     [setCode]
   );
-
-  const settingAudio = () => {
-    setAudioKeybord(new Audio(Keybord));
-    setAudioDisplayQ(new Audio(DisplayQ));
-    setAudioMiss(new Audio(Miss));
-    setAudioSuccess(new Audio(Success));
-  };
-
-  useEffect(() => {
-    settingAudio();
-
-    if (Number(count) === 1) {
-      displayNextQuestion(currentId); // 最初の問題を表示
-      performance.mark("question:start");
-      performance.mark("question1src:start");
-    }
-
-    if (Number(count) === 2) {
-      displayNextQuestion(currentId); // 最初の問題を表示
-      performance.mark("question2src:start");
-    }
-
-    window.addEventListener("beforeunload", onUnload);
-
-    return () => {
-      // イベントの設定解除
-      window.removeEventListener("beforeunload", onUnload);
-    };
-  }, []);
-
-  useEffect(() => {
-    const unsubscribeRoom = db
-      .collection("rooms")
-      .doc(roomId)
-      .onSnapshot((snapshot) => {
-        const data: any = snapshot.data();
-
-        if (data.answers.miss.length > answers.miss.length) {
-          dispatch(fetchAnswersFromRoom(roomId));
-          // dbのroomからstoreのanswerに反映させる
-        }
-
-        if (data.nextQuestionId > currentId) {
-          displayNextQuestion(data.nextQuestionId);
-        }
-
-        if (data.nextTurn == "creator") {
-          // creatorが入力する番で
-          setTurn("creator");
-          if (data.creator == user.uid) {
-            // 自分がcreatorならば
-            setIsMyTurn(true);
-          }
-        }
-        if (data.nextTurn == "participant") {
-          // participantが入力する番で
-          setTurn("participant");
-          if (data.participant == user.uid) {
-            // 自分がparticipantならば
-            setIsMyTurn(true);
-          }
-        }
-
-        setAnothorCode(data.code); // 相手が入力しているコード
-      });
-
-    return () => unsubscribeRoom();
-  }, []);
-
-  const onUnload = (e: any) => {
-    e.preventDefault();
-    e.returnValue = "";
-  };
 
   const displayNextQuestion = (nextQuestionId: number) => {
     if (nextQuestionId > Object.keys(questions[Number(count)]["src"]).length) {
@@ -235,6 +169,72 @@ const CoopPlay = () => {
         setAlertText("コードが違います。");
       }
     }
+  };
+
+  useEffect(() => {
+    settingAudio();
+
+    if (Number(count) === 1) {
+      displayNextQuestion(currentId); // 最初の問題を表示
+      performance.mark("question:start");
+      performance.mark("question1src:start");
+    }
+
+    if (Number(count) === 2) {
+      displayNextQuestion(currentId); // 最初の問題を表示
+      performance.mark("question2src:start");
+    }
+
+    window.addEventListener("beforeunload", onUnload);
+
+    return () => {
+      // イベントの設定解除
+      window.removeEventListener("beforeunload", onUnload);
+    };
+  }, []);
+
+  useEffect(() => {
+    const unsubscribeRoom = db
+      .collection("rooms")
+      .doc(roomId)
+      .onSnapshot((snapshot) => {
+        const data: any = snapshot.data();
+
+        if (data.answers.miss.length > answers.miss.length) {
+          dispatch(fetchAnswersFromRoom(roomId));
+          // dbのroomからstoreのanswerに反映させる
+        }
+
+        if (data.nextQuestionId > currentId) {
+          displayNextQuestion(data.nextQuestionId);
+        }
+
+        if (data.nextTurn == "creator") {
+          // creatorが入力する番で
+          setTurn("creator");
+          if (data.creator == user.uid) {
+            // 自分がcreatorならば
+            setIsMyTurn(true);
+          }
+        }
+        if (data.nextTurn == "participant") {
+          // participantが入力する番で
+          setTurn("participant");
+          if (data.participant == user.uid) {
+            // 自分がparticipantならば
+            setIsMyTurn(true);
+          }
+        }
+
+        setAnothorCode(data.code); // 相手が入力しているコード
+      });
+
+    return () => unsubscribeRoom();
+  }, []);
+
+  const onUnload = (e: any) => {
+    e.preventDefault();
+    e.returnValue = "";
   };
 
   return (

@@ -1,6 +1,5 @@
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { useDispatch, useSelector } from "react-redux";
-// import { DropdownButtun } from "../atoms";
 import { getUser, signOutUser } from "../../../redux/slices/userSlice";
 import Image from "next/image";
 import Router from "next/router";

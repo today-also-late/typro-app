@@ -1,9 +1,4 @@
-import {
-  bindActionCreators,
-  createAsyncThunk,
-  createSlice,
-  PayloadAction,
-} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { db } from "../../src/firebase/firebase";
 import { RootState } from "../store";
 

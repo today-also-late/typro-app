@@ -3,31 +3,19 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../redux/slices/userSlice";
 import styles from "../../styles/Home.module.css";
-import { PlayButton, DropdownIcon, PrimaryButton } from "../components/atoms";
+import { PlayButton } from "../components/atoms";
 import ITyped from "../firebase/ityped";
-import { emptyAnswers, getAnswers } from "../../redux/slices/answersSlice";
+import { emptyAnswers } from "../../redux/slices/answersSlice";
 import Router from "next/router";
 import { emptyQuestions } from "../../redux/slices/questionsSlice";
-import { IconButton } from "@material-ui/core";
 
 type HOME = {
   title: string;
-  content1: string;
-  content1_1: string;
-  content2: string;
-  content2_1: string;
 };
 
-export default function Home({
-  title,
-  content1,
-  content1_1,
-  content2,
-  content2_1,
-}: HOME) {
+export default function Home({ title }: HOME) {
   const dispatch = useDispatch();
   const user = useSelector(getUser).user;
-  const answers = useSelector(getAnswers).answers;
 
   useEffect(() => {
     dispatch(emptyAnswers());
@@ -45,10 +33,7 @@ export default function Home({
         <div className="h-1/6 text-center text-5xl pt-48">
           <ITyped strings={["Welcome to TyPro.", "Yeah!"]} />
         </div>
-        {/* <div className="text-center font-mono text-2xl">
-          <div className="pt-16 pb-4">{content2}</div>
-          <div className="">{content2_1}</div>
-        </div> */}
+
         <div className="pt-32">
           {user.isSignedIn ? (
             <div className="w-full flex pt-24">
@@ -90,24 +75,4 @@ export default function Home({
       </div>
     </div>
   );
-}
-
-// ビルド時に実行される
-export async function getStaticProps() {
-  const title = "TyPro";
-  const content1 = "Welcome to TyPro";
-  const content1_1 = "プログラムのタイピングゲームです。";
-  const content2 = "Skills you can learn";
-
-  const content2_1 = "コードを打つのが早くなる いろんな言語を学べる ";
-
-  return {
-    props: {
-      title,
-      content1,
-      content1_1,
-      content2,
-      content2_1,
-    },
-  };
 }
