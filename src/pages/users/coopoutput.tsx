@@ -57,6 +57,13 @@ const CoopOutput = () => {
     null
   );
 
+  const settingAudio = () => {
+    setAudioKeybord(new Audio(Keybord));
+    setAudioDisplayQ(new Audio(DisplayQ2));
+    setAudioMiss(new Audio(Miss));
+    setAudioSuccess(new Audio(Success));
+  };
+
   const InputCode = useCallback(
     (event) => {
       setAlertText("");
@@ -66,14 +73,93 @@ const CoopOutput = () => {
       setCode(event.target.value);
       dispatch(changeCode({ roomId: roomId, code: event.target.value }));
     },
-    [setCode]
+    [dispatch, roomId, setCode]
   );
 
-  const settingAudio = () => {
-    setAudioKeybord(new Audio(Keybord));
-    setAudioDisplayQ(new Audio(DisplayQ2));
-    setAudioMiss(new Audio(Miss));
-    setAudioSuccess(new Audio(Success));
+  const displayNextQuestion = (nextQuestionId: number) => {
+    if (
+      nextQuestionId > Object.keys(questions[Number(count)]["output"]).length
+    ) {
+      if (Number(count) === 1) {
+        if (turn === "creator") {
+          dispatch(
+            changeTurn({
+              roomId: roomId,
+              nextTurn: "participant",
+              nextQuestionId: 1,
+              code: "",
+              count: Number(count) + 1,
+            })
+          );
+        }
+        if (turn === "participant") {
+          dispatch(
+            changeTurn({
+              roomId: roomId,
+              nextTurn: "creator",
+              nextQuestionId: 1,
+              code: "",
+              count: Number(count) + 1,
+            })
+          );
+        }
+      }
+      if (Number(count) === 2) {
+        dispatch(
+          endRoom({
+            roomId: roomId,
+            isEnd: true,
+          })
+        );
+      }
+    }
+    setQuesiton(questions[Number(count)]["output"][nextQuestionId]);
+    setCurrentId(nextQuestionId);
+  };
+
+  const Judge = (e: any, code: string) => {
+    if (e.key === "Enter") {
+      if (code.match(/'/)) {
+        code = code.replace(/'/g, '"');
+      }
+      console.log(question);
+      if (code === question) {
+        audioSuccess?.play();
+        if (Number(count) === 1) {
+          dispatch(
+            addAnswersToRoom({
+              roomId: roomId,
+              code: code,
+              count: Number(count),
+              isSrc: "output",
+            })
+          );
+        } else if (Number(count) === 2) {
+          dispatch(
+            addAnswersToRoom({
+              roomId: roomId,
+              code: code,
+              count: Number(count),
+              isSrc: "output",
+            })
+          );
+        }
+        setCode("");
+        setAlertText("正解です。");
+        dispatch(
+          addMissAnswersToRoom({
+            roomId: roomId,
+            missCount: missCount,
+          })
+        );
+        let nextQuestionId = currentId + 1;
+        displayNextQuestion(nextQuestionId);
+      } else {
+        audioMiss?.play();
+        setMissCount((prevState) => prevState + 1);
+        setAlertText("コードが違います。");
+      }
+    }
   };
 
   useEffect(() => {
@@ -195,91 +281,6 @@ const CoopOutput = () => {
     return () => unsubscribeRoom();
   }, []);
 
-  const displayNextQuestion = (nextQuestionId: number) => {
-    if (
-      nextQuestionId > Object.keys(questions[Number(count)]["output"]).length
-    ) {
-      if (Number(count) === 1) {
-        if (turn === "creator") {
-          dispatch(
-            changeTurn({
-              roomId: roomId,
-              nextTurn: "participant",
-              nextQuestionId: 1,
-              code: "",
-              count: Number(count) + 1,
-            })
-          );
-        }
-        if (turn === "participant") {
-          dispatch(
-            changeTurn({
-              roomId: roomId,
-              nextTurn: "creator",
-              nextQuestionId: 1,
-              code: "",
-              count: Number(count) + 1,
-            })
-          );
-        }
-      }
-      if (Number(count) === 2) {
-        dispatch(
-          endRoom({
-            roomId: roomId,
-            isEnd: true,
-          })
-        );
-      }
-    }
-    setQuesiton(questions[Number(count)]["output"][nextQuestionId]);
-    setCurrentId(nextQuestionId);
-  };
-
-  const Judge = (e: any, code: string) => {
-    if (e.key === "Enter") {
-      if (code.match(/'/)) {
-        code = code.replace(/'/g, '"');
-      }
-      console.log(question);
-      if (code === question) {
-        audioSuccess?.play();
-        if (Number(count) === 1) {
-          dispatch(
-            addAnswersToRoom({
-              roomId: roomId,
-              code: code,
-              count: Number(count),
-              isSrc: "output",
-            })
-          );
-        } else if (Number(count) === 2) {
-          dispatch(
-            addAnswersToRoom({
-              roomId: roomId,
-              code: code,
-              count: Number(count),
-              isSrc: "output",
-            })
-          );
-        }
-        setCode("");
-        setAlertText("正解です。");
-        dispatch(
-          addMissAnswersToRoom({
-            roomId: roomId,
-            missCount: missCount,
-          })
-        );
-        let nextQuestionId = currentId + 1;
-        displayNextQuestion(nextQuestionId);
-      } else {
-        audioMiss?.play();
-        setMissCount((prevState) => prevState + 1);
-        setAlertText("コードが違います。");
-      }
-    }
-  };
   if (!isEnd) {
     return (
       <body className="w-screen h-screen ">

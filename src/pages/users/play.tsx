@@ -9,10 +9,7 @@ import {
 } from "../../../redux/slices/answersSlice";
 import { useEffect } from "react";
 import { getAnswers } from "../../../redux/slices/answersSlice";
-import {
-  getQuestions,
-  updateQuestionsState,
-} from "../../../redux/slices/questionsSlice";
+import { getQuestions } from "../../../redux/slices/questionsSlice";
 import Router, { useRouter } from "next/router";
 import Keybord from "../../../public/audios/keybord.mp3";
 import DisplayQ from "../../../public/audios/displayquestion1.mp3";
@@ -47,6 +44,13 @@ const Play = () => {
     null
   );
 
+  const settingAudio = () => {
+    setAudioKeybord(new Audio(Keybord));
+    setAudioDisplayQ(new Audio(DisplayQ));
+    setAudioMiss(new Audio(Miss));
+    setAudioSuccess(new Audio(Success));
+  };
+
   const InputCode = useCallback(
     (event) => {
       audioKeybord?.play(); // 鳴らない
@@ -58,44 +62,6 @@ const Play = () => {
     },
     [setCode]
   );
-
-  const settingAudio = () => {
-    setAudioKeybord(new Audio(Keybord));
-    setAudioDisplayQ(new Audio(DisplayQ));
-    setAudioMiss(new Audio(Miss));
-    setAudioSuccess(new Audio(Success));
-  };
-
-  useEffect(() => {
-    settingAudio();
-
-    audioDisplayQ?.play(); // 鳴らない
-
-    if (Number(count) === 1) {
-      performance.mark("question:start");
-      performance.mark("question1src:start");
-    }
-
-    if (Number(count) === 2) {
-      performance.mark("question2src:start");
-    }
-
-    window.addEventListener("beforeunload", onUnload);
-
-    return () => {
-      // イベントの設定解除
-      window.removeEventListener("beforeunload", onUnload);
-    };
-  }, []);
-
-  const onUnload = (e: any) => {
-    e.preventDefault();
-    e.returnValue = "";
-  };
-
-  useEffect(() => {
-    displayNextQuestion(currentId);
-  }, [questions]);
 
   const displayNextQuestion = (nextQuestionId: number) => {
     if (nextQuestionId > Object.keys(questions[Number(count)]["src"]).length) {
@@ -144,6 +110,37 @@ const Play = () => {
       }
     }
   };
+
+  useEffect(() => {
+    settingAudio();
+
+    audioDisplayQ?.play(); // 鳴らない
+
+    if (Number(count) === 1) {
+      performance.mark("question:start");
+      performance.mark("question1src:start");
+    }
+
+    if (Number(count) === 2) {
+      performance.mark("question2src:start");
+    }
+
+    window.addEventListener("beforeunload", onUnload);
+
+    return () => {
+      // イベントの設定解除
+      window.removeEventListener("beforeunload", onUnload);
+    };
+  }, []);
+
+  const onUnload = (e: any) => {
+    e.preventDefault();
+    e.returnValue = "";
+  };
+
+  useEffect(() => {
+    displayNextQuestion(currentId);
+  }, [questions]);
 
   return (
     <body className="w-full h-screen">

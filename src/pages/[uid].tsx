@@ -7,7 +7,7 @@ import {
   fetchPythonScore,
   getScore,
 } from "../../redux/slices/scoreSlice";
-import { LineChart } from "../components/organisms";
+import { ScoreChart } from "../components/organisms";
 import { db } from "../firebase/firebase";
 import Image from "next/image";
 import NoProfileImage from "../../public/images/no-profile.png";
@@ -25,7 +25,7 @@ type User = {
   };
 };
 
-const Profile = () => {
+const AnotherProfile = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { uid } = router.query;
@@ -115,21 +115,14 @@ const Profile = () => {
           </div>
         )}
       </section>
-      <section className="flex justify-around">
-        <LineChart
-          title={"Python"}
-          scores={scores.python}
-          label={pythonLevel}
-          setLevel={setPythonLevel}
-        />
-        <LineChart
-          title={"JavaScript"}
-          scores={scores.javascript}
-          label={javascriptLevel}
-          setLevel={setJavascriptLevel}
-        />
-      </section>
+      <ScoreChart
+        scores={scores}
+        pythonLevel={pythonLevel}
+        javascriptLevel={javascriptLevel}
+        setPythonLevel={setPythonLevel}
+        setJavascriptLevel={setJavascriptLevel}
+      />
     </>
   );
 };
-export default Profile;
+export default AnotherProfile;

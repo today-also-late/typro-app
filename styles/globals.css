@@ -97,7 +97,7 @@ h1 {
 }
 
 .background-image {
-  background-image: url("../src/assets/images/background-image.png");
+  background-image: url("../public/images/background-image.png");
   background-color: rgba(255, 255, 255, 0.95);
   background-blend-mode: lighten;
   background-size: cover;

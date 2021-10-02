@@ -1,7 +1,6 @@
 import router from "next/router";
 import Router from "next/router";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { Progress } from "../../components/atoms";
 import { db } from "../../firebase/firebase";
 

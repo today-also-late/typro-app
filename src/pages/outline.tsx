@@ -1,6 +1,6 @@
 import React from "react";
 
-const outline = () => {
+const Outline = () => {
   return (
     <div className="text-center pt-24">
       <div className="bg-gray-100 mx-32 p-12">
@@ -19,4 +19,4 @@ const outline = () => {
   );
 };
 
-export default outline;
+export default Outline;

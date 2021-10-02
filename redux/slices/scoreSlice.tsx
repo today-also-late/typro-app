@@ -1,7 +1,6 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { auth, FirebaseTimestamp, db, fb } from "../../src/firebase/firebase";
-import { rankingdata } from "../../src/pages/ranking";
+import { FirebaseTimestamp, db } from "../../src/firebase/firebase";
 
 export type scoreState = {
   score: {
