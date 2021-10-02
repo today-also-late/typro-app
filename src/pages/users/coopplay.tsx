@@ -107,14 +107,15 @@ const CoopPlay = () => {
       if (code.match(/'/)) {
         code = code.replace(/'/g, '"');
       }
-      if (code === question) {
+      const noIndentQuestion = question.trim();
+      if (code === noIndentQuestion) {
         audioSuccess?.play();
 
         if (Number(count) === 1) {
           dispatch(
             addAnswersToRoom({
               roomId: roomId,
-              code: code,
+              code: question,
               count: Number(count),
               isSrc: "src",
             })
@@ -124,7 +125,7 @@ const CoopPlay = () => {
           dispatch(
             addAnswersToRoom({
               roomId: roomId,
-              code: code,
+              code: question,
               count: Number(count),
               isSrc: "src",
             })
@@ -248,9 +249,9 @@ const CoopPlay = () => {
           {answers[Number(count)]["src"].length > 0 &&
             answers[Number(count)]["src"].map(
               (answer: string, index: number) => (
-                <div className="ml-6" key={index}>
+                <pre className="ml-6" key={index}>
                   {index + 1} : {answer}
-                </div>
+                </pre>
               )
             )}
         </div>
@@ -261,28 +262,10 @@ const CoopPlay = () => {
             {question}
           </h1>
           <div className="flex justify-center items-center">
-            {isMyTurn ? (
-              <div className="w-full">
-                <TextInput
-                  fullWidth={true}
-                  autoFocus={true}
-                  margin="dense"
-                  multiline={false}
-                  required={true}
-                  rows={1}
-                  value={code}
-                  type={"text"}
-                  variant={"outlined"}
-                  onChange={InputCode}
-                  onKeyDown={(e) => Judge(e, code)}
-                />
-                <div className="text-center text-red-500">
-                  あなたが入力する番です
-                </div>
-              </div>
-            ) : (
-              <div className="w-full">
-                <div className="bg-gray-100">
+            <div className="w-1/6" />
+            <div className="w-2/3">
+              {isMyTurn ? (
+                <div className="w-full">
                   <TextInput
                     fullWidth={true}
                     autoFocus={true}
@@ -290,16 +273,38 @@ const CoopPlay = () => {
                     multiline={false}
                     required={true}
                     rows={1}
-                    value={anothorCode}
+                    value={code}
                     type={"text"}
                     variant={"outlined"}
+                    onChange={InputCode}
+                    onKeyDown={(e) => Judge(e, code)}
                   />
+                  <div className="text-center text-red-500">
+                    あなたが入力する番です
+                  </div>
                 </div>
-                <div className="text-center text-red-500">
-                  相手が入力する番です
+              ) : (
+                <div className="w-full">
+                  <div className="bg-gray-100">
+                    <TextInput
+                      fullWidth={true}
+                      autoFocus={true}
+                      margin="dense"
+                      multiline={false}
+                      required={true}
+                      rows={1}
+                      value={anothorCode}
+                      type={"text"}
+                      variant={"outlined"}
+                    />
+                  </div>
+                  <div className="text-center text-red-500">
+                    相手が入力する番です
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+            <div className="w-1/6" />
           </div>
           {isMyTurn && (
             <div className="flex justify-center">
