@@ -33,13 +33,16 @@ const Play = () => {
   const [alertText, setAlertText] = useState("");
   const [missCount, setMissCount] = useState(0);
 
-  const [audioKeybord, setAudioKeybord] =
-    useState<HTMLAudioElement | null>(null);
-  const [audioDisplayQ, setAudioDisplayQ] =
-    useState<HTMLAudioElement | null>(null);
+  const [audioKeybord, setAudioKeybord] = useState<HTMLAudioElement | null>(
+    null
+  );
+  const [audioDisplayQ, setAudioDisplayQ] = useState<HTMLAudioElement | null>(
+    null
+  );
   const [audioMiss, setAudioMiss] = useState<HTMLAudioElement | null>(null);
-  const [audioSuccess, setAudioSuccess] =
-    useState<HTMLAudioElement | null>(null);
+  const [audioSuccess, setAudioSuccess] = useState<HTMLAudioElement | null>(
+    null
+  );
 
   const settingAudio = () => {
     setAudioKeybord(new Audio(Keybord));
@@ -59,20 +62,6 @@ const Play = () => {
     },
     [setCode]
   );
-
-  const DeleateIndent = (question: String) => {
-    let noIndentQuestion = "";
-    let indent = true;
-    for (let i = 0; i < question.length; i++) {
-      if (question[i] === " " && indent) {
-        continue;
-      } else if (indent) {
-        indent = false;
-      }
-      noIndentQuestion += question[i];
-    }
-    return noIndentQuestion;
-  };
 
   const displayNextQuestion = (nextQuestionId: number) => {
     if (nextQuestionId > Object.keys(questions[Number(count)]["src"]).length) {
@@ -101,7 +90,7 @@ const Play = () => {
       if (code.match(/'/)) {
         code = code.replace(/'/g, '"');
       }
-      const noIndentQuestion = DeleateIndent(question);
+      const noIndentQuestion = question.trim();
       if (code === noIndentQuestion) {
         audioSuccess?.play();
 
@@ -114,6 +103,7 @@ const Play = () => {
         setAlertText("正解です。");
         let nextQuestionId = currentId + 1; // srcの次の問題
         displayNextQuestion(nextQuestionId);
+        console.log(answers);
       } else {
         audioMiss?.play();
 
@@ -165,9 +155,9 @@ const Play = () => {
           {answers[Number(count)]["src"].length > 0 &&
             answers[Number(count)]["src"].map(
               (answer: string, index: number) => (
-                <div className="ml-6" key={index}>
+                <pre className="" key={index}>
                   {index + 1} : {answer}
-                </div>
+                </pre>
               )
             )}
         </div>

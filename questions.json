@@ -71,17 +71,6 @@
       },
       "3": {
         "src": {
-          "1": "a=[1,7,4,9,12,19]",
-          "2": "print(a[1])"
-        },
-        "output": {
-          "1": "7"
-        },
-        "timelimit": 60,
-        "reward": 13
-      },
-      "4": {
-        "src": {
           "1": "a,b=11,0",
           "2": "for i in range(a)",
           "3": "  b+=i",
@@ -90,8 +79,19 @@
         "output": {
           "1": "55"
         },
-        "timelimit": 30,
-        "reward": 7
+        "timelimit": 100,
+        "reward": 30
+      },
+      "4": {
+        "src": {
+          "1": "a=[1,7,4,9,12,19]",
+          "2": "print(a[1])"
+        },
+        "output": {
+          "1": "7"
+        },
+        "timelimit": 60,
+        "reward": 13
       }
     },
     "difficult": {
