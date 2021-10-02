@@ -288,7 +288,7 @@ const CoopOutput = () => {
             {answers[Number(count)]["output"].length > 0 &&
               answers[Number(count)]["output"].map(
                 (answer: string, index: number) => (
-                  <pre className="ml-6" key={index}>
+                  <pre className="ml-24" key={index}>
                     {index + 1} : {answer}
                   </pre>
                 )
@@ -301,7 +301,7 @@ const CoopOutput = () => {
             {answers[Number(count)]["src"].length > 0 &&
               answers[Number(count)]["src"].map(
                 (answer: string, index: number) => (
-                  <pre className="ml-6" key={index}>
+                  <pre className="pre" key={index}>
                     {index + 1} : {answer}
                   </pre>
                 )

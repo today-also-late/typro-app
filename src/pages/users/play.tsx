@@ -155,7 +155,7 @@ const Play = () => {
           {answers[Number(count)]["src"].length > 0 &&
             answers[Number(count)]["src"].map(
               (answer: string, index: number) => (
-                <pre className="" key={index}>
+                <pre className="pre" key={index}>
                   {index + 1} : {answer}
                 </pre>
               )
