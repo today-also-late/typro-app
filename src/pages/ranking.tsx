@@ -14,14 +14,14 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
+
 // import Image from "next/image";
 import { DropdownIcon, IconPrize } from "../components/atoms";
 import { RankingDrawer } from "../components/molecules";
 import { Menu, MenuItem } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getScore } from "../../redux/slices/scoreSlice";
-import { SettingsEthernetRounded } from "@material-ui/icons";
 
 // import First from "../../public/images/1.png";
 // import Second from "../../public/images/2.png";
@@ -277,10 +277,17 @@ const Ranking = () => {
                 .filter((data) => data.level === level)
                 .map((data: rankingdata, index: number) => (
                   <StyledTableRow key={index}>
-                    <StyledTableCell component="th" scope="row">
+                    <StyledTableCell
+                      component="th"
+                      scope="row"
+                      onClick={() => router.push("./" + data.uid)}
+                    >
                       {data.username}
                     </StyledTableCell>
-                    <StyledTableCell align="right">
+                    <StyledTableCell
+                      align="right"
+                      onClick={() => router.push("./" + data.uid)}
+                    >
                       {iconDataList ? (
                         <IconPrize
                           index={index}

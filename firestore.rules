@@ -18,11 +18,13 @@ service cloud.firestore {
       }
 
       match /python/{scoreId} {
-        allow read,write: if request.auth.uid == userId;
+        allow read;
+      allow write;
       }
 
       match /javascript/{scoreId} {
-        allow read,write: if request.auth.uid == userId;
+        allow read;
+      allow write;
       }
     }
      match /rooms/{roomId} {

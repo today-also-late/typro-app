@@ -30,7 +30,7 @@ const Profile = () => {
     if (user.image.path) {
       setImage(user.image);
     }
-  }, []);
+  }, [user.image]);
 
   useEffect(() => {
     dispatch(
@@ -39,7 +39,7 @@ const Profile = () => {
         level: pythonLevel,
       })
     );
-  }, [pythonLevel]);
+  }, [dispatch, user.uid, pythonLevel]);
 
   useEffect(() => {
     dispatch(
@@ -48,7 +48,7 @@ const Profile = () => {
         level: javascriptLevel,
       })
     );
-  }, [javascriptLevel]);
+  }, [dispatch, user.uid, javascriptLevel]);
 
   return (
     <>
