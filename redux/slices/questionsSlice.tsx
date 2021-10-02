@@ -82,7 +82,7 @@ export const updateQuestionsState = createAsyncThunk(
     const randoms: number[] = [];
 
     const min: number = 1;
-    const max: number = 3; // minからmaxまでのランダムな整数
+    const max: number = Object.keys(data[level]).length; // minからmaxまでのランダムな整数
     const length: number = 2; // 生成する配列の長さ
     /** 重複チェックしながら乱数作成 */
     for (let i: number = min; i <= length; i++) {
