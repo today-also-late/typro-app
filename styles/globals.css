@@ -109,3 +109,8 @@ h1 {
   -ms-user-select: none;
   user-select: none;
 }
+
+/* preタブに折り返しつける */
+.pre {
+  white-space: pre-wrap;
+}

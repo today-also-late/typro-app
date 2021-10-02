@@ -194,7 +194,7 @@ const Output = () => {
             {answers[Number(count)]["src"].length > 0 &&
               answers[Number(count)]["src"].map(
                 (answer: string, index: number) => (
-                  <pre className="ml-6" key={index}>
+                  <pre className="pre" key={index}>
                     {index + 1} : {answer}
                   </pre>
                 )
