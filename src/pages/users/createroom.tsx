@@ -41,7 +41,8 @@ const CreateRoom = () => {
     setLevel(event.target.value as string);
   };
 
-  const [state, setState] = useState(true);
+  const [state, setState] = useState(true); // すぐに遊ぶ: true 友だちと遊ぶ: false
+  const [disabled, setDisabled] = useState(false); // prevent mulitple times button press
 
   const handleChange = () => {
     setState(!state);
@@ -78,16 +79,19 @@ const CreateRoom = () => {
     } else if (!state && addroom.password === null) {
       alert("パスワードを入力してください");
       return false;
+    } else if (disabled) {
+      return;
     } else {
+      setDisabled(true);
       dispatch(addRoom(addroom));
     }
   };
 
   return (
     <div className="w-screen h-screen">
-      <h2 className="pt-16 text-center text-3xl font-bold">部屋を作成</h2>
+      <h2 className="pt-16 text-center text-2xl font-bold">部屋を作成</h2>
       <div className="w-1/3 container mx-auto">
-        <div className="h-8" />
+        <div className="h-16" />
         <div className="h-8 flex items-center justify-center">
           <FormControl className={classes.formControl} required={true}>
             <InputLabel id="demo-simple-select-label">language</InputLabel>
