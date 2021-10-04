@@ -15,17 +15,9 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { useRouter } from "next/router";
-// import Image from "next/image";
 import { DropdownIcon, IconPrize } from "../components/atoms";
 import { RankingDrawer } from "../components/molecules";
 import { Menu, MenuItem } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
-import { getScore } from "../../redux/slices/scoreSlice";
-import { SettingsEthernetRounded } from "@material-ui/icons";
-
-// import First from "../../public/images/1.png";
-// import Second from "../../public/images/2.png";
-// import Third from "../../public/images/3.png";
 
 export type rankingdata = {
   uid: string;
@@ -82,9 +74,6 @@ const useStyles = makeStyles({
 const Ranking = () => {
   const classes = useStyles();
   const router = useRouter();
-  const dispatch = useDispatch();
-
-  const scores = useSelector(getScore).score;
 
   const [openLangDrawer, setOpenLangDrawer] = useState<null | HTMLElement>(
     null
@@ -136,55 +125,58 @@ const Ranking = () => {
   };
 
   useEffect(() => {
-    const fetchRankingData = async () => {
-      await db
-        .collection("ranking")
-        .orderBy("score", "desc")
-        .where("language", "==", language)
-        .limit(30)
-        .get()
-        .then(async (snapshots) => {
-          const scoreList: Array<rankingdata> = [];
-          snapshots.forEach(async (snapshot) => {
-            let dateData = snapshot.data().created_at.toDate();
-            dateData =
-              dateData.getFullYear() +
-              "/" +
-              (Number(dateData.getMonth()) + 1).toString() +
-              "/" +
-              dateData.getDate();
-            const scoreData = snapshot.data().score;
-            const username = snapshot.data().username;
-            const language = snapshot.data().language;
-            const level = snapshot.data().level;
-            const uid = snapshot.data().uid;
-            // const response = await db.collection("users").doc(uid).get();
-            // const data: any = response.data();
+    if (language) {
+      const fetchRankingData = async () => {
+        await db
+          .collection("ranking")
+          .orderBy("score", "desc")
+          .where("language", "==", language)
+          .limit(30)
+          .get()
+          .then(async (snapshots) => {
+            const scoreList: Array<rankingdata> = [];
+            snapshots.forEach(async (snapshot) => {
+              let dateData = snapshot.data().created_at.toDate();
+              dateData =
+                dateData.getFullYear() +
+                "/" +
+                (Number(dateData.getMonth()) + 1).toString() +
+                "/" +
+                dateData.getDate();
+              const scoreData = snapshot.data().score;
+              const username = snapshot.data().username;
+              const language = snapshot.data().language;
+              const level = snapshot.data().level;
+              const uid = snapshot.data().uid;
+              // const response = await db.collection("users").doc(uid).get();
+              // const data: any = response.data();
 
-            scoreList.push({
-              uid: uid,
-              date: dateData,
-              language: language,
-              level: level,
-              score: scoreData,
-              username: username,
-              image: {
-                id: "",
-                path: "",
-              },
+              scoreList.push({
+                uid: uid,
+                date: dateData,
+                language: language,
+                level: level,
+                score: scoreData,
+                username: username,
+                image: {
+                  id: "",
+                  path: "",
+                },
+              });
             });
+            setIconDataList(null); // 一度nullにしないとPython->Javascript->PythonのときにscoreListに値が反映される前に描画されるためエラーが出る
+            setRankingDataList(scoreList);
+          })
+          .catch((e: any) => {
+            console.log(e);
+          })
+          .catch((e: any) => {
+            console.log(e);
           });
-          setIconDataList(null); // 一度nullにしないとPython->Javascript->PythonのときにscoreListに値が反映される前に描画されるためエラーが出る
-          setRankingDataList(scoreList);
-        })
-        .catch((e: any) => {
-          console.log(e);
-        })
-        .catch((e: any) => {
-          console.log(e);
-        });
-    };
-    fetchRankingData();
+      };
+
+      fetchRankingData();
+    }
   }, [language]);
 
   useEffect(() => {
@@ -223,7 +215,7 @@ const Ranking = () => {
         }
       });
     }
-  }, [iconDataList]);
+  }, [iconDataList, rankingDataList]);
 
   return (
     <div className="w-full h-full">
@@ -277,10 +269,17 @@ const Ranking = () => {
                 .filter((data) => data.level === level)
                 .map((data: rankingdata, index: number) => (
                   <StyledTableRow key={index}>
-                    <StyledTableCell component="th" scope="row">
+                    <StyledTableCell
+                      component="th"
+                      scope="row"
+                      onClick={() => router.push("./" + data.uid)}
+                    >
                       {data.username}
                     </StyledTableCell>
-                    <StyledTableCell align="right">
+                    <StyledTableCell
+                      align="right"
+                      onClick={() => router.push("./" + data.uid)}
+                    >
                       {iconDataList ? (
                         <IconPrize
                           index={index}

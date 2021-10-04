@@ -1,32 +1,30 @@
 import { useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TextInput, TimeUpCountDown } from "../../components/atoms";
+import { TextInput, TimeUpCountDown } from "../../../components/atoms";
 
 import { useEffect } from "react";
 import {
   fetchAnswersFromRoom,
   getAnswers,
-} from "../../../redux/slices/answersSlice";
-import {
-  fetchQuestonsFromRoom,
-  getQuestions,
-  updateQuestionsState,
-} from "../../../redux/slices/questionsSlice";
+} from "../../../../redux/slices/answersSlice";
+import { getQuestions } from "../../../../redux/slices/questionsSlice";
 import Router, { createRouter, useRouter } from "next/router";
-import Keybord from "../../../public/audios/keybord.mp3";
-import DisplayQ from "../../../public/audios/displayquestion1.mp3";
-import Miss from "../../../public/audios/miss.mp3";
-import Success from "../../../public/audios/success.mp3";
-import { getUser } from "../../../redux/slices/userSlice";
+import Keybord from "../../../../public/audios/keybord.mp3";
+import DisplayQ from "../../../../public/audios/displayquestion1.mp3";
+import Miss from "../../../../public/audios/miss.mp3";
+import Success from "../../../../public/audios/success.mp3";
+import { getUser } from "../../../../redux/slices/userSlice";
 import {
   addAnswersToRoom,
   addMissAnswersToRoom,
   changeCode,
   changeTurn,
-} from "../../../redux/slices/roomsSlice";
-import { db } from "../../firebase/firebase";
-import Stamp from "../../components/organisms/Stamp";
+  deleteRoom,
+} from "../../../../redux/slices/roomsSlice";
+import { db } from "../../../firebase/firebase";
+import Stamp from "../../../components/organisms/Stamp";
+import { Button } from "@material-ui/core";
 
 const CoopPlay = () => {
   const dispatch = useDispatch();
@@ -61,6 +59,13 @@ const CoopPlay = () => {
     null
   );
 
+  const settingAudio = () => {
+    setAudioKeybord(new Audio(Keybord));
+    setAudioDisplayQ(new Audio(DisplayQ));
+    setAudioMiss(new Audio(Miss));
+    setAudioSuccess(new Audio(Success));
+  };
+
   const InputCode = useCallback(
     (event) => {
       setAlertText("");
@@ -70,81 +75,8 @@ const CoopPlay = () => {
       setCode(event.target.value);
       dispatch(changeCode({ roomId: roomId, code: event.target.value }));
     },
-    [setCode]
+    [dispatch, roomId, setCode]
   );
-
-  const settingAudio = () => {
-    setAudioKeybord(new Audio(Keybord));
-    setAudioDisplayQ(new Audio(DisplayQ));
-    setAudioMiss(new Audio(Miss));
-    setAudioSuccess(new Audio(Success));
-  };
-
-  useEffect(() => {
-    settingAudio();
-
-    if (Number(count) === 1) {
-      displayNextQuestion(currentId); // 最初の問題を表示
-      performance.mark("question:start");
-      performance.mark("question1src:start");
-    }
-
-    if (Number(count) === 2) {
-      displayNextQuestion(currentId); // 最初の問題を表示
-      performance.mark("question2src:start");
-    }
-
-    window.addEventListener("beforeunload", onUnload);
-
-    return () => {
-      // イベントの設定解除
-      window.removeEventListener("beforeunload", onUnload);
-    };
-  }, []);
-
-  useEffect(() => {
-    const unsubscribeRoom = db
-      .collection("rooms")
-      .doc(roomId)
-      .onSnapshot((snapshot) => {
-        const data: any = snapshot.data();
-
-        if (data.answers.miss.length > answers.miss.length) {
-          dispatch(fetchAnswersFromRoom(roomId));
-          // dbのroomからstoreのanswerに反映させる
-        }
-
-        if (data.nextQuestionId > currentId) {
-          displayNextQuestion(data.nextQuestionId);
-        }
-
-        if (data.nextTurn == "creator") {
-          // creatorが入力する番で
-          setTurn("creator");
-          if (data.creator == user.uid) {
-            // 自分がcreatorならば
-            setIsMyTurn(true);
-          }
-        }
-        if (data.nextTurn == "participant") {
-          // participantが入力する番で
-          setTurn("participant");
-          if (data.participant == user.uid) {
-            // 自分がparticipantならば
-            setIsMyTurn(true);
-          }
-        }
-
-        setAnothorCode(data.code); // 相手が入力しているコード
-      });
-
-    return () => unsubscribeRoom();
-  }, []);
-
-  const onUnload = (e: any) => {
-    e.preventDefault();
-    e.returnValue = "";
-  };
 
   const displayNextQuestion = (nextQuestionId: number) => {
     if (nextQuestionId > Object.keys(questions[Number(count)]["src"]).length) {
@@ -155,7 +87,7 @@ const CoopPlay = () => {
         performance.mark("question2src:end");
       }
       Router.push({
-        pathname: "/users/coopoutput",
+        pathname: "/users/coop/coopoutput",
         query: {
           language: language,
           level: level,
@@ -173,14 +105,15 @@ const CoopPlay = () => {
       if (code.match(/'/)) {
         code = code.replace(/'/g, '"');
       }
-      if (code === question) {
+      const noIndentQuestion = question.trim();
+      if (code === noIndentQuestion) {
         audioSuccess?.play();
 
         if (Number(count) === 1) {
           dispatch(
             addAnswersToRoom({
               roomId: roomId,
-              code: code,
+              code: question,
               count: Number(count),
               isSrc: "src",
             })
@@ -190,7 +123,7 @@ const CoopPlay = () => {
           dispatch(
             addAnswersToRoom({
               roomId: roomId,
-              code: code,
+              code: question,
               count: Number(count),
               isSrc: "src",
             })
@@ -237,6 +170,79 @@ const CoopPlay = () => {
     }
   };
 
+  useEffect(() => {
+    settingAudio();
+
+    displayNextQuestion(currentId); // 最初の問題を表示
+
+    if (Number(count) === 1) {
+      performance.mark("question:start");
+      performance.mark("question1src:start");
+    }
+
+    if (Number(count) === 2) {
+      performance.mark("question2src:start");
+    }
+
+    window.addEventListener("beforeunload", onUnload);
+
+    return () => {
+      // イベントの設定解除
+      window.removeEventListener("beforeunload", onUnload);
+    };
+  }, []);
+
+  useEffect(() => {
+    const unsubscribeRoom = db
+      .collection("rooms")
+      .doc(roomId)
+      .onSnapshot((snapshot) => {
+        const data: any = snapshot.data();
+
+        if (data.answers.miss.length > answers.miss.length) {
+          dispatch(fetchAnswersFromRoom(roomId));
+          // dbのroomからstoreのanswerに反映させる
+        }
+
+        if (data.nextQuestionId > currentId) {
+          displayNextQuestion(data.nextQuestionId);
+        }
+
+        if (data.nextTurn == "creator") {
+          // creatorが入力する番で
+          setTurn("creator");
+          if (data.creator == user.uid) {
+            // 自分がcreatorならば
+            setIsMyTurn(true);
+          }
+        }
+        if (data.nextTurn == "participant") {
+          // participantが入力する番で
+          setTurn("participant");
+          if (data.participant == user.uid) {
+            // 自分がparticipantならば
+            setIsMyTurn(true);
+          }
+        }
+        if (data.isExit) {
+          if (data.isExit !== user.uid) {
+            alert("協力相手が退出しました");
+            dispatch(deleteRoom(roomId));
+            setTimeout(() => Router.push("/"), 1000);
+          }
+        }
+
+        setAnothorCode(data.code); // 相手が入力しているコード
+      });
+
+    return () => unsubscribeRoom();
+  }, []);
+
+  const onUnload = (e: any) => {
+    e.preventDefault();
+    e.returnValue = "";
+  };
+
   return (
     <body className="w-full h-screen">
       <div className="h-1/3 pt-24 flex justify-center">
@@ -248,9 +254,9 @@ const CoopPlay = () => {
           {answers[Number(count)]["src"].length > 0 &&
             answers[Number(count)]["src"].map(
               (answer: string, index: number) => (
-                <div className="ml-6" key={index}>
+                <pre className="pre" key={index}>
                   {index + 1} : {answer}
-                </div>
+                </pre>
               )
             )}
         </div>
@@ -261,28 +267,10 @@ const CoopPlay = () => {
             {question}
           </h1>
           <div className="flex justify-center items-center">
-            {isMyTurn ? (
-              <div className="w-full">
-                <TextInput
-                  fullWidth={true}
-                  autoFocus={true}
-                  margin="dense"
-                  multiline={false}
-                  required={true}
-                  rows={1}
-                  value={code}
-                  type={"text"}
-                  variant={"outlined"}
-                  onChange={InputCode}
-                  onKeyDown={(e) => Judge(e, code)}
-                />
-                <div className="text-center text-red-500">
-                  あなたが入力する番です
-                </div>
-              </div>
-            ) : (
-              <div className="w-full">
-                <div className="bg-gray-100">
+            <div className="w-1/6" />
+            <div className="w-2/3">
+              {isMyTurn ? (
+                <div className="w-full">
                   <TextInput
                     fullWidth={true}
                     autoFocus={true}
@@ -290,16 +278,38 @@ const CoopPlay = () => {
                     multiline={false}
                     required={true}
                     rows={1}
-                    value={anothorCode}
+                    value={code}
                     type={"text"}
                     variant={"outlined"}
+                    onChange={InputCode}
+                    onKeyDown={(e) => Judge(e, code)}
                   />
+                  <div className="text-center text-red-500">
+                    あなたが入力する番です
+                  </div>
                 </div>
-                <div className="text-center text-red-500">
-                  相手が入力する番です
+              ) : (
+                <div className="w-full">
+                  <div className="bg-gray-100">
+                    <TextInput
+                      fullWidth={true}
+                      autoFocus={true}
+                      margin="dense"
+                      multiline={false}
+                      required={true}
+                      rows={1}
+                      value={anothorCode}
+                      type={"text"}
+                      variant={"outlined"}
+                    />
+                  </div>
+                  <div className="text-center text-red-500">
+                    相手が入力する番です
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+            <div className="w-1/6" />
           </div>
           {isMyTurn && (
             <div className="flex justify-center">

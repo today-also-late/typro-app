@@ -1,12 +1,19 @@
-import router from "next/router";
+import router, { useRouter } from "next/router";
 import Router from "next/router";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Progress } from "../../components/atoms";
-import { db } from "../../firebase/firebase";
+import { deleteRoom } from "../../../../redux/slices/roomsSlice";
+import { PrimaryButton, Progress } from "../../../components/atoms";
+import { db } from "../../../firebase/firebase";
 
 const WaitingRoom = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const roomId: any = router.query["roomId"];
+  const cancel = () => {
+    dispatch(deleteRoom(roomId));
+    router.push("/");
+  };
 
   useEffect(() => {
     const unsubscribeRoom = db
@@ -16,7 +23,7 @@ const WaitingRoom = () => {
         const data: any = snapshot.data();
         if (data.participant) {
           Router.push({
-            pathname: "/users/countdown",
+            pathname: "/users/coop/countdown",
             query: {
               language: data.language,
               level: data.level,
@@ -52,6 +59,9 @@ const WaitingRoom = () => {
       </div>
       <div className="h-2/6 flex items-center justify-center">
         <Progress size={80} />
+      </div>
+      <div className="h-2/6 flex items-center justify-center">
+        <PrimaryButton label={"キャンセル"} onClick={() => cancel()} />
       </div>
     </div>
   );

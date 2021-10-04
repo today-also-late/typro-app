@@ -11,7 +11,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { CommonInput, PrimaryButton } from "../../components/atoms";
 import { useDispatch, useSelector } from "react-redux";
 import { addroom, addRoom } from "../../../redux/slices/roomsSlice";
-import userSlice, { getUser } from "../../../redux/slices/userSlice";
+import { getUser } from "../../../redux/slices/userSlice";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -85,7 +85,7 @@ const CreateRoom = () => {
 
   return (
     <div className="w-screen h-screen">
-      <h2 className="text-center text-4xl pt-16">部屋を作成</h2>
+      <h2 className="pt-16 text-center text-3xl font-bold">部屋を作成</h2>
       <div className="w-1/3 container mx-auto">
         <div className="h-8" />
         <div className="h-8 flex items-center justify-center">
