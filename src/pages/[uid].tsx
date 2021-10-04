@@ -58,11 +58,14 @@ const AnotherProfile = () => {
                 path: data.image.path,
               },
             });
+          })
+          .catch((e) => {
+            router.push("/");
           });
       };
       fetchUserByUid();
     }
-  }, [uid]);
+  }, [uid, router]);
 
   useEffect(() => {
     if (user.uid) {
