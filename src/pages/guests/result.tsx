@@ -78,8 +78,8 @@ const Result = () => {
   };
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="text-center pt-10">
+    <div className="w-full h-screen flex items-center justify-center">
+      <div className="text-center ">
         <p className="text-5xl underline">Result</p>
         <div className="h-8" />
         <div className="text-3xl">
@@ -102,53 +102,61 @@ const Result = () => {
         </div>
         <div className="mt-10"></div>
         <div className="border-solid border-2 border-gray-400 mt-10">
-          <div className="border-b-2 border-gray-400 px-28 mx-10 text-2xl mt-3 mb-2">
-            1問目
+          <div className="w-1/3">
+            <div className="text-xl mt-3 mb-2">1問目</div>
+            <div className="border-b-2 border-gray-400 mx-2"></div>
           </div>
           {answers[1]["src"].length > 0 &&
             answers[1]["src"].map((src: string, index: number) => (
-              <div className="" key={index}>
-                {/* {"code" + (index + 1)} */}
-                <div>{src}</div>
+              <div className="w-full flex" key={index}>
+                <div className="w-1/3" />
+                <pre className="w-2/3 pre text-left mx-2">{src}</pre>
               </div>
             ))}
+
+          <div className="w-1/3">
+            <div className="text-xl mt-3 mb-2">出力</div>
+            <div className="border-b-2 border-gray-400 mx-2"></div>
+          </div>
           {answers[1]["output"].length > 0 &&
             answers[1]["output"].map((output: string, index: number) => (
-              <div className="mt-4 mb-3" key={index}>
-                <div className="text-2xl border-b-2 border-gray-400 px-28 mx-10">
-                  {"出力"}
-                </div>
-                <div>{output}</div>
+              <div className="w-full flex mt-3 mb-3 " key={index}>
+                <div className="w-1/3" />
+                <pre className="w-2/3 pre text-left mx-2">{output}</pre>
               </div>
             ))}
         </div>
 
-        <div className="order-solid border-2 border-gray-400 mt-10">
-          <div className="border-b-2 border-gray-400 px-28 mx-10 text-2xl mt-3 mb-2">
-            2問目
+        <div className="border-solid border-2 border-gray-400 mt-10">
+          <div className="w-1/3">
+            <div className="text-xl mt-3 mb-2">2問目</div>
+            <div className="border-b-2 border-gray-400 mx-2"></div>
           </div>
           {answers[2]["src"].length > 0 &&
             answers[2]["src"].map((src: string, index: number) => (
-              <div className="" key={index}>
-                {src}
+              <div className="w-full flex" key={index}>
+                <div className="w-1/3" />
+                <pre className="w-2/3 pre text-left mx-2">{src}</pre>
               </div>
             ))}
+
+          <div className="w-1/3">
+            <div className="text-xl mt-3 mb-2">出力</div>
+            <div className="border-b-2 border-gray-400 mx-2"></div>
+          </div>
           {answers[2]["output"].length > 0 &&
             answers[2]["output"].map((output: string, index: number) => (
-              <div className="mt-4 mb-3" key={index}>
-                <div className="text-2xl border-b-2 border-gray-400 px-28 mx-10">
-                  {"出力"}
-                </div>
-                {output}
+              <div className="w-full flex mt-3 mb-3 " key={index}>
+                <div className="w-1/3" />
+                <pre className="w-2/3 pre text-left mx-2">{output}</pre>
               </div>
             ))}
         </div>
-        <div className="mt-8">
-          <PrimaryButton
-            label={"アカウントを作成する"}
-            onClick={() => Router.push("/signup")}
-          />
-        </div>
+        <div className="mt-10"></div>
+        <PrimaryButton
+          label={"アカウントを作成する"}
+          onClick={() => Router.push("/signup")}
+        />
       </div>
     </div>
   );
