@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import ReactDOM from "react-dom";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import Router, { useRouter } from "next/router";
 import router from "next/router";
@@ -7,9 +6,9 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
   emptyQuestions,
-  updateQuestionsState,
-} from "../../../redux/slices/questionsSlice";
-import { emptyAnswers } from "../../../redux/slices/answersSlice";
+  fetchQuestonsFromRoom,
+} from "../../../../redux/slices/questionsSlice";
+import { emptyAnswers } from "../../../../redux/slices/answersSlice";
 
 const renderTime = ({ remainingTime }: any) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -23,6 +22,7 @@ const renderTime = ({ remainingTime }: any) => {
 
   const language: string | string[] | undefined = router.query["language"];
   const level: string | string[] | undefined = router.query["level"];
+  const roomId: string | string[] | undefined = router.query["roomId"];
 
   if (currentTime.current !== remainingTime) {
     isNewTimeFirstTick.current = true;
@@ -34,11 +34,12 @@ const renderTime = ({ remainingTime }: any) => {
 
   if (remainingTime === 0) {
     Router.push({
-      pathname: "/users/play",
+      pathname: "/users/coop/coopplay",
       query: {
         language: language,
         level: level,
         count: 1,
+        roomId: roomId,
       },
     });
   }
@@ -67,14 +68,16 @@ const CountDown = () => {
 
   const language: string | string[] | undefined = router.query["language"];
   const level: string | string[] | undefined = router.query["level"];
+  const roomId: any = router.query["roomId"];
 
   const selected: any = { language: language, level: level };
 
   useEffect(() => {
     dispatch(emptyAnswers()); // 問題が開始する前に前回の回答を消す
     dispatch(emptyQuestions());
-    // ソロプレイのときにdbからstateにquestionを反映させる
-    dispatch(updateQuestionsState(selected)); // dbからquestionをとってくる
+
+    // 協力プレイのときにdbからstateにquestionを反映させる(participantだけ)
+    dispatch(fetchQuestonsFromRoom(roomId));
   }, []);
 
   return (

@@ -9,18 +9,20 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import router from "next/router";
 import { db } from "../../firebase/firebase";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../../redux/slices/userSlice";
 import { CommonInput } from "../atoms";
 import Image from "next/image";
+import AlertDialog from "../molecules/ AlertDialog";
+import { exitRoom } from "../../../redux/slices/roomsSlice";
 
 const Stamp = () => {
+  const dispatch = useDispatch();
   const user = useSelector(getUser).user;
   const roomId: any = router.query["roomId"];
   const [creatorChat, setCreatorChat] = useState<null | string>(null);
   const [participantChat, setParticipantChat] = useState<null | string>(null);
   const [isCreator, setIsCreator] = useState(false);
-  const [isParticipant, setIsParticipant] = useState(false);
   const [creatorName, setCreatorName] = useState("");
   const [participantName, setParticipantName] = useState("");
   const [creatorImage, setCreatorImage] = useState("");
@@ -130,8 +132,8 @@ const Stamp = () => {
   const gifSorce = [fight, nicePlay, osii, genius];
 
   return (
-    <div className="w-full">
-      <div className="flex pt-12">
+    <div className="w-full h-96">
+      <div className="h-5/6 flex pt-12">
         <div className="w-1/3 text-center">
           <p className="">{creatorName}</p>
           <div className="flex items-center justify-center">
@@ -256,6 +258,13 @@ const Stamp = () => {
             )}
           </div>
         </div>
+      </div>
+      <div className="h-1/6 flex items-center justify-center">
+        <AlertDialog
+          label="退出"
+          title="本当に退出しますか？"
+          onClick={() => dispatch(exitRoom({ roomId: roomId, uid: user.uid }))}
+        />
       </div>
     </div>
   );

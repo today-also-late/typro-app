@@ -5,22 +5,14 @@ import { getUser } from "../../redux/slices/userSlice";
 import styles from "../../styles/Home.module.css";
 import { PlayButton } from "../components/atoms";
 import ITyped from "../firebase/ityped";
-import { emptyAnswers } from "../../redux/slices/answersSlice";
 import Router from "next/router";
-import { emptyQuestions } from "../../redux/slices/questionsSlice";
 
 type HOME = {
   title: string;
 };
 
 export default function Home({ title }: HOME) {
-  const dispatch = useDispatch();
   const user = useSelector(getUser).user;
-
-  useEffect(() => {
-    dispatch(emptyAnswers());
-    dispatch(emptyQuestions());
-  }, []);
 
   return (
     <div className={styles.container}>

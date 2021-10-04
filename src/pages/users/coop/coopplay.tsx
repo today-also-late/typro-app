@@ -1,32 +1,30 @@
 import { useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TextInput, TimeUpCountDown } from "../../components/atoms";
+import { TextInput, TimeUpCountDown } from "../../../components/atoms";
 
 import { useEffect } from "react";
 import {
   fetchAnswersFromRoom,
   getAnswers,
-} from "../../../redux/slices/answersSlice";
-import {
-  fetchQuestonsFromRoom,
-  getQuestions,
-  updateQuestionsState,
-} from "../../../redux/slices/questionsSlice";
+} from "../../../../redux/slices/answersSlice";
+import { getQuestions } from "../../../../redux/slices/questionsSlice";
 import Router, { createRouter, useRouter } from "next/router";
-import Keybord from "../../../public/audios/keybord.mp3";
-import DisplayQ from "../../../public/audios/displayquestion1.mp3";
-import Miss from "../../../public/audios/miss.mp3";
-import Success from "../../../public/audios/success.mp3";
-import { getUser } from "../../../redux/slices/userSlice";
+import Keybord from "../../../../public/audios/keybord.mp3";
+import DisplayQ from "../../../../public/audios/displayquestion1.mp3";
+import Miss from "../../../../public/audios/miss.mp3";
+import Success from "../../../../public/audios/success.mp3";
+import { getUser } from "../../../../redux/slices/userSlice";
 import {
   addAnswersToRoom,
   addMissAnswersToRoom,
   changeCode,
   changeTurn,
-} from "../../../redux/slices/roomsSlice";
-import { db } from "../../firebase/firebase";
-import Stamp from "../../components/organisms/Stamp";
+  deleteRoom,
+} from "../../../../redux/slices/roomsSlice";
+import { db } from "../../../firebase/firebase";
+import Stamp from "../../../components/organisms/Stamp";
+import { Button } from "@material-ui/core";
 
 const CoopPlay = () => {
   const dispatch = useDispatch();
@@ -77,7 +75,7 @@ const CoopPlay = () => {
       setCode(event.target.value);
       dispatch(changeCode({ roomId: roomId, code: event.target.value }));
     },
-    [setCode]
+    [dispatch, roomId, setCode]
   );
 
   const displayNextQuestion = (nextQuestionId: number) => {
@@ -89,7 +87,7 @@ const CoopPlay = () => {
         performance.mark("question2src:end");
       }
       Router.push({
-        pathname: "/users/coopoutput",
+        pathname: "/users/coop/coopoutput",
         query: {
           language: language,
           level: level,
@@ -175,14 +173,14 @@ const CoopPlay = () => {
   useEffect(() => {
     settingAudio();
 
+    displayNextQuestion(currentId); // 最初の問題を表示
+
     if (Number(count) === 1) {
-      displayNextQuestion(currentId); // 最初の問題を表示
       performance.mark("question:start");
       performance.mark("question1src:start");
     }
 
     if (Number(count) === 2) {
-      displayNextQuestion(currentId); // 最初の問題を表示
       performance.mark("question2src:start");
     }
 
@@ -224,6 +222,13 @@ const CoopPlay = () => {
           if (data.participant == user.uid) {
             // 自分がparticipantならば
             setIsMyTurn(true);
+          }
+        }
+        if (data.isExit) {
+          if (data.isExit !== user.uid) {
+            alert("協力相手が退出しました");
+            dispatch(deleteRoom(roomId));
+            setTimeout(() => Router.push("/"), 1000);
           }
         }
 

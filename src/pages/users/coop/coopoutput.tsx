@@ -1,27 +1,28 @@
 import { useCallback, useMemo } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TextInput, TimeUpCountDown } from "../../components/atoms";
-import { fetchAnswersFromRoom } from "../../../redux/slices/answersSlice";
+import { TextInput, TimeUpCountDown } from "../../../components/atoms";
+import { fetchAnswersFromRoom } from "../../../../redux/slices/answersSlice";
 import { useEffect } from "react";
-import { getAnswers } from "../../../redux/slices/answersSlice";
-import { getQuestions } from "../../../redux/slices/questionsSlice";
+import { getAnswers } from "../../../../redux/slices/answersSlice";
+import { getQuestions } from "../../../../redux/slices/questionsSlice";
 import Router, { useRouter } from "next/router";
-import Keybord from "../../../public/audios/keybord.mp3";
-import DisplayQ2 from "../../../public/audios/displayquestion2.mp3";
-import Miss from "../../../public/audios/miss.mp3";
-import Success from "../../../public/audios/success.mp3";
+import Keybord from "../../../../public/audios/keybord.mp3";
+import DisplayQ2 from "../../../../public/audios/displayquestion2.mp3";
+import Miss from "../../../../public/audios/miss.mp3";
+import Success from "../../../../public/audios/success.mp3";
 import {
   addAnswersToRoom,
   addMissAnswersToRoom,
   changeCode,
   changeTurn,
+  deleteRoom,
   endRoom,
-} from "../../../redux/slices/roomsSlice";
-import { db } from "../../firebase/firebase";
-import { getUser } from "../../../redux/slices/userSlice";
-import Stamp from "../../components/organisms/Stamp";
-import ITyped from "../../firebase/ityped";
+} from "../../../../redux/slices/roomsSlice";
+import { db } from "../../../firebase/firebase";
+import { getUser } from "../../../../redux/slices/userSlice";
+import Stamp from "../../../components/organisms/Stamp";
+import ITyped from "../../../firebase/ityped";
 
 const CoopOutput = () => {
   const dispatch = useDispatch();
@@ -164,6 +165,8 @@ const CoopOutput = () => {
   useEffect(() => {
     settingAudio();
 
+    displayNextQuestion(currentId);
+
     if (Number(count) === 1) {
       performance.mark("question1output:start");
     }
@@ -171,8 +174,6 @@ const CoopOutput = () => {
     if (Number(count) === 2) {
       performance.mark("question2output:start");
     }
-
-    displayNextQuestion(currentId);
 
     // リロード,タブを閉じるときに警告(禁止はできない)
     window.addEventListener("beforeunload", onUnload);
@@ -248,7 +249,7 @@ const CoopOutput = () => {
           // 1問目の出力の回答が終わったとき
           performance.mark("question1output:end");
           Router.push({
-            pathname: "/users/coopplay",
+            pathname: "/users/coop/coopplay",
             query: {
               language: language,
               level: level,
@@ -272,6 +273,14 @@ const CoopOutput = () => {
           if (data.participant == user.uid) {
             // 自分がparticipantならば
             setIsMyTurn(true);
+          }
+        }
+
+        if (data.isExit) {
+          if (data.isExit !== user.uid) {
+            alert("協力相手が退出しました");
+            dispatch(deleteRoom(roomId));
+            setTimeout(() => Router.push("/"), 1000);
           }
         }
 
