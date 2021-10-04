@@ -118,6 +118,8 @@ const Play = () => {
 
     audioDisplayQ?.play(); // 鳴らない
 
+    displayNextQuestion(currentId); // 最初の問題を表示
+
     if (Number(count) === 1) {
       performance.mark("question:start");
       performance.mark("question1src:start");
@@ -139,10 +141,6 @@ const Play = () => {
     e.preventDefault();
     e.returnValue = "";
   };
-
-  useEffect(() => {
-    displayNextQuestion(currentId);
-  }, [questions]);
 
   return (
     <body className="w-full h-screen">

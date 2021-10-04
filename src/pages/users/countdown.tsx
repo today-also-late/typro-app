@@ -6,10 +6,10 @@ import router from "next/router";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
-  fetchQuestonsFromRoom,
-  Selected,
+  emptyQuestions,
   updateQuestionsState,
 } from "../../../redux/slices/questionsSlice";
+import { emptyAnswers } from "../../../redux/slices/answersSlice";
 
 const renderTime = ({ remainingTime }: any) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -23,7 +23,6 @@ const renderTime = ({ remainingTime }: any) => {
 
   const language: string | string[] | undefined = router.query["language"];
   const level: string | string[] | undefined = router.query["level"];
-  const roomId: string | string[] | undefined = router.query["roomId"];
 
   if (currentTime.current !== remainingTime) {
     isNewTimeFirstTick.current = true;
@@ -34,26 +33,14 @@ const renderTime = ({ remainingTime }: any) => {
   }
 
   if (remainingTime === 0) {
-    if (roomId) {
-      Router.push({
-        pathname: "/users/coopplay",
-        query: {
-          language: language,
-          level: level,
-          count: 1,
-          roomId: roomId,
-        },
-      });
-    } else {
-      Router.push({
-        pathname: "/users/play",
-        query: {
-          language: language,
-          level: level,
-          count: 1,
-        },
-      });
-    }
+    Router.push({
+      pathname: "/users/play",
+      query: {
+        language: language,
+        level: level,
+        count: 1,
+      },
+    });
   }
 
   const isTimeUp = isNewTimeFirstTick.current;
@@ -80,18 +67,14 @@ const CountDown = () => {
 
   const language: string | string[] | undefined = router.query["language"];
   const level: string | string[] | undefined = router.query["level"];
-  const roomId: any = router.query["roomId"];
 
   const selected: any = { language: language, level: level };
 
   useEffect(() => {
-    if (roomId) {
-      // 協力プレイのときにdbからstateにquestionを反映させる(participantだけ)
-      dispatch(fetchQuestonsFromRoom(roomId));
-    } else {
-      // ソロプレイのときにdbからstateにquestionを反映させる
-      dispatch(updateQuestionsState(selected)); // dbからquestionをとってくる
-    }
+    dispatch(emptyAnswers()); // 問題が開始する前に前回の回答を消す
+    dispatch(emptyQuestions());
+    // ソロプレイのときにdbからstateにquestionを反映させる
+    dispatch(updateQuestionsState(selected)); // dbからquestionをとってくる
   }, []);
 
   return (

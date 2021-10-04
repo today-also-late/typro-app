@@ -150,6 +150,8 @@ const Output = () => {
   useEffect(() => {
     settingAudio();
 
+    displayNextQuestion(currentId); // 最初の問題を表示
+
     if (Number(count) === 1) {
       performance.mark("question1output:start");
     }
@@ -157,8 +159,6 @@ const Output = () => {
     if (Number(count) === 2) {
       performance.mark("question2output:start");
     }
-
-    displayNextQuestion(currentId);
 
     // リロード,タブを閉じるときに警告(禁止はできない)
     window.addEventListener("beforeunload", onUnload);
