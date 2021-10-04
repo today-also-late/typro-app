@@ -124,18 +124,20 @@ const Play = () => {
       if (code.match(/'/)) {
         code = code.replace(/'/g, '"');
       }
-      if (code === question) {
+      const noIndentQuestion = question.trim();
+      if (code === noIndentQuestion) {
         audioSuccess?.play();
 
         if (Number(count) === 1) {
-          dispatch(addFirstSrcAnswers(code));
+          dispatch(addFirstSrcAnswers(question));
         } else if (Number(count) === 2) {
-          dispatch(addSecondSrcAnswers(code));
+          dispatch(addSecondSrcAnswers(question));
         }
         setCode("");
         setAlertText("正解です。");
         let nextQuestionId = currentId + 1; // srcの次の問題
         displayNextQuestion(nextQuestionId);
+        console.log(answers);
       } else {
         audioMiss?.play();
 
@@ -156,9 +158,9 @@ const Play = () => {
           {answers[Number(count)]["src"].length > 0 &&
             answers[Number(count)]["src"].map(
               (answer: string, index: number) => (
-                <div className="ml-6" key={index}>
+                <pre className="pre" key={index}>
                   {index + 1} : {answer}
-                </div>
+                </pre>
               )
             )}
         </div>
@@ -187,6 +189,9 @@ const Play = () => {
           </div>
           <div className="text-center text-red-500">{alertText}</div>
           <div className="text-center text-red-500">{"miss:" + missCount}</div>
+          <div className="mt-10  mx-24  p-2 rounded-full bg-blue-200 shadow-md">
+            問題文と同じコードを入力してね！
+          </div>
         </div>
       </div>
     </body>
