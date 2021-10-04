@@ -150,6 +150,29 @@ export type addroom = {
   nextTurn: string;
 };
 
+type ExitRoom = {
+  roomId: string;
+  uid: string;
+};
+
+export const exitRoom = createAsyncThunk(
+  "rooms/exitRoom",
+  async (exitroom: ExitRoom) => {
+    const { roomId, uid } = exitroom;
+
+    await db
+      .collection("rooms")
+      .doc(roomId)
+      .set({ isExit: uid }, { merge: true })
+      .then(() => {
+        console.log("退出");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
+);
+
 export const deleteRoom = createAsyncThunk(
   "rooms/deleteRoom",
   async (roomId: string) => {
@@ -274,7 +297,7 @@ export const enterRoom = createAsyncThunk(
     await roomRef.get().then((snapshot) => {
       const data: any = snapshot.data();
       Router.push({
-        pathname: "/users/countdown",
+        pathname: "/users/coop/countdown",
         query: {
           language: data.language,
           level: data.level,
@@ -340,7 +363,7 @@ export const addRoom = createAsyncThunk(
     };
     await roomRef.set(roomData).then(() => {
       Router.push({
-        pathname: "/users/waitingroom",
+        pathname: "/users/coop/waitingroom",
         query: {
           roomId: roomRef.id,
         },
@@ -405,6 +428,9 @@ const roomsSlice = createSlice({
     });
     builder.addCase(addAnswersToRoom.rejected, (state, action: any) => {
       console.log(action.error);
+    });
+    builder.addCase(exitRoom.fulfilled, (state, action: any) => {
+      Router.push("/");
     });
   },
 });
