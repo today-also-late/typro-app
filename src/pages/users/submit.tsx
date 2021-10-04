@@ -79,7 +79,7 @@ const Submit = () => {
   return (
     <div className="w-full h-full flex items-center justify-center">
       <div className="pt-12 w-1/2 ">
-        <div className="text-center text-3xl font-bold">問題が投稿できます</div>
+        <div className="text-center text-2xl font-bold">問題が投稿できます</div>
         <div className="mt-8">
           <CommonInput
             fullWidth={true}

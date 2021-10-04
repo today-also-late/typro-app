@@ -6,10 +6,12 @@ import router from "next/router";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
+  emptyQuestions,
   fetchQuestonsFromRoom,
   Selected,
   updateQuestionsState,
 } from "../../../redux/slices/questionsSlice";
+import { emptyAnswers } from "../../../redux/slices/answersSlice";
 
 const renderTime = ({ remainingTime }: any) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -65,6 +67,8 @@ const CountDown = () => {
   const selected: any = { language: "python", level: "easy" };
 
   useEffect(() => {
+    dispatch(emptyAnswers()); // 問題が開始する前に前回の回答を消す
+    dispatch(emptyQuestions());
     // ソロプレイのときにdbからstateにquestionを反映させる
     dispatch(updateQuestionsState(selected)); // dbからquestionをとってくる
   }, []);

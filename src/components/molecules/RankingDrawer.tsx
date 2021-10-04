@@ -1,12 +1,13 @@
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useState } from "react";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 
 const RankingDrawer = (props: any) => {
+  const router = useRouter();
   const selectMenu = (id: string) => {
-    Router.push({
-      pathname: "ranking",
+    router.push({
+      pathname: "/ranking",
       query: {
         language: id,
       },
