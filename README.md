@@ -7,6 +7,9 @@ https://typro-app.vercel.app/
 
 本アプリでは 1 つのプログラムを 1 行づつ入力し、タイピング中も思考させるために出力結果まで解答します。解答後の解説で、コードを詳細まで理解することも可能です。
 
+## TERMINAL2021 準グランプリ!!
+Sky株式会社主催、学生対象アプリ開発コンテスト「TERMINAL2021」　全国の121名の学生が挑戦した中から準グランプリ獲得！！
+
 ## Environment setting
 
 ### Installation of Node.js・npm
