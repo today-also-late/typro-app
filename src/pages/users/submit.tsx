@@ -3,10 +3,12 @@ import { CommonInput, PrimaryButton } from "../../components/atoms";
 import { useCallback } from "react";
 import { useSelector } from "react-redux";
 import { getUser } from "../../../redux/slices/userSlice";
+import AlertDialog from "../../components/molecules/ AlertDialog";
 
 const Submit = () => {
   const user = useSelector(getUser).user;
 
+  const [language, setLanguage] = useState("");
   const [src, setSrc] = useState("");
   const [output, setOutput] = useState("");
 
@@ -21,6 +23,12 @@ const Submit = () => {
     return isBlank;
   };
   // (...args)は引数をいくらでも受け取れる
+  const inputLang = useCallback(
+    (event) => {
+      setLanguage(event.target.value);
+    },
+    [setLanguage]
+  );
 
   const inputSrc = useCallback(
     (event) => {
@@ -36,7 +44,7 @@ const Submit = () => {
   );
 
   const submitForm = () => {
-    const isBlank = validateRequiredInput(src, output);
+    const isBlank = validateRequiredInput(language, src, output);
 
     if (isBlank) {
       alert("入力必須欄が空白です。");
@@ -54,10 +62,13 @@ const Submit = () => {
           "email: " +
           user.email +
           "\n" +
+          "language: \n" +
+          language +
+          "\n" +
           "src: \n" +
           src +
           "\n" +
-          "output: " +
+          "output: \n" +
           output,
       };
 
@@ -83,7 +94,19 @@ const Submit = () => {
         <div className="mt-8">
           <CommonInput
             fullWidth={true}
-            label={"src(必須)"}
+            label={"プログラミング言語(必須)"}
+            multiline={true}
+            rows={1}
+            value={language}
+            type={"description"}
+            required={true}
+            onChange={inputLang}
+          />
+        </div>
+        <div className="mt-8">
+          <CommonInput
+            fullWidth={true}
+            label={"入力してもらうコード(必須)"}
             multiline={true}
             rows={20}
             value={src}
@@ -95,7 +118,7 @@ const Submit = () => {
         <div className="mt-8">
           <CommonInput
             fullWidth={true}
-            label={"output(必須)"}
+            label={"出力(必須)"}
             multiline={false}
             rows={1}
             value={output}
@@ -105,10 +128,12 @@ const Submit = () => {
           />
         </div>
         <div className="mt-8 text-center">
-          <PrimaryButton
-            label={"送信する"}
-            onClick={submitForm}
+          <AlertDialog
+            label="送信する"
+            title="本当に送信しますか？"
+            content="送信した内容は、TyPro管理者が確認してから問題に反映されます。"
             color="primary"
+            onClick={() => submitForm()}
           />
         </div>
       </div>

@@ -263,6 +263,7 @@ const Stamp = () => {
         <AlertDialog
           label="退出"
           title="本当に退出しますか？"
+          color="inherit"
           onClick={() => dispatch(exitRoom({ roomId: roomId, uid: user.uid }))}
         />
       </div>
