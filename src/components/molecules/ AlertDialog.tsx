@@ -19,28 +19,25 @@ type Props = {
     | "info"
     | "warning"
     | undefined;
+  open: boolean;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClose: React.MouseEventHandler<HTMLButtonElement>;
+  onClickOpen: React.MouseEventHandler<HTMLButtonElement>;
 };
 
 export default function AlertDialog(props: Props) {
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   return (
     <div>
-      <Button variant="contained" color={props.color} onClick={handleClickOpen}>
+      <Button
+        variant="contained"
+        color={props.color}
+        onClick={props.onClickOpen}
+      >
         {props.label}
       </Button>
       <Dialog
-        open={open}
-        onClose={handleClose}
+        open={props.open}
+        onClose={props.onClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -51,7 +48,7 @@ export default function AlertDialog(props: Props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>いいえ</Button>
+          <Button onClick={props.onClose}>いいえ</Button>
           <Button onClick={props.onClick} autoFocus>
             はい
           </Button>
