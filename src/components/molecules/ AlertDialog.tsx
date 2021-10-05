@@ -10,6 +10,15 @@ type Props = {
   label: string;
   title: string;
   content?: string;
+  color?:
+    | "inherit"
+    | "primary"
+    | "secondary"
+    | "success"
+    | "error"
+    | "info"
+    | "warning"
+    | undefined;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 };
 
@@ -26,7 +35,7 @@ export default function AlertDialog(props: Props) {
 
   return (
     <div>
-      <Button variant="contained" color="inherit" onClick={handleClickOpen}>
+      <Button variant="contained" color={props.color} onClick={handleClickOpen}>
         {props.label}
       </Button>
       <Dialog
