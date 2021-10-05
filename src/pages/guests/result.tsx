@@ -74,8 +74,8 @@ const Result = () => {
   };
 
   return (
-    <div className="w-full h-screen flex items-center justify-center">
-      <div className="text-center ">
+    <div className="w-full h-screen flex justify-center">
+      <div className="text-center p-6">
         <p className="text-5xl underline">Result</p>
         <div className="h-8" />
         <div className="text-3xl">
