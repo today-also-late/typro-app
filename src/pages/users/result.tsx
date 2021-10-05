@@ -60,10 +60,6 @@ const Result = () => {
         level: level,
       })
     );
-    console.log(t1src);
-    console.log(t2src);
-    console.log(t1output);
-    console.log(t2output);
 
     // リロード,タブを閉じるときに警告(禁止はできない)
     window.addEventListener("beforeunload", onUnload);
