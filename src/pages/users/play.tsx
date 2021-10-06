@@ -106,7 +106,6 @@ const Play = () => {
         console.log(answers);
       } else {
         audioMiss?.play();
-
         setMissCount((prevState) => prevState + 1);
         setAlertText("コードが違います。");
       }

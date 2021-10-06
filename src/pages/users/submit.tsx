@@ -73,7 +73,7 @@ const Submit = () => {
       };
 
       const url =
-        "https://hooks.slack.com/services/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";
+        "https://hooks.slack.com/services/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";
 
       fetch(url, {
         method: "POST",
@@ -83,6 +83,7 @@ const Submit = () => {
 
         setSrc("");
         setOutput("");
+        setLanguage("");
       });
     }
   };
@@ -133,7 +134,7 @@ const Submit = () => {
             title="本当に送信しますか？"
             content="送信した内容は、TyPro管理者が確認してから問題に反映されます。"
             color="primary"
-            onClick={() => submitForm()}
+            onClick={submitForm}
           />
         </div>
       </div>
