@@ -12,15 +12,6 @@ const Submit = () => {
   const [src, setSrc] = useState("");
   const [output, setOutput] = useState("");
 
-  // AlertDialog
-  const [open, setOpen] = React.useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   // バリデーション
   const validateRequiredInput = (...args: any) => {
     let isBlank = false;
@@ -54,7 +45,6 @@ const Submit = () => {
 
   const submitForm = () => {
     const isBlank = validateRequiredInput(language, src, output);
-    handleClose();
 
     if (isBlank) {
       alert("入力必須欄が空白です。");
@@ -144,10 +134,7 @@ const Submit = () => {
             title="本当に送信しますか？"
             content="送信した内容は、TyPro管理者が確認してから問題に反映されます。"
             color="primary"
-            open={open}
             onClick={submitForm}
-            onClose={handleClose}
-            onClickOpen={handleClickOpen}
           />
         </div>
       </div>
