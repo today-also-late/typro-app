@@ -72,19 +72,22 @@ const Submit = () => {
           output,
       };
 
-      const url =
-        "https://hooks.slack.com/services/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";
+      const url = process.env.NEXT_PUBLIC_SLACK_WEBHOOK_API;
 
-      fetch(url, {
-        method: "POST",
-        body: JSON.stringify(payload),
-      }).then(() => {
-        alert("送信が完了しました!!");
+      if (url) {
+        fetch(url, {
+          method: "POST",
+          body: JSON.stringify(payload),
+        }).then(() => {
+          alert("送信が完了しました!!");
 
-        setSrc("");
-        setOutput("");
-        setLanguage("");
-      });
+          setSrc("");
+          setOutput("");
+          setLanguage("");
+        });
+      } else {
+        alert("大変申し訳ございません。エラー復旧までしばらくお持ちください。");
+      }
     }
   };
 
