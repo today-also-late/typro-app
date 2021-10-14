@@ -1,7 +1,7 @@
 
 ## TyPro
 
-https://typro-app.vercel.app/
+https://typro.vercel.app/
 
 プログラミング教育必修化に向け、初学者(中高生)がスムーズにプログラミングを学ぶための助けとなるタイピングアプリです。
 
