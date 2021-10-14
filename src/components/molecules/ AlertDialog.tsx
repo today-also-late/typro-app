@@ -20,6 +20,7 @@ type Props = {
     | "warning"
     | undefined;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClose?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
 export default function AlertDialog(props: Props) {
@@ -52,7 +53,12 @@ export default function AlertDialog(props: Props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>いいえ</Button>
-          <Button onClick={props.onClick} autoFocus>
+          <Button
+            onClick={(e: any) => {
+              props.onClick(e), handleClose();
+            }}
+            autoFocus
+          >
             はい
           </Button>
         </DialogActions>

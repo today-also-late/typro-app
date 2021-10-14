@@ -72,18 +72,22 @@ const Submit = () => {
           output,
       };
 
-      const url =
-        "https://hooks.slack.com/services/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";
+      const url = process.env.NEXT_PUBLIC_SLACK_WEBHOOK_API;
 
-      fetch(url, {
-        method: "POST",
-        body: JSON.stringify(payload),
-      }).then(() => {
-        alert("送信が完了しました!!");
+      if (url) {
+        fetch(url, {
+          method: "POST",
+          body: JSON.stringify(payload),
+        }).then(() => {
+          alert("送信が完了しました!!");
 
-        setSrc("");
-        setOutput("");
-      });
+          setSrc("");
+          setOutput("");
+          setLanguage("");
+        });
+      } else {
+        alert("大変申し訳ございません。エラー復旧までしばらくお持ちください。");
+      }
     }
   };
 
@@ -133,7 +137,7 @@ const Submit = () => {
             title="本当に送信しますか？"
             content="送信した内容は、TyPro管理者が確認してから問題に反映されます。"
             color="primary"
-            onClick={() => submitForm()}
+            onClick={submitForm}
           />
         </div>
       </div>
