@@ -1,11 +1,11 @@
 import Head from "next/head";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { getUser } from "../../redux/slices/userSlice";
-import styles from "../../styles/Home.module.css";
 import { PlayButton } from "../components/atoms";
 import ITyped from "../firebase/ityped";
 import Router from "next/router";
+import Image from "next/image";
+import BackgroundImage from "../../public/images/background-image.png";
 
 type HOME = {
   title: string;
@@ -15,13 +15,22 @@ export default function Home({ title }: HOME) {
   const user = useSelector(getUser).user;
 
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>{title}</title>
         <meta name="description" content="TyPro" />
         <link rel="typro" href="/favicon.ico" />
       </Head>
-      <div className="w-screen h-screen background-image">
+      <div className="w-screen h-screen relative">
+        <div className="bg-blend-lighten opacity-5">
+          <Image
+            src={BackgroundImage}
+            alt="typro"
+            layout="fill"
+            objectFit="cover"
+            objectPosition="center"
+          />
+        </div>
         <div className="h-1/6 text-center text-5xl pt-48">
           <ITyped strings={["Welcome to TyPro.", "Yeah!"]} />
         </div>
