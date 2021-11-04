@@ -10,3 +10,5 @@ https://typro.vercel.app/
 ## TERMINAL2021 準グランプリ!!
 Sky株式会社主催、学生対象アプリ開発コンテスト「TERMINAL2021」　全国の121名の学生が挑戦した中から準グランプリ獲得！！
 
+https://sky-terminal.com/result/
+
